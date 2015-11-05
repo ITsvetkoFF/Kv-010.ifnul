@@ -119,6 +119,7 @@ class PersonsPage(InternalPage):
     COLUMN_VZ_ADD = (By.XPATH, "//li[15]//*[@id='showHideHeader']")
     COLUMN_HOSTEL_ADD = (By.XPATH, "//li[16]//*[@id='showHideHeader']")
     COLUMN_MATERIAL_LIABILITY_ADD = (By.XPATH, "//li[17]//*[@id='showHideHeader']")
+    ID_OF_PERSON_IN_FIRST_ROW = (By.XPATH, "//*[@class='pointer']/tr[1]/td[1]")
 
     COLUMNS_DICT = {
         1: '№',
@@ -160,6 +161,9 @@ class PersonsPage(InternalPage):
     @ErrorHandlerPO("current page is not Persons page")
     def is_current_page(self):
         return self.wait.until(visibility_of_element_located(self.ADD_PERSON_BUTTON))
+
+    def id_of_person_in_first_row(self):
+        return self.is_element_visible(self.ID_OF_PERSON_IN_FIRST_ROW)
 
     @property
     def is_this_page(self):
@@ -492,5 +496,18 @@ class PersonsPage(InternalPage):
         self.try_get_choose_surname().click()
         self.try_get_input_group().clear()
         self.try_get_input_group().send_keys(given_surname)
+        self.try_get_ok_button().click()
+        self.is_element_present(self.SPINNER_OFF)
+
+    def search_person_by_id(self, person_id):
+        """
+        Method performs search by id.
+        :param person_id: wanted id.
+        :return:
+        """
+        self.is_this_page
+        self.try_get_choose_person_id().click()
+        self.try_get_input_group().clear()
+        self.try_get_input_group().send_keys(person_id)
         self.try_get_ok_button().click()
         self.is_element_present(self.SPINNER_OFF)

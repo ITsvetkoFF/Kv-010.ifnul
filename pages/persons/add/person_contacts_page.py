@@ -23,6 +23,30 @@ class AddPersonContactsPage(AddPersonPage):
     def is_this_page(self):
         return self.is_element_visible(self.SKYPE_INPUT)
 
+    def mobile_phone1_input(self):
+        return self.is_element_visible(self.MOBILE_PHONE1_INPUT)
+
+    def mobile_phone2_input(self):
+        return self.is_element_visible(self.MOBILE_PHONE2_INPUT)
+
+    def home_phone_input(self):
+        return self.is_element_visible(self.HOME_PHONE_INPUT)
+
+    def work_phone_input(self):
+        return self.is_element_visible(self.WORK_PHONE_INPUT)
+
+    def email_input(self):
+        return self.is_element_visible(self.EMAIL_INPUT)
+
+    def skype_input(self):
+        return self.is_element_visible(self.SKYPE_INPUT)
+
+    def site_input(self):
+        return self.is_element_visible(self.SITE_INPUT)
+
+    def icq_input(self):
+        return self.is_element_visible(self.ICQ_INPUT)
+
     def set_first_mobile_phone(self, phone):
         """
         Method sets the first mobile phone
@@ -102,3 +126,20 @@ class AddPersonContactsPage(AddPersonPage):
         self.set_skype(person.skype)
         self.set_site(person.web_site)
         self.set_icq(person.icq)
+
+    def read_in_contact_page(self, person_new):
+        """
+        Method read the data on the contact persons page
+        :param person_new: persons model in Person format
+        :return:
+        """
+        self.is_this_page
+        person_new.mobile_phone1 = self.mobile_phone1_input().test
+        person_new.mobile_phone2 = self.mobile_phone2_input().test
+        person_new.home_phone = self.home_phone_input().test
+        person_new.work_phone = self.work_phone_input().test
+        person_new.email = self.email_input().test
+        person_new.skype = self.skype_input().test
+        person_new.web_site = self.site_input().test
+        person_new.icq = self.icq_input().test
+        return person_new

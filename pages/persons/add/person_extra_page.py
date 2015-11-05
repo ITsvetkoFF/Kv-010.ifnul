@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from utils.common_methods import CommonMethods
+
 __author__ = 'Deorditsa'
 
 from person_base_page import AddPersonPage
@@ -25,6 +27,24 @@ class AddPersonExtraPage(AddPersonPage):
     @property
     def is_this_page(self):
         return self.is_element_visible(self.ACTIVATE_BIRTH_DAY_CHOOSER)
+
+    def active_birth_day_chooser(self):
+        return self.is_element_visible(self.ACTIVATE_BIRTH_DAY_CHOOSER)
+
+    def sex_types_select(self):
+        return self.is_element_visible(self.SEX_TYPES_SELECT)
+
+    def marital_status_select(self):
+        return self.is_element_visible(self.MARITAL_STATUS_SELECT)
+
+    def nationality_select(self):
+        return self.is_element_visible(self.NATIONALITY_SELECT)
+
+    def private_case_chars_input(self):
+        return self.is_element_visible(self.PRIVATE_CASE_CHARS_INPUT)
+
+    def private_case_number_input(self):
+        return self.is_element_visible(self.PRIVATE_CASE_NUMBER_INPUT)
 
     @property
     def private_case_number_input_incorrect(self):
@@ -125,5 +145,24 @@ class AddPersonExtraPage(AddPersonPage):
         self.check_reservist_status(person.reservist)
         self.check_needed_hostel_status(person.hostel_need)
 
-
-
+    def read_in_extra_person_page(self, person_new):
+        """
+        Method read the data on the extra persons page
+        :param person_new: persons model in Person format
+        :return:
+        """
+        self.is_this_page
+        common_methods = CommonMethods()
+        person_new.birth_day = self.active_birth_day_chooser().text
+        person_new.sex = self.sex_types_select().text
+        person_new.marital_status = self.marital_status_select().text
+        person_new.nationality = self.nationality_select().text
+        person_new.private_case_chars = self.private_case_chars_input().text
+        person_new.private_case_number = self.private_case_number_input().text
+        person_new.is_outlander = common_methods.is_checkbox_checked(
+            self.driver.find_element(*self.IS_A_OUTLANDER_CHECKER))
+        person_new.reservist = common_methods.is_checkbox_checked(
+            self.driver.find_element(*self.IS_A_OUTLANDER_CHECKER))
+        person_new.hostel_need = common_methods.is_checkbox_checked(
+            self.driver.find_element(*self.IS_A_OUTLANDER_CHECKER))
+        return person_new

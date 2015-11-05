@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-__author__ = 'Deorditsa'
+from utils.common_methods import CommonMethods
 
+__author__ = 'Deorditsa'
 
 from person_base_page import AddPersonPage
 from selenium.webdriver.common.by import By
@@ -9,7 +10,6 @@ from selenium.webdriver.support.ui import Select
 
 
 class AddPersonAddressesPage(AddPersonPage):
-
     BIRTH_PLACE_SELECTOR = "div[ng-model='person.birthPlace']>div:nth-child(%s) ul a div"
     BIRTH_PLACE_LEVEL_SELECTOR = "div[ng-model='person.birthPlace']>div:nth-child(%s) label+div span"
     REG_ADDRESS_PLACE_SELECTOR = "div[ng-model='addresses.regAddresses.adminUnitId']>div:nth-child(%s) ul a div"
@@ -31,9 +31,54 @@ class AddPersonAddressesPage(AddPersonPage):
     HOUSE_POST_INPUT = (By.XPATH, "//input[@id='inputHousePost']")
     APARTMENT_POST_INPUT = (By.XPATH, "//input[@id='inputApartmentPost']")
 
+    ARRAY_BIRTH_PLACE_SELECTOR = (By.XPATH, ".//*[@name='birthPlaceInput']//span[@class='ng-binding ng-scope']")
+    ARRAY_REGISTRATION_PLACE_SELECTOR = (By.XPATH, ".//*[@name='regAddressesInput']//span[@class='ng-binding ng-scope']")
+    ARRAY_POST_PLACE_SELECTOR = (By.XPATH, ".//*[@label='Мiсце проживання']//span[@class='ng-binding ng-scope']")
+    SELECTED_ADDRESS_TYPE = (By.XPATH, ".//*[@id='inputStreetTypeReg']/option[@selected='selected']")
+    SELECTED_ADDRESS_TYPE_POST = (By.XPATH, ".//*[@id='inputStreetTypePost']/option[@selected='selected']")
+
     @property
     def is_this_page(self):
         return self.is_element_visible(self.INDEX_INPUT)
+
+    def array_birth_place_selector(self):
+        return self.driver.find_elements(*self.ARRAY_BIRTH_PLACE_SELECTOR)
+
+    def array_post_place_selector(self):
+        return self.driver.find_elements(*self.ARRAY_POST_PLACE_SELECTOR)
+
+    def array_registration_place_selector(self):
+        return self.driver.find_elements(*self.ARRAY_REGISTRATION_PLACE_SELECTOR)
+
+    def index_input(self):
+        return self.is_element_visible(self.INDEX_INPUT)
+
+    def address_type_chooser(self):
+        return self.is_element_visible(self.SELECTED_ADDRESS_TYPE)
+
+    def street_input(self):
+        return self.is_element_visible(self.STREET_INPUT)
+
+    def house_input(self):
+        return self.is_element_visible(self.HOUSE_INPUT)
+
+    def apartment_input(self):
+        return self.is_element_visible(self.APARTMENT_INPUT)
+
+    def index_post_input(self):
+        return self.is_element_visible(self.INDEX_POST_INPUT)
+
+    def address_type_post_chooser(self):
+        return self.is_element_visible(self.SELECTED_ADDRESS_TYPE_POST)
+
+    def street_post_input(self):
+        return self.is_element_visible(self.STREET_POST_INPUT)
+
+    def house_post_input(self):
+        return self.is_element_visible(self.HOUSE_POST_INPUT)
+
+    def apartment_post_input(self):
+        return self.is_element_visible(self.APARTMENT_POST_INPUT)
 
     def get_selector_for_current_block_and_level(self, selector, level):
         """
@@ -51,9 +96,12 @@ class AddPersonAddressesPage(AddPersonPage):
         :param address_level: Integer number which means level in current block
         :return:
         """
-        self.is_element_visible(self.get_selector_for_current_block_and_level(self.BIRTH_PLACE_LEVEL_SELECTOR, address_level+1))
-        self.driver.find_element(*self.get_selector_for_current_block_and_level(self.BIRTH_PLACE_LEVEL_SELECTOR, address_level+1)).click()
-        all_level_addresses = self.driver.find_elements(*self.get_selector_for_current_block_and_level(self.BIRTH_PLACE_SELECTOR, address_level+1))
+        self.is_element_visible(
+            self.get_selector_for_current_block_and_level(self.BIRTH_PLACE_LEVEL_SELECTOR, address_level + 1))
+        self.driver.find_element(
+            *self.get_selector_for_current_block_and_level(self.BIRTH_PLACE_LEVEL_SELECTOR, address_level + 1)).click()
+        all_level_addresses = self.driver.find_elements(
+            *self.get_selector_for_current_block_and_level(self.BIRTH_PLACE_SELECTOR, address_level + 1))
         self.find_element_in_select(all_level_addresses, address).click()
         self.is_element_present(self.SPINNER_OFF)
 
@@ -64,9 +112,12 @@ class AddPersonAddressesPage(AddPersonPage):
         :param address_level: Integer number which means level in current block
         :return:
         """
-        self.is_element_visible(self.get_selector_for_current_block_and_level(self.REG_ADDRESS_LEVEL_SELECTOR, address_level+1))
-        self.driver.find_element(*self.get_selector_for_current_block_and_level(self.REG_ADDRESS_LEVEL_SELECTOR, address_level+1)).click()
-        all_level_addresses = self.driver.find_elements(*self.get_selector_for_current_block_and_level(self.REG_ADDRESS_PLACE_SELECTOR, address_level+1))
+        self.is_element_visible(
+            self.get_selector_for_current_block_and_level(self.REG_ADDRESS_LEVEL_SELECTOR, address_level + 1))
+        self.driver.find_element(
+            *self.get_selector_for_current_block_and_level(self.REG_ADDRESS_LEVEL_SELECTOR, address_level + 1)).click()
+        all_level_addresses = self.driver.find_elements(
+            *self.get_selector_for_current_block_and_level(self.REG_ADDRESS_PLACE_SELECTOR, address_level + 1))
         self.find_element_in_select(all_level_addresses, address).click()
         self.is_element_present(self.SPINNER_OFF)
 
@@ -138,3 +189,46 @@ class AddPersonAddressesPage(AddPersonPage):
         self.set_house(person.registration_place["house"])
         self.set_apartment(person.registration_place["apartment"])
         self.check_is_reg_and_post_addresses_the_same(person.registration_place["is_addresses_match"])
+
+    def read_in_address_page(self, person_new):
+        """
+        Method read the data on the address persons page
+        :param person_new: persons model in Person format
+        :return:
+        """
+        common_methods = CommonMethods()
+        self.is_this_page
+        # filling birth place
+        for place in self.array_birth_place_selector():
+            person_new.burn_place.append(place.text)
+
+        # filling registration address
+        for place in self.array_registration_place_selector():
+            person_new.registration_place["area"].append(place.text)
+
+        person_new.registration_place["index"] = self.index_input().text
+        person_new.registration_place["type"] = self.address_type_chooser().text
+        person_new.registration_place["street"] = self.street_input().text
+        person_new.registration_place["house"] = self.house_input().text
+        person_new.registration_place["apartment"] = self.apartment_input().text
+        person_new.registration_place["is_addresses_match"] = common_methods.is_checkbox_checked(
+            self.driver.find_element(*self.IS_ADDRESSES_MATCH))
+
+        if person_new.registration_place["is_addresses_match"]:
+            person_new.post_registration_place["index"] = person_new.registration_place["index"]
+            person_new.post_registration_place["type"] = person_new.registration_place["type"]
+            person_new.post_registration_place["street"] = person_new.registration_place["street"]
+            person_new.post_registration_place["house"] = person_new.registration_place["house"]
+            person_new.post_registration_place["apartment"] = person_new.registration_place["apartment"]
+            return person_new
+
+        # filling post address
+        for place in self.array_post_place_selector():
+            person_new.post_registration_place["area"].append(place.text)
+
+        person_new.post_registration_place["index"] = self.index_post_input().text
+        person_new.post_registration_place["type"] = self.address_type_post_chooser().text
+        person_new.post_registration_place["street"] = self.street_post_input().text
+        person_new.post_registration_place["house"] = self.house_post_input().text
+        person_new.post_registration_place["apartment"] = self.apartment_post_input().text
+        return person_new

@@ -27,6 +27,21 @@ class AddPersonMainPage(AddPersonPage):
     def is_this_page(self):
         return self.is_element_visible(self.PERSON_TYPE_SELECT)
 
+    def person_surname_ukr_input(self):
+        return self.is_element_visible(self.PERSON_SURNAME_UKR_INPUT)
+
+    def person_surname_eng_input(self):
+        return self.is_element_visible(self.PERSON_SURNAME_ENG_INPUT)
+
+    def person_farther_name_ukr_input(self):
+        return self.is_element_visible(self.PERSON_FARTHER_NAME_UKR_INPUT)
+
+    def person_first_name_ukr_input(self):
+        return self.is_element_visible(self.PERSON_FIRST_NAME_UKR_INPUT)
+
+    def person_first_name_eng_input(self):
+        return self.is_element_visible(self.PERSON_FIRST_NAME_ENG_INPUT)
+
     @property
     def person_surname_ukr_input_incorrect(self):
         return self.is_element_visible(self.PERSON_SURNAME_UKR_INPUT_INCORRECT)
@@ -47,13 +62,13 @@ class AddPersonMainPage(AddPersonPage):
     def person_first_name_eng_input_incorrect(self):
         return self.is_element_visible(self.PERSON_FIRST_NAME_ENG_INPUT_INCORRECT)
 
-    def person_type_select_click(self):
+    def person_type_select(self):
         """
         Method performs clicking on person type select field
         :return:
         """
         self.is_element_present(self.PERSON_TYPE_SELECT)
-        self.driver.find_element(*self.PERSON_TYPE_SELECT).click()
+        self.driver.find_element(*self.PERSON_TYPE_SELECT)
 
     def choose_person_type(self, person_type):
         """
@@ -113,10 +128,25 @@ class AddPersonMainPage(AddPersonPage):
         :return:
         """
         self.is_this_page
-        self.person_type_select_click()
+        self.person_type_select().click()
         self.choose_person_type(person.person_type)
         self.set_ukr_surname(person.surname_ukr)
         self.set_first_ukr_name(person.first_name_ukr)
         self.set_father_ukr_name(person.second_name_ukr)
         self.set_eng_surname(person.surname_eng)
         self.set_first_eng_name(person.first_name_eng)
+
+    def read_in_main_person_page(self, person_new):
+        """
+        Method read the data on the main persons page
+        :param person_new: is persons model in Person format
+        :return: person_new
+        """
+        self.is_this_page
+        person_new.person_type = self.person_type_select().text
+        person_new.surname_ukr = self.person_surname_ukr_input().text
+        person_new.first_name_ukr = self.person_first_name_ukr_input().text
+        person_new.second_name_ukr = self.person_farther_name_ukr_input().text
+        person_new.surname_eng = self.person_surname_eng_input().text
+        person_new.first_name_eng = self.person_first_name_eng_input().text
+        return person_new
