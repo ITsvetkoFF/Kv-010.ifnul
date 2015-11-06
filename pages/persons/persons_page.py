@@ -157,10 +157,6 @@ class PersonsPage(InternalPage):
     # END OF SELECTORS SECTION
     #
 
-    @ErrorHandlerPO("current page is not Persons page")
-    def is_current_page(self):
-        return self.wait.until(visibility_of_element_located(self.ADD_PERSON_BUTTON))
-
     @property
     def is_this_page(self):
         return self.is_element_visible(self.ADD_PERSON_BUTTON)

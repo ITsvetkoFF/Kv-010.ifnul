@@ -99,10 +99,6 @@ class EnrollmentsPage(InternalPage):
     EDIT_BUTTON_ON_FIRST_ROW = (By.XPATH, "//tbody[@class='pointer']/tr[1]/td//i[@class='fa fa-pencil-square-o']")
     DELETE_BUTTON_ON_FIRST_ROW = (By.XPATH, "//tbody[@class='pointer']/tr[1]/td//i[@class='fa fa-times']")
 
-    @ErrorHandlerPO("current page is not Enrollments page")
-    def is_current_page(self):
-        return self.wait.until(visibility_of_element_located(self.ADD_NEW_ENROLLMENT_BUTTON))
-
     def delete_button_on_first_row_click(self):
         self.is_element_visible(self.DELETE_BUTTON_ON_FIRST_ROW)
         self.driver.find_element(*self.DELETE_BUTTON_ON_FIRST_ROW).click()
@@ -115,7 +111,7 @@ class EnrollmentsPage(InternalPage):
 
     @property
     def is_this_page(self):
-        return self.is_element_visible(self.ADD_NEW_ENROLLMENT_BUTTON)\
+        return self.is_element_visible(self.ADD_NEW_ENROLLMENT_BUTTON)
 
     @property
     def add_new_enrollment_button_click(self):

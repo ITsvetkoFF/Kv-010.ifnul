@@ -33,7 +33,3 @@ class LoginPage(Page):
     @property
     def is_this_page(self):
         return self.is_element_visible(self.LOGIN_PAGE)
-
-    @ErrorHandlerPO("current page is not Login page")
-    def is_current_page(self):
-        return self.wait.until(visibility_of_element_located(self.LOGIN_PAGE))

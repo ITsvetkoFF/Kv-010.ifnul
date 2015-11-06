@@ -1,14 +1,10 @@
 import abc
-
 from selenium.webdriver.common.by import By
-
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support.expected_conditions import *
 from decorators.error_handling_dec import ErrorHandlerPO
 
 __author__ = 'Evgen'
-
-from selenium.webdriver.support.ui import WebDriverWait
-
-from selenium.webdriver.support.expected_conditions import *
 
 
 class Page(object):
@@ -35,5 +31,5 @@ class Page(object):
         return self.wait.until(presence_of_element_located(self.SPINNER_OFF))
 
     @abc.abstractmethod
-    def is_current_page(self):
+    def is_this_page(self):
         return
