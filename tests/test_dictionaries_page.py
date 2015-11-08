@@ -8,21 +8,15 @@ from utils.table_ease_access import TestTable
 
 __author__ = 'Den'
 
-
-def login(app):
-    app.ensure_logout()
-    app.login(User.Admin(), True)
-
-
 def goto_dictionaries_page(app):
     assert app.internal_page.is_this_page
     app.internal_page.dictionaries_page_link.click()
     assert app.dictionaries_page.is_this_page
 
 
-def test_public_activity_dict(app):
+def test_public_activity_dict(logout_login):
+    app = logout_login
     dict_page = app.dictionaries_page
-    login(app)
     goto_dictionaries_page(app)
     select_value = dict_page.try_get_dictionaries_select_elem
     assert select_value
@@ -64,7 +58,7 @@ def test_inform_about_unit_dict_check_all_value(app):
     case_value.select_by_visible_text(u'Інформація про підрозділи')
     data_provider = DataProviderJSON('info_about_unit.json')
     table = TestTable(dict_page.driver, dict_page.DICTIONARIES_PAGE_TABLE)
-    assert dict_page.is_element_present(dict_page.SPINNER_OFF)
+    assert dict_page.wait_until_page_generate()
     for i in range(1, table.try_get_table_data_height() + 1):
         for j in range(1, table.try_get_table_data_width() + 1):
             assert table.try_get_cell_ij(i, j).text == data_provider.get_value_by_ij(str(i), str(j))
@@ -84,7 +78,7 @@ def test_click_on_all_dictionary(app):
     for s in dp.get_dict_value()["value"]:
         if s != u"Адміністративно-територіальні одиниці":
             case_value.select_by_visible_text(s)
-            assert dict_page.is_element_present(dict_page.SPINNER_OFF)
+            assert dict_page.wait_until_page_generate()
             dict_page.try_get_button_10().click()
             table = TestTable(dict_page.driver, dict_page.DICTIONARIES_PAGE_TABLE)
             assert table.try_get_table_data_height() <= 10

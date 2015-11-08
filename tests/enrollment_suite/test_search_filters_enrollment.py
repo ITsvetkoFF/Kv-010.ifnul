@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from model.user import User
+
 from allure.constants import AttachmentType
 import pytest
 import allure
@@ -10,10 +10,7 @@ __author__ = 'Evgen'
 
 
 class TestSearchFilters(object):
-    # driver = webdriver.Firefox()
-    # base_url = "http://localhost:9000"
-    # app = Application(driver, base_url)
-
+    @pytest.allure.severity(pytest.allure.severity_level.NORMAL)
     def test_search_by_person_id(self, app):
         with pytest.allure.step("Authorize on the site with admin credentials"):
             app.ensure_logged_in()
@@ -33,6 +30,7 @@ class TestSearchFilters(object):
                 self.print_simple_stacktrace()
                 raise
 
+    @pytest.allure.severity(pytest.allure.severity_level.NORMAL)
     def test_search_by_document_series(self, app):
         en_page = app.enrollments_page
         with pytest.allure.step("Searching by document's series"):
@@ -46,6 +44,7 @@ class TestSearchFilters(object):
                 self.print_simple_stacktrace()
                 raise
 
+    @pytest.allure.severity(pytest.allure.severity_level.NORMAL)
     def test_search_by_document_number(self, app):
         en_page = app.enrollments_page
         with pytest.allure.step("Searching by document's number"):
@@ -59,6 +58,7 @@ class TestSearchFilters(object):
                 self.print_simple_stacktrace()
                 raise
 
+    @pytest.allure.severity(pytest.allure.severity_level.NORMAL)
     def test_search_by_proposal_id(self, app):
         en_page = app.enrollments_page
         with pytest.allure.step("Searching by proposal ID"):
@@ -71,11 +71,9 @@ class TestSearchFilters(object):
                 self.print_simple_stacktrace()
                 raise
 
-    def test_filter_by_budget(self, app):
-        with pytest.allure.step("Authorize on the site with admin credentials"):
-            app.ensure_logout()
-            app.login(User.Admin())
-            app.internal_page.is_this_page
+    @pytest.allure.severity(pytest.allure.severity_level.NORMAL)
+    def test_filter_by_budget(self, logout_login):
+        app = logout_login
         with pytest.allure.step("Go to enrollments page"):
             app.internal_page.enrollments_page_link.click()
             app.enrollments_page.is_this_page
@@ -95,11 +93,9 @@ class TestSearchFilters(object):
                 self.print_simple_stacktrace()
                 raise
 
-    def test_filter_by_not_budget(self, app):
-        with pytest.allure.step("Authorize on the site with admin credentials"):
-            app.ensure_logout()
-            app.login(User.Admin())
-            app.internal_page.is_this_page
+    @pytest.allure.severity(pytest.allure.severity_level.NORMAL)
+    def test_filter_by_not_budget(self, logout_login):
+        app = logout_login
         with pytest.allure.step("Go to enrollments page"):
             app.internal_page.enrollments_page_link.click()
             app.enrollments_page.is_this_page
@@ -117,11 +113,9 @@ class TestSearchFilters(object):
                 self.print_simple_stacktrace()
                 raise
 
-    def test_filter_by_privileges(self, app):
-        with pytest.allure.step("Authorize on the site with admin credentials"):
-            app.ensure_logout()
-            app.login(User.Admin())
-            app.internal_page.is_this_page
+    @pytest.allure.severity(pytest.allure.severity_level.NORMAL)
+    def test_filter_by_privileges(self, logout_login):
+        app = logout_login
         with pytest.allure.step("Go to enrollments page"):
             app.internal_page.enrollments_page_link.click()
             app.enrollments_page.is_this_page
@@ -139,11 +133,9 @@ class TestSearchFilters(object):
                 self.print_simple_stacktrace()
                 raise
 
-    def test_filter_by_not_privileges(self, app):
-        with pytest.allure.step("Authorize on the site with admin credentials"):
-            app.ensure_logout()
-            app.login(User.Admin())
-            app.internal_page.is_this_page
+    @pytest.allure.severity(pytest.allure.severity_level.NORMAL)
+    def test_filter_by_not_privileges(self, logout_login):
+        app = logout_login
         with pytest.allure.step("Go to enrollments page"):
             app.internal_page.enrollments_page_link.click()
             app.enrollments_page.is_this_page
@@ -161,11 +153,9 @@ class TestSearchFilters(object):
                 self.print_simple_stacktrace()
                 raise
 
-    def test_filter_mix(self, app):
-        with pytest.allure.step("Authorize on the site with admin credentials"):
-            app.ensure_logout()
-            app.login(User.Admin())
-            app.internal_page.is_this_page
+    @pytest.allure.severity(pytest.allure.severity_level.NORMAL)
+    def test_filter_mix(self, logout_login):
+        app = logout_login
         with pytest.allure.step("Go to enrollments page"):
             app.internal_page.enrollments_page_link.click()
             app.enrollments_page.is_this_page
@@ -186,11 +176,9 @@ class TestSearchFilters(object):
                 self.print_simple_stacktrace()
                 raise
 
-    def test_delete_filters(self, app):
-        with pytest.allure.step("Authorize on the site with admin credentials"):
-            app.ensure_logout()
-            app.login(User.Admin())
-            app.internal_page.is_this_page
+    @pytest.allure.severity(pytest.allure.severity_level.NORMAL)
+    def test_delete_filters(self, logout_login):
+        app = logout_login
         with pytest.allure.step("Go to enrollments page"):
             app.internal_page.enrollments_page_link.click()
             app.enrollments_page.is_this_page
@@ -209,7 +197,6 @@ class TestSearchFilters(object):
                 allure.attach('screenshot', enr_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
                 self.print_simple_stacktrace()
                 raise
-
 
     def print_simple_stacktrace(self):
         _, _, tb = sys.exc_info()

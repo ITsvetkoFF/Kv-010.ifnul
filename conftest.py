@@ -11,11 +11,10 @@ from model.application import Application
 from utils.data_provider_from_json import DataProviderJSON
 from utils.configuration import Configuration
 
-
 def pytest_addoption(parser):
     parser.addoption("--browser", action="store", default="firefox")
-    # parser.addoption("--base_url", action="store", default="http://localhost:9000/")
-    parser.addoption("--base_url", action="store", default="http://194.44.198.221/")
+    parser.addoption("--base_url", action="store", default="http://192.168.96.134:9000/")
+    # parser.addoption("--base_url", action="store", default="http://194.44.198.221/")
     parser.addoption("--jenkins_display", action="store_true")
 
 
@@ -66,7 +65,7 @@ def app(request, browser_type, base_url, jenkins_display):
 def logout_login(app):
     app.ensure_logout()
     app.login(User.Admin(), True)
-    app.internal_page.is_element_present(app.internal_page.SPINNER_OFF)
+    app.internal_page.wait_until_page_generate()
     yield app
 
 

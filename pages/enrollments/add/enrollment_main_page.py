@@ -15,6 +15,8 @@ class EnrollmentsMainPage(InternalPage):
     FIRST_PERSON = (By.XPATH, "//*[@class='table-responsive']//tbody[@class='pointer']//tr[1]/td[2]")
     SERIES_OF_STATEMENTS = (By.ID, "inputDocSeries")
     NUMBER_STATEMENTS = (By.ID, "inputdocNum")
+    NUMBER_WRONG_STATMENTS = (By.XPATH, "//input[contains(@class, 'ng-invalid-pattern')]")
+    NUMBER_RIGHT_STATMENTS = (By.XPATH, "//input[contains(@class, 'ng-valid-pattern')]")
     CHECKBOX_IS_STATE = (By.XPATH, ".//input[@ng-model='enrolment.isState']")
     CHECKBOX_IS_CONTRACT = (By.XPATH, ".//input[@ng-model='enrolment.isContract']")
     CHECKBOX_IS_PRIVILEGE = (By.XPATH, ".//input[@ng-model='enrolment.isPrivilege']")
@@ -41,6 +43,9 @@ class EnrollmentsMainPage(InternalPage):
     TEXT_FROM_GRADING_SCALE = (By.XPATH, ".//*[@id='markScale']//span[@class='ng-binding ng-scope']")
     CHECKBOX_DOCUMENT_IS_ORIGINAL = (By.XPATH, ".//*[@ng-init='enrolment.isOriginal = 0']")
     PRIORITY = (By.ID, "inputPriority")
+    PRIORITY_WRONG_UP   = (By.XPATH, "//input[contains(@class, 'ng-invalid-max')]")
+    PRIORITY_WRONG_DOWN   = (By.XPATH, "//input[contains(@class, 'ng-invalid-min')]")
+    PRIORITY_RIGHT   = (By.XPATH, "//input[contains(@class, 'ng-valid')]")
     STRUCTURAL_UNIT = (By.XPATH, ".//*[@class='col-xs-3']/*[@id='inputStructure']//i[@class='caret pull-right']")
     DATE_OF_CREATION_STATEMENTS = (By.ID, "evDate")
     DATE_OF_ENTRY_STATEMENTS = (By.ID, "begDate")
@@ -75,7 +80,7 @@ class EnrollmentsMainPage(InternalPage):
         return self.driver.find_elements(*self.FIRST_SPECIALTIES_ID_IN_VIEW_TABLE)[1]
 
     def search_person_by(self, index):
-        self.is_element_present(self.SPINNER_OFF)
+        self.wait_until_page_generate()
         Select(self.driver.find_element(*self.SEARCH_PERSON_BY_SELECT)).select_by_index(index)
 
     def set_search_person_by(self, searched_value):
@@ -135,7 +140,7 @@ class EnrollmentsMainPage(InternalPage):
     @property
     def ok_for_input_field(self):
         self.is_element_visible(self.OK_FOR_INPUT_FIELD).click()
-        self.is_element_present(self.SPINNER_OFF)
+        self.wait_until_page_generate()
 
     def find_series_of_statements(self):
         self.is_element_visible(self.SERIES_OF_STATEMENTS)
@@ -144,6 +149,28 @@ class EnrollmentsMainPage(InternalPage):
     def find_number_statements(self):
         self.is_element_visible(self.NUMBER_STATEMENTS)
         return self.driver.find_element(*self.NUMBER_STATEMENTS)
+
+    @property
+    def number_statements(self):
+        return self.is_element_present(self.NUMBER_STATEMENTS)
+
+    def certain_number_statements(self, c_number_statements):
+        try:
+            val = int(c_number_statements)
+            if val <= 0:
+                raise ValueError
+        except ValueError:
+            return self.is_element_visible(self.NUMBER_WRONG_STATMENTS)
+        else:
+            return self.is_element_visible(self.NUMBER_RIGHT_STATMENTS)
+
+    @property
+    def certain_negative_number_statements(self):
+        return self.is_element_visible(self.NUMBER_WRONG_STATMENTS)
+
+    @property
+    def certain_positive_number_statements(self):
+        return self.is_element_visible(self.NUMBER_RIGHT_STATMENTS)
 
     def find_checkbox_is_state(self):
         self.is_element_visible(self.CHECKBOX_IS_STATE)
@@ -245,6 +272,11 @@ class EnrollmentsMainPage(InternalPage):
     def priority(self):
         return self.is_element_visible(self.PRIORITY)
 
+    def certain_priority(self, c_priority):
+        if 0 < c_priority < 16:
+            return self.is_element_visible(self.PRIORITY_RIGHT)
+        return self.is_element_visible(self.PRIORITY_WRONG_DOWN) or self.is_element_visible(self.PRIORITY_WRONG_UP)
+
     @property
     def structural_unit(self):
         return self.is_element_visible(self.STRUCTURAL_UNIT)
@@ -328,7 +360,7 @@ class EnrollmentsMainPage(InternalPage):
         self.specification_of_entry(enrollment.detailing_start)
         self.set_date(self.DATE_OF_ENTRY_STATEMENTS, enrollment.date_of_entry)
         self.set_date(self.DATE_CLOSING_STATEMENTS, enrollment.date_closing)
-        self.is_element_present(self.SPINNER_OFF)
+        self.wait_until_page_generate()
         self.button_save.click()
         return enrollment
 
@@ -337,12 +369,12 @@ class EnrollmentsMainPage(InternalPage):
         This method adds person in enrollments.
         :param name: is name of person.
         """
-        self.is_element_present(self.SPINNER_OFF)
+        self.wait_until_page_generate()
         self.ok_for_input_field
-        self.is_element_present(self.SPINNER_OFF)
+        self.wait_until_page_generate()
         self.emulation_of_input(self.SEARCH_NAME_FIELD, name)
         self.first_person.click()
-        self.is_element_present(self.SPINNER_OFF)
+        self.wait_until_page_generate()
 
     def radiobutton_higher_education(self, education):
         """
@@ -381,7 +413,7 @@ class EnrollmentsMainPage(InternalPage):
         self.choose_form_of_education.click()
         self.find_element_in_ui_select(self.list_form_ui_select(), form_of_education).click()
         self.button_choose_specialties.click()
-        self.is_element_present(self.SPINNER_OFF)
+        self.wait_until_page_generate()
 
     def choose_document(self, document):
         """
@@ -468,7 +500,7 @@ class EnrollmentsMainPage(InternalPage):
         :param index: Searching type in Integer. 0 - by PIB, 1 - by surname, 2 - by person id, 3 - by documents number
         :return:
         """
-        self.is_element_present(self.SPINNER_OFF)
+        self.wait_until_page_generate()
         Select(self.driver.find_element(*self.SEARCH_PERSON_BY_SELECT)).select_by_index(index)
 
     def set_search_person_by(self, searched_value):
