@@ -25,10 +25,6 @@ class DictionariesPage(InternalPage):
     TABLE_BODY_LAST_CELL_IN_I_ROW = ("//table/tbody/tr[%d]/td[last()]")
     TABLE_BODY_LAST_CELL_IN_LAST_ROW = ("//table/tbody/tr[last()]/td[last()]")
 
-    @ErrorHandlerPO("current page is not Dictionaries page")
-    def is_current_page(self):
-        return self.wait.until(visibility_of_element_located(self.DICTIONARIES_PAGE))
-
     @property
     def is_this_page(self):
         return self.is_element_visible(self.DICTIONARIES_PAGE)

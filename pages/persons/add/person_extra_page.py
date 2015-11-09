@@ -5,6 +5,7 @@ __author__ = 'Deorditsa'
 from person_base_page import AddPersonPage
 from selenium.webdriver.common.by import By
 
+
 class AddPersonExtraPage(AddPersonPage):
 
     ACTIVATE_BIRTH_DAY_CHOOSER = (By.XPATH, "//input[@ng-model='person.begDate']")

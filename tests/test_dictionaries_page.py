@@ -8,6 +8,7 @@ from utils.table_ease_access import TestTable
 
 __author__ = 'Den'
 
+
 def goto_dictionaries_page(app):
     assert app.internal_page.is_this_page
     app.internal_page.dictionaries_page_link.click()
