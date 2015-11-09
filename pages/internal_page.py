@@ -55,6 +55,11 @@ class InternalPage(Page):
     def dictionaries_page_link(self):
         return self.driver.find_element(*self.DICTIONARIES_PAGE_LINK)
 
+    # function
+    def dictionaries_page_link_click(self):
+        self.dictionaries_page_link.click()
+        self.wait_until_page_generate()
+
     def is_element_present(self, locator):
         try:
             return self.wait.until(presence_of_element_located(locator))
