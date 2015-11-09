@@ -6,10 +6,10 @@ from utils.add_person_pattern import AddPersonPattern
 
 __author__ = 'Denys'
 
-GIVEN_SURNAME = u'Прізвище'
+GIVEN_SURNAME = u'Леонов'
 GIVEN_PERSON_ID = '14'
-GIVEN_NUM_OS = '999999'
-GIVEN_SERIES_OS = 'ss'
+GIVEN_NUM_OS = '0101'
+GIVEN_SERIES_OS = u'ОЛОЛО'
 
 
 @pytest.allure.severity(pytest.allure.severity_level.NORMAL)
