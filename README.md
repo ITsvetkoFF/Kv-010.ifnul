@@ -2,7 +2,10 @@
 
 first test framework for ifnul project
 
-In order to change default test runner, go to Settings > Tools > Python Integrated Tools > Default test runner and change value to py.test
+In order to change default PyCharm test runner, go to PyCharm > Settings > Tools > Python Integrated Tools > Default test runner and change value to py.test
+
+In order to run performance tsung test, go to performance/tsung, and print in the terminal: 
+tsung -f test.xml start
 
 [Test plan](https://drive.google.com/file/d/0B-eCYJHMa12ebE1nMnAxTXF1M3c/view?usp=sharing) 
 
