@@ -14,7 +14,7 @@ def test_add_enrollment_in_new_person(logout_login, person, dictionary_with_json
         add_person.search_person_by_surname(app, person.surname_ukr)
         app.internal_page.wait_until_page_generate()
         app.persons_page.edit_first_person_in_page.click()
-        app.person_base_page.enrollments_tab.click()
+        app.person_base_pageenrollments_tab.click()
         enrollment = fill_enrollment_in_person(app, dictionary_with_json_files["fill_enrollment_main"])
         expected_number = enrollment.number_statements
         app.internal_page.wait_until_page_generate()
