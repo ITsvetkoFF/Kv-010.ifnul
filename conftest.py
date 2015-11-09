@@ -13,7 +13,7 @@ from utils.configuration import Configuration
 import datetime
 
 def pytest_addoption(parser):
-    parser.addoption("--browser", action="store", default="firefox")
+    parser.addoption("--browser", action="store", default="phantom")
     parser.addoption("--base_url", action="store", default="http://192.168.96.134:9000/")
     # parser.addoption("--base_url", action="store", default="http://194.44.198.221/")
     parser.addoption("--jenkins_display", action="store_true")
@@ -60,7 +60,7 @@ def app(request, browser_type, base_url, jenkins_display):
     elif browser_type == "ie":
         driver = webdriver.Ie()
     elif browser_type == "phantom":
-        driver = webdriver.PhantomJS()
+        driver = webdriver.PhantomJS('/phantomjs/bin/./phantomjs')
     request.addfinalizer(driver.quit)
     return Application(driver, base_url)
 
