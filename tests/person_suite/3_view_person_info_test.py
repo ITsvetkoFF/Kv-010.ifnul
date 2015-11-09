@@ -17,7 +17,7 @@ class TestViewPersonInfo():
     def test_global_info_about_person(self, person):
         try:
             persons_page = self.app.persons_page
-            persons_page.is_current_page()
+            persons_page.is_this_page
             # Find new person by surname (Alexey test 'add person')
             add_person_pattern = AddPersonPattern()
             add_person_pattern.search_person_by_surname(self.app, person.surname_ukr)
