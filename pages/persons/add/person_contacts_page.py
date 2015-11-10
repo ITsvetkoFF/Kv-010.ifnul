@@ -16,7 +16,7 @@ class AddPersonContactsPage(AddPersonPage):
     SITE_INPUT = (By.ID, "site")
     ICQ_INPUT = (By.ID, "ICQ")
 
-    # override functions
+    # overriding functions
     def is_this_page(self):
         return self.is_element_visible(self.SKYPE_INPUT)
 
@@ -53,7 +53,7 @@ class AddPersonContactsPage(AddPersonPage):
     def icq_field(self):
         return self.driver.find_element(*self.ICQ_INPUT)
 
-    # web element functions
+    # web element's functions
     def set_first_mobile_phone(self, phone):
         """
         Method sets the first mobile phone
@@ -116,7 +116,7 @@ class AddPersonContactsPage(AddPersonPage):
         :param icq: Integer parameter.
         :return:
         """
-        input_text_in_field(self.icq_field, icq)
+        input_text_in_field(self.icq_field, str(icq))
 
     # general functions
     def fill_in_contact_page(self, person):

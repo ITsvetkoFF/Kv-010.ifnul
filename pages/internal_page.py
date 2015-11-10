@@ -25,7 +25,7 @@ class InternalPage(Page):
     GO_TO_RIGHT_BUTTON_IN_DATE_PICKER = (By.CSS_SELECTOR, "button.btn.btn-default.btn-sm.pull-right")
     ACTIVATE_MONTH_OR_YEAR_CHANGE_BUTTON = (By.CSS_SELECTOR, "button[id*='-title']")
 
-    # override functions
+    # overriding functions
     def is_this_page(self):
         return self.is_element_visible(self.INTERNAL_PAGE)
 

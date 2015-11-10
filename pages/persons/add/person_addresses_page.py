@@ -32,7 +32,7 @@ class AddPersonAddressesPage(AddPersonPage):
     HOUSE_POST_INPUT = (By.XPATH, "//input[@id='inputHousePost']")
     APARTMENT_POST_INPUT = (By.XPATH, "//input[@id='inputApartmentPost']")
 
-    # override functions
+    # overriding functions
     def is_this_page(self):
         return self.is_element_visible(self.INDEX_INPUT)
 
@@ -57,7 +57,7 @@ class AddPersonAddressesPage(AddPersonPage):
     def chechbox_address_match(self):
         return self.driver.find_element(*self.IS_ADDRESSES_MATCH)
 
-    # web element functions
+    # web element's functions
     def set_zip_code(self, index):
         """
         Method sets the zip code

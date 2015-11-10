@@ -21,7 +21,7 @@ class AddPersonPage(InternalPage):
     PERSON_PAPERS_TAB = (By.XPATH, "//li//a[contains(., 'Документи')]")
     PERSON_ENROLLMENTS_TAB = (By.XPATH, "//li//a[contains(., 'Заяви')][@ng-click='select()']")
 
-    # override function
+    # overriding function
     def is_this_page(self):
         return self.is_element_visible(self.SAVE_NEW_PERSON_BUTTON)
 

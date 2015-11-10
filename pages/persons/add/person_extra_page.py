@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from utils.web_elem_utils import checkbox_set_state
+from utils.web_elem_utils import checkbox_set_state, input_text_in_field
 
 __author__ = 'Deorditsa'
 
@@ -24,10 +24,11 @@ class AddPersonExtraPage(AddPersonPage):
     IS_A_MILITARY_CHECKER = (By.XPATH, "//input[@ng-checked='person.isMilitary']")
     NEED_HOSTEL_CHECKER = (By.XPATH, "//input[@ng-checked='person.isHostel']")
 
+    # overriding functions
     def is_this_page(self):
         return self.is_element_visible(self.ACTIVATE_BIRTH_DAY_CHOOSER)
 
-    # web element
+    # web elements
     @property
     def checkbox_is_outlander(self):
         return self.driver.find_element(*self.IS_A_OUTLANDER_CHECKER)
@@ -43,6 +44,75 @@ class AddPersonExtraPage(AddPersonPage):
     @property
     def private_case_number_input_incorrect(self):
         return self.is_element_visible(self.PRIVATE_CASE_NUMBER_INPUT_INCORRECT)
+
+    @property
+    def private_case_chars_field(self):
+        return self.driver.find_element(*self.PRIVATE_CASE_CHARS_INPUT)
+
+    @property
+    def private_case_numbers_field(self):
+        return self.driver.find_element(*self.PRIVATE_CASE_NUMBER_INPUT)
+
+    # web element's functions
+    def check_resident_status(self, is_outlander):
+        """
+        Method checks or unchecks "Is person outlander?" checkbox
+        :param is_outlander: Boolean format. Must be True, if person is outlander.
+        :return:
+        """
+        checkbox_set_state(self.checkbox_is_outlander, is_outlander)
+
+    def check_needed_hostel_status(self, is_need):
+        """
+        Method checks or unchecks "Is person need a hostel?" checkbox
+        :param is_need: Boolean format. Must be True, if person need a hostel.
+        :return:
+        """
+        checkbox_set_state(self.checkbox_is_hostel_need, is_need)
+
+    def check_reservist_status(self, is_reservist):
+        """
+        Method checks or unchecks "Is person reservist?" checkbox
+        :param is_reservist: Boolean format. Must be True, if person is reservist.
+        :return:
+        """
+        checkbox_set_state(self.checkbox_is_military, is_reservist)
+
+    def set_private_case_chars(self, chars):
+        """
+        Method sets the persons private case series
+        :param chars: String format. Persons private case series
+        :return:
+        """
+        input_text_in_field(self.private_case_chars_field, chars)
+
+    def set_private_case_numbers(self, numbers):
+        """
+        Method sets the persons private case number
+        :param numbers: Integer format. Persons private case number
+        :return:
+        """
+        input_text_in_field(self.private_case_numbers_field, str(numbers))
+
+    # general functions
+    def fill_in_extra_person_page(self, person):
+        """
+        Method fill in data on the extra persons page
+        :param person: persons model in Person format
+        :return:
+        """
+        self.is_this_page()
+        self.set_persons_birth_day(person.birth_day)
+        self.choose_person_sex_type(person.sex)
+        self.choose_person_martial_status(person.marital_status)
+        self.choose_person_nationality(person.nationality)
+        self.set_private_case_chars(person.private_case_chars)
+        self.set_private_case_numbers(person.private_case_number)
+        self.check_resident_status(person.is_outlander)
+        self.check_reservist_status(person.reservist)
+        self.check_needed_hostel_status(person.hostel_need)
+
+    # old
 
     def set_persons_birth_day(self, date):
         """
@@ -83,64 +153,3 @@ class AddPersonExtraPage(AddPersonPage):
         self.driver.find_element(*self.NATIONALITY_SELECT).click()
         self.find_element_in_select(self.driver.find_elements(*self.ALL_NATIONALITIES_SELECT),
                                     person_nationality).click()
-
-    def set_private_case_chars(self, chars):
-        """
-        Method sets the persons private case series
-        :param chars: String format. Persons private case series
-        :return:
-        """
-        self.emulation_of_input(self.PRIVATE_CASE_CHARS_INPUT, chars)
-
-    def set_private_case_numbers(self, numbers):
-        """
-        Method sets the persons private case number
-        :param numbers: String format. Persons private case number
-        :return:
-        """
-        self.emulation_of_input(self.PRIVATE_CASE_NUMBER_INPUT, numbers)
-
-
-
-    # web element function
-    def check_resident_status(self, is_outlander):
-        """
-        Method checks or unchecks "Is person outlander?" checkbox
-        :param is_outlander: Boolean format. Must be True, if person is outlander.
-        :return:
-        """
-        checkbox_set_state(self.checkbox_is_outlander, is_outlander)
-
-    def check_needed_hostel_status(self, is_need):
-        """
-        Method checks or unchecks "Is person need a hostel?" checkbox
-        :param is_need: Boolean format. Must be True, if person need a hostel.
-        :return:
-        """
-        checkbox_set_state(self.checkbox_is_hostel_need, is_need)
-
-    def check_reservist_status(self, is_reservist):
-        """
-        Method checks or unchecks "Is person reservist?" checkbox
-        :param is_reservist: Boolean format. Must be True, if person is reservist.
-        :return:
-        """
-        checkbox_set_state(self.checkbox_is_military, is_reservist)
-
-    # general functions
-    def fill_in_extra_person_page(self, person):
-        """
-        Method fill in data on the extra persons page
-        :param person: persons model in Person format
-        :return:
-        """
-        self.is_this_page()
-        self.set_persons_birth_day(person.birth_day)
-        self.choose_person_sex_type(person.sex)
-        self.choose_person_martial_status(person.marital_status)
-        self.choose_person_nationality(person.nationality)
-        self.set_private_case_chars(person.private_case_chars)
-        self.set_private_case_numbers(person.private_case_number)
-        self.check_resident_status(person.is_outlander)
-        self.check_reservist_status(person.reservist)
-        self.check_needed_hostel_status(person.hostel_need)
