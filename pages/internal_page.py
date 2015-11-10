@@ -25,6 +25,11 @@ class InternalPage(Page):
     GO_TO_RIGHT_BUTTON_IN_DATE_PICKER = (By.CSS_SELECTOR, "button.btn.btn-default.btn-sm.pull-right")
     ACTIVATE_MONTH_OR_YEAR_CHANGE_BUTTON = (By.CSS_SELECTOR, "button[id*='-title']")
 
+    # override functions
+    def is_this_page(self):
+        return self.is_element_visible(self.INTERNAL_PAGE)
+
+    # web elements
     @property
     def user_dropdown(self):
         self.is_element_visible(self.USER_DROPDOWN)
@@ -34,9 +39,6 @@ class InternalPage(Page):
     def logout_button(self):
         self.is_element_visible(self.LOGOUT_BUTTON)
         return self.driver.find_element(*self.LOGOUT_BUTTON)
-
-    def is_this_page(self):
-        return self.is_element_visible(self.INTERNAL_PAGE)
 
     @property
     def persons_page_link(self):
@@ -50,7 +52,7 @@ class InternalPage(Page):
     def dictionaries_page_link(self):
         return self.driver.find_element(*self.DICTIONARIES_PAGE_LINK)
 
-    # function
+    # web elements functions
     def dictionaries_page_link_click(self):
         self.dictionaries_page_link.click()
         self.wait_until_page_generate()
