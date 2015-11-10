@@ -109,7 +109,6 @@ class EnrollmentsPage(InternalPage):
         self.driver.find_element(*self.EDIT_BUTTON_ON_FIRST_ROW).click()
         self.wait_until_page_generate()
 
-    @property
     def is_this_page(self):
         return self.is_element_visible(self.ADD_NEW_ENROLLMENT_BUTTON)
 
@@ -172,7 +171,7 @@ class EnrollmentsPage(InternalPage):
         :param search_by:  SEARCH_METHOD["method"]
         :param req: Any wanted string request
         """
-        self.is_this_page
+        self.is_this_page()
         self.hundred_button.click()
         self.wait_until_page_generate()
         select = Select(self.search_select_dropdown)
@@ -247,7 +246,7 @@ class EnrollmentsPage(InternalPage):
         Method adds one or more columns in table
         :param columns: Column selectors, separated with comas
         """
-        self.is_this_page
+        self.is_this_page()
         self.column_chooser_button.click()
         for column in columns:
             self.is_element_visible(column)
@@ -260,7 +259,7 @@ class EnrollmentsPage(InternalPage):
         Method adds one or more wanted filters
         :param selectors_tuple: Selectors, separated with comas
         """
-        self.is_this_page
+        self.is_this_page()
         for selector in selectors_tuple:
             self.driver.find_element(*selector).click()
         self.filter_refresh_button_enr.click()
@@ -300,7 +299,7 @@ class EnrollmentsPage(InternalPage):
         """
         Method deletes all filters
         """
-        self.is_this_page
+        self.is_this_page()
         elements = self.driver.find_elements(*self.DELETE_FILTER_BUTTON)
         for element in elements:
             element.click()

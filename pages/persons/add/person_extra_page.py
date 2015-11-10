@@ -23,7 +23,6 @@ class AddPersonExtraPage(AddPersonPage):
     IS_A_MILITARY_CHECKER = (By.XPATH, "//input[@ng-checked='person.isMilitary']")
     NEED_HOSTEL_CHECKER = (By.XPATH, "//input[@ng-checked='person.isHostel']")
 
-    @property
     def is_this_page(self):
         return self.is_element_visible(self.ACTIVATE_BIRTH_DAY_CHOOSER)
 
@@ -115,7 +114,7 @@ class AddPersonExtraPage(AddPersonPage):
         :param person: persons model in Person format
         :return:
         """
-        self.is_this_page
+        self.is_this_page()
         self.set_persons_birth_day(person.birth_day)
         self.choose_person_sex_type(person.sex)
         self.choose_person_martial_status(person.marital_status)

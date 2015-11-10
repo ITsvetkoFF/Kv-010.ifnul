@@ -14,10 +14,10 @@ class TestSearchFilters(object):
     def test_search_by_person_id(self, app):
         with pytest.allure.step("Authorize on the site with admin credentials"):
             app.ensure_logged_in()
-            app.internal_page.is_this_page
+            app.internal_page.is_this_page()
         with pytest.allure.step("Go to enrollments page"):
             app.internal_page.enrollments_page_link.click()
-            app.enrollments_page.is_this_page
+            app.enrollments_page.is_this_page()
         with pytest.allure.step("Searching by person ID"):
             en_page = app.enrollments_page
             expected_id = "9"
@@ -76,7 +76,7 @@ class TestSearchFilters(object):
         app = logout_login
         with pytest.allure.step("Go to enrollments page"):
             app.internal_page.enrollments_page_link.click()
-            app.enrollments_page.is_this_page
+            app.enrollments_page.is_this_page()
         with pytest.allure.step("Add budget column"):
             enr_page = app.enrollments_page
             enr_page.add_table_columns(enr_page.COLUMN_BUDGET_ADD)
@@ -98,7 +98,7 @@ class TestSearchFilters(object):
         app = logout_login
         with pytest.allure.step("Go to enrollments page"):
             app.internal_page.enrollments_page_link.click()
-            app.enrollments_page.is_this_page
+            app.enrollments_page.is_this_page()
         with pytest.allure.step("In the filters section add not budget filter"):
             enr_page = app.enrollments_page
             enr_page.add_filters(enr_page.FILTER_NOT_BUDGET)
@@ -118,7 +118,7 @@ class TestSearchFilters(object):
         app = logout_login
         with pytest.allure.step("Go to enrollments page"):
             app.internal_page.enrollments_page_link.click()
-            app.enrollments_page.is_this_page
+            app.enrollments_page.is_this_page()
         with pytest.allure.step("In the filters section add privileges filter"):
             enr_page = app.enrollments_page
             enr_page.add_filters(enr_page.FILTER_PRIVILEGES)
@@ -138,7 +138,7 @@ class TestSearchFilters(object):
         app = logout_login
         with pytest.allure.step("Go to enrollments page"):
             app.internal_page.enrollments_page_link.click()
-            app.enrollments_page.is_this_page
+            app.enrollments_page.is_this_page()
         with pytest.allure.step("In the filters section add not privileges filter"):
             enr_page = app.enrollments_page
             enr_page.add_filters(enr_page.FILTER_NOT_PRIVILEGES)
@@ -158,7 +158,7 @@ class TestSearchFilters(object):
         app = logout_login
         with pytest.allure.step("Go to enrollments page"):
             app.internal_page.enrollments_page_link.click()
-            app.enrollments_page.is_this_page
+            app.enrollments_page.is_this_page()
         with pytest.allure.step("In the filters section add necessary filters"):
             enr_page = app.enrollments_page
             enr_page.add_filters(enr_page.FILTER_NOT_PRIVILEGES, enr_page.FILTER_BUDGET,
@@ -181,7 +181,7 @@ class TestSearchFilters(object):
         app = logout_login
         with pytest.allure.step("Go to enrollments page"):
             app.internal_page.enrollments_page_link.click()
-            app.enrollments_page.is_this_page
+            app.enrollments_page.is_this_page()
         with pytest.allure.step("In the filters section add necessary filters"):
             enr_page = app.enrollments_page
             enr_page.add_filters(enr_page.FILTER_NEED_ACCOMMODATION, enr_page.FILTER_BUDGET, enr_page.FILTER_CONTRACT)

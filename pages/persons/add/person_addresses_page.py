@@ -31,7 +31,6 @@ class AddPersonAddressesPage(AddPersonPage):
     HOUSE_POST_INPUT = (By.XPATH, "//input[@id='inputHousePost']")
     APARTMENT_POST_INPUT = (By.XPATH, "//input[@id='inputApartmentPost']")
 
-    @property
     def is_this_page(self):
         return self.is_element_visible(self.INDEX_INPUT)
 
@@ -125,7 +124,7 @@ class AddPersonAddressesPage(AddPersonPage):
         :param person: persons model in Person format
         :return:
         """
-        self.is_this_page
+        self.is_this_page()
         for i in range(0, len(person.burn_place)):
             self.select_birth_place(person.burn_place[i], i)
 

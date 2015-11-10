@@ -25,7 +25,6 @@ class AddPersonPapersPage(AddPersonPage):
     DELETE_FIRST_DOCUMENT_BUTTON = (By.XPATH, "//div[@class='col-xs-12']/table/tbody/tr[1]/td[13]/button[2]")
     DELETE_DOCUMENT_BUTTONS = (By.XPATH, "//div[@class='col-xs-12']/table/tbody/tr[1]/td[13]/button[2]")
 
-    @property
     def is_this_page(self):
         return self.is_element_visible(self.ADD_DOCUMENT_BUTTON)
 
@@ -136,7 +135,7 @@ class AddPersonPapersPage(AddPersonPage):
         :param person: persons model in Person format
         :return:
         """
-        self.is_this_page
+        self.is_this_page()
         self.press_add_new_document_button
         self.document_type_select(person.documents[0].category)
         self.document_name_select(person.documents[0].document_name)

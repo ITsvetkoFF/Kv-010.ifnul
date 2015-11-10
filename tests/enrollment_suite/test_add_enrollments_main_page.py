@@ -19,8 +19,8 @@ def add_enrollments(logout_login):
         name_of_dictionary = "fill_data_enrollment"
         enrollment = app.enrollments_main_page.get_enrollment(name_of_json_file, name_of_dictionary)
         app.internal_page.enrollments_page_link.click()
-        assert app.enrollments_page.is_this_page
-        app.enrollments_page.is_this_page.click()
+        assert app.enrollments_page.is_this_page()
+        app.enrollments_page.is_this_page().click()
         app.enrollments_main_page.fill_enrollment(name_of_json_file, name_of_dictionary)
         fill_enrollment = FillEnrollment()
         app.enrollments_page.search_enrollment(app.enrollments_page.SEARCH_METHOD["document_series"],

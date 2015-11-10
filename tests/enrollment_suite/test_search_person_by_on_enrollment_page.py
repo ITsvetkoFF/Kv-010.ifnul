@@ -32,9 +32,9 @@ class TestSearchPersonBy(object):
         :return:
         """
         app.internal_page.enrollments_page_link.click()
-        app.enrollments_page.is_this_page
+        app.enrollments_page.is_this_page()
         app.enrollments_page.add_new_enrollment_button_click
-        app.enrollments_main_page.is_this_page
+        app.enrollments_main_page.is_this_page()
         app.enrollments_main_page.select_person_by(searched_by_option)
         app.enrollments_main_page.set_search_person_by(searched_value)
         app.enrollments_main_page.ok_for_input_field

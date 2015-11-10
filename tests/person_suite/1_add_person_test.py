@@ -14,7 +14,7 @@ def test_add_person(app, person, screenshot):
         add_person_pattern = AddPersonPattern()
         add_person_pattern.login_and_delete_all_person_by_name(app, person)
         person_page = app.persons_page
-        person_page.is_this_page
+        person_page.is_this_page()
         person_page.add_person_link
         base_page = app.person_base_page
     with pytest.allure.step('Fill data on the main add person page'):

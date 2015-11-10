@@ -35,7 +35,6 @@ class InternalPage(Page):
         self.is_element_visible(self.LOGOUT_BUTTON)
         return self.driver.find_element(*self.LOGOUT_BUTTON)
 
-    @property
     def is_this_page(self):
         return self.is_element_visible(self.INTERNAL_PAGE)
 

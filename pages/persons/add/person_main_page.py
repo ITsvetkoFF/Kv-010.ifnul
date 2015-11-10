@@ -23,7 +23,6 @@ class AddPersonMainPage(AddPersonPage):
     PERSON_FIRST_NAME_ENG_INPUT_INCORRECT = \
         (By.XPATH, "//input[@id='firstNameEng'][contains (@class, 'ng-invalid-pattern')]")
 
-    @property
     def is_this_page(self):
         return self.is_element_visible(self.PERSON_TYPE_SELECT)
 
@@ -112,7 +111,7 @@ class AddPersonMainPage(AddPersonPage):
         :param person: persons model in Person format
         :return:
         """
-        self.is_this_page
+        self.is_this_page()
         self.person_type_select_click()
         self.choose_person_type(person.person_type)
         self.set_ukr_surname(person.surname_ukr)
