@@ -6,6 +6,7 @@ __author__ = 'Deorditsa'
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
+from utils.common_methods import CommonMethods
 from selenium.webdriver.support import expected_conditions as EC
 
 from person_base_page import AddPersonPage
@@ -25,10 +26,17 @@ class AddPersonPapersPage(AddPersonPage):
     DOCUMENT_IS_FOREIGN = (By.XPATH, "//input[@ng-model='currentObj.isForeign']")
     TABLE_DOCUMENTS_NUM_ROW = (By.XPATH, "//div[@class='col-xs-12']/table/tbody/tr/td[3]")
     DELETE_FIRST_DOCUMENT_BUTTON = (By.XPATH, "//div[@class='col-xs-12']/table/tbody/tr[1]/td[13]/button[2]")
-    DELETE_DOCUMENT_BUTTONS = (By.XPATH, "//div[@class='col-xs-12']/table/tbody/tr[1]/td[13]/button[2]")
+    DELETE_DOCUMENT_BUTTONS = (By.XPATH, "//div[@class='col-xs-12']/table/tbody/tr/td[13]/button[2]")
+
+    EDIT_DOCUMENT_FIELDS = (
+        By.XPATH, ".//*[@id='person']//*[@ng-show='!personView']//*[@class='row']//div[@class='col-xs-4']")
 
     def is_this_page(self):
         return self.is_element_visible(self.ADD_DOCUMENT_BUTTON)
+
+    @property
+    def number_of_fields(self):
+        return len(self.driver.find_elements(*self.EDIT_DOCUMENT_FIELDS))
 
     # web elements
     @property
@@ -73,6 +81,10 @@ class AddPersonPapersPage(AddPersonPage):
         checkbox_set_state(self.is_foreign_checkbox, is_foreign)
 
     # old
+
+    def list_with_all_visible_element_in_document(self):
+        return self.driver.find_elements(
+            *(By.XPATH, ".//*[@id='person']//*[@ng-show='!personView']//*[@class='row']//div[@class='col-xs-4']/*[2]"))
 
     def document_type_select(self, document_type):
         """
@@ -172,3 +184,37 @@ class AddPersonPapersPage(AddPersonPage):
             for element in elements:
                 element.click()
                 self.wait_until_page_generate()
+
+
+    def read_in_document_page(self, person_new):
+        """
+        Method read the data on the papers persons page
+        :param person_new: persons model in Person format
+        :return: person_new
+        """
+        common_methods = CommonMethods(self.driver)
+        self.is_this_page
+        self.wait_until_page_generate()
+        for index in range(1, self.get_number_of_person_documents() + 1):
+            self.click_on_edit_document(index)
+            document = []
+            self.wait_until_page_generate()
+            for web_element in self.list_with_all_visible_element_in_document():
+                if web_element.tag_name == "input":
+                    value_of_webelement_by_js = common_methods.get_value_from_text_field(web_element)
+                    document.append(value_of_webelement_by_js)
+                elif web_element.tag_name == "select":
+                    value_of_webelement_by_js = common_methods.get_value_from_select(web_element)
+                    document.append(value_of_webelement_by_js)
+
+            document.append(
+                common_methods.is_checkbox_checked(self.driver.find_element(*self.DOCUMENT_IS_ORIGINAL)))
+            document.append(
+                common_methods.is_checkbox_checked(self.driver.find_element(*self.DOCUMENT_IS_FOREIGN)))
+            person_new.documents.append(document)
+
+        return person_new
+
+    def click_on_edit_document(self, count):
+        self.driver.find_element(By.XPATH, "//div[@class='col-xs-12']/table/tbody/tr[" + str(
+            count) + "]/td[13]/button[1]").click()

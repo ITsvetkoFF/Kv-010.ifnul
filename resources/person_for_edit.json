@@ -1,0 +1,92 @@
+{
+  "person": {
+    "person_type": "науковець",
+    "surname_ukr": "Стрелка",
+    "first_name_ukr": "Белка",
+    "second_name_ukr": "Космонавты",
+    "surname_eng": "Squirrel",
+    "first_name_eng": "Arrow",
+    "birth_day": {
+      "day": 1,
+      "month": 4,
+      "year": 1945
+    },
+    "sex": "Не визначено",
+    "marital_status": "розлучений",
+    "nationality": "Україна",
+    "private_case_chars": "BB",
+    "private_case_number": 7524,
+    "is_outlander": true,
+    "reservist": true,
+    "hostel_need": false,
+    "burn_place": [
+      "ДОНЕЦЬКА ОБЛАСТЬ/М.ДОНЕЦЬК",
+      "РАЙОНИ ДОНЕЦЬКОЇ ОБЛАСТІ",
+      "ОЛЕКСАНДРІВСЬКИЙ РАЙОН/СМТ ОЛЕКСАНДРІВКА",
+      "СІЛЬРАДИ ОЛЕКСАНДРІВСЬКОГО Р-НУ",
+      "ВИСОКОПІЛЬСЬКА/С.ВИСОКОПІЛЛЯ",
+      "ВИСОКОПІЛЛЯ"
+    ],
+    "registration_place": {
+      "area": [
+        "ДНІПРОПЕТРОВСЬКА ОБЛАСТЬ/М.ДНІПРОПЕТРОВСЬК",
+        "РАЙОНИ ДНІПРОПЕТРОВСЬКОЇ ОБЛАСТІ",
+        "ВЕРХНЬОДНІПРОВСЬКИЙ РАЙОН/М.ВЕРХНЬОДНІПРОВСЬК",
+        "СІЛЬРАДИ ВЕРХНЬОДНІПРОВСЬКОГО Р-НУ",
+        "ВОДЯНСЬКА/С.ВОДЯНЕ",
+        "АНДРІЇВКА"
+      ],
+      "index": 143006,
+      "type": "Селище міського типу",
+      "street": "Canis lupus familiaris",
+      "house": 4,
+      "apartment": 25,
+      "is_addresses_match": false
+    },
+    "post_registration_place": {
+      "area": [
+        "ДНІПРОПЕТРОВСЬКА ОБЛАСТЬ/М.ДНІПРОПЕТРОВСЬК",
+        "РАЙОНИ ДНІПРОПЕТРОВСЬКОЇ ОБЛАСТІ",
+        "ВЕРХНЬОДНІПРОВСЬКИЙ РАЙОН/М.ВЕРХНЬОДНІПРОВСЬК",
+        "СІЛЬРАДИ ВЕРХНЬОДНІПРОВСЬКОГО Р-НУ",
+        "БОРОДАЇВСЬКА/С.БОРОДАЇВКА",
+        "ПРАВОБЕРЕЖНЕ"
+      ],
+      "index": 143111,
+      "type": "Сільрада",
+      "street": "Hola",
+      "house": 11,
+      "apartment": 1
+    },
+    "photo": "chegevara.jpg",
+    "mobile_phone1": "(050) 016-50-46",
+    "mobile_phone2": "(090) 021-17-02",
+    "home_phone": "(054) 027-39-10",
+    "work_phone": "(044) 060-43-90",
+    "email": "Belka@strelka.ru",
+    "skype": "Pesiki",
+    "web_site": "sobaki-kosmonavti.gav",
+    "icq": 19081960,
+    "documents": [
+      {
+        "category": "атестати",
+        "document_name": "Атестат про повну загальну середню освіту",
+        "document_case_char": "CU",
+        "document_case_number": 328754,
+        "day_of_issue": {
+          "day": 18,
+          "month": 3,
+          "year": 2014
+        },
+        "issued_by": "женщиной в розовой кофточке",
+        "document_is_original": true,
+        "document_is_foreign": false,
+        "category_reward": "",
+        "reward": "",
+        "type_of_reward": "Золота медаль",
+        "average_rate": 11.2,
+        "pincode": ""
+      }
+    ]
+  }
+}

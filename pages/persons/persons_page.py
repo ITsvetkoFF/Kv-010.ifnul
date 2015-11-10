@@ -100,7 +100,7 @@ class PersonsPage(InternalPage):
     # Columns dictionary binding number of column to it's name
     DELETE_FIRST_PERSON_IN_TABLE = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[18]//button[3]")
     VIEW_FIRST_PERSON_IN_TABLE = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[18]//button[2]")
-    EDIT_FIRST_PERSON_IN_TABLE = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[18]//button[1]")
+    EDIT_FIRST_PERSON_IN_TABLE = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][3]/td[18]//button[1]")
 
     COLUMN_NUMBER_ADD = (By.XPATH, "//li[1]//*[@id='showHideHeader']")
     COLUMN_FIO_ADD = (By.XPATH, "//li[2]//*[@id='showHideHeader']")
@@ -119,6 +119,7 @@ class PersonsPage(InternalPage):
     COLUMN_VZ_ADD = (By.XPATH, "//li[15]//*[@id='showHideHeader']")
     COLUMN_HOSTEL_ADD = (By.XPATH, "//li[16]//*[@id='showHideHeader']")
     COLUMN_MATERIAL_LIABILITY_ADD = (By.XPATH, "//li[17]//*[@id='showHideHeader']")
+    ID_OF_PERSON_IN_FIRST_ROW = (By.XPATH, "//*[@class='pointer']/tr[1]/td[1]")
 
     COLUMNS_DICT = {
         1: '№',
@@ -157,7 +158,16 @@ class PersonsPage(InternalPage):
     # END OF SELECTORS SECTION
     #
 
+    @ErrorHandlerPO("current page is not Persons page")
+    def is_current_page(self):
+        return self.wait.until(visibility_of_element_located(self.ADD_PERSON_BUTTON))
+
+    def id_of_person_in_first_row(self):
+        return self.driver.find_element(*self.ID_OF_PERSON_IN_FIRST_ROW)
+
+    @property
     def is_this_page(self):
+        self.is_element_visible(self.ADD_PERSON_BUTTON)
         return self.is_element_visible(self.ADD_PERSON_BUTTON)
 
     @property

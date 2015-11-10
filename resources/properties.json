@@ -8,6 +8,7 @@
     "info_about_unit": "info_about_unit.json",
     "person_test_view": "person_test_view.json",
     "public_activity": "public_activity.json",
-    "existing_person": "existing_person.json"
+    "existing_person": "existing_person.json",
+    "person_for_edit": "person_for_edit.json"
   }
 }
