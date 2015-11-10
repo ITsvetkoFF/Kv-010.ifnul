@@ -1,0 +1,36 @@
+{
+  "enrollment":
+  {
+      "person_name": "Полякав Валерій Володивирович",
+      "series_of_statements": "МД",
+      "number_statements": 124989,
+      "radiobutton_higher_education": "Отримую освіту",
+      "radiobutton_evaluation_of_the_interview": "Не потрібно співбесіди",
+      "checkbox_is_state": false,
+      "checkbox_is_contract": true,
+      "checkbox_is_privilege": false,
+      "checkbox_is_hostel": false,
+      "checkbox_document_is_original": false,
+      "offers": "Фізичний",
+      "form_of_education": "Бакалавр",
+      "document": "Атестат про повну загальну середню освіту",
+      "grading_scale": "стобальна",
+      "total_score": 10,
+      "priority": 10,
+      "structural_unit": "Геологічний",
+      "type_of_entry": "За результатами іспитів",
+      "detailing_start": "іноземець за контрактом",
+      "date_of_entry":
+      {
+          "day":5,
+          "month":11,
+          "year":2015
+      },
+      "date_closing":
+      {
+          "day":17,
+          "month":12,
+          "year":2015
+      }
+  }
+}

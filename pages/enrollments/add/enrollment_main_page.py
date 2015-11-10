@@ -13,6 +13,7 @@ class EnrollmentsMainPage(InternalPage):
     OK_FOR_INPUT_FIELD = (By.CSS_SELECTOR, "div[class='input-group'] * button[class='btn btn-primary']")
     SEARCH_NAME_FIELD = (By.XPATH, "//div[@class='modal-body ng-scope']//input[contains (@type, 'search')]")
     FIRST_PERSON = (By.XPATH, "//*[@class='table-responsive']//tbody[@class='pointer']//tr[1]/td[2]")
+    PERSON_FIO_ALREADY_ADDED_VIEW = (By.XPATH, "//div[@search='personSearch']//table[@class='table table-bordered table-hover ']/tbody/tr[1]/td[2]")
     SERIES_OF_STATEMENTS = (By.ID, "inputDocSeries")
     NUMBER_STATEMENTS = (By.ID, "inputdocNum")
     CHECKBOX_IS_STATE = (By.XPATH, ".//input[@ng-model='enrolment.isState']")
@@ -32,27 +33,30 @@ class EnrollmentsMainPage(InternalPage):
     BUTTON_CHOOSE_SPECIALTIES = (By.CSS_SELECTOR, "button[class='btn btn-primary'] >i")
     CHOOSE_FIRST_SPECIALTIES = (By.XPATH, "//div[@class='table-responsive']//tbody[@class='pointer']/tr[1]/td[2]")
     FIRST_SPECIALTIES_ID = (By.XPATH, "//div[@class='table-responsive']//tbody[@class='pointer']/tr[1]/td[1]")
-    FIRST_SPECIALTIES_ID_IN_VIEW_TABLE = (By.XPATH, "//tbody[@class='pointer']/tr[1]//td[1]")
+    FIRST_SPECIALTIES_ID_IN_VIEW_TABLE = (By.XPATH, "//div[@ng-model='enrolment.specOfferId']//tbody[@class='pointer']/tr[1]//td[1]")
+    FIRST_SPECIALTIES_FIO_IN_VIEW_TABLE = (By.XPATH, "//div[@ng-model='enrolment.specOfferId']//tbody[@class='pointer']/tr[1]//td[2]")
     BUTTON_CLOSE_CHOOSE_OFFER = (By.XPATH, "//button[@class='close']")
     COUNT_SPECIALISTS = (By.XPATH, "//div[@class='table-responsive']//tbody[@class='pointer']/tr")
     DOCUMENT = (By.XPATH, ".//*[@class='col-xs-5']/*[@id='inputStructure']//i[@class='caret pull-right']")
+    DOCUMENT_TITLE = (By.XPATH, "//*[@class='col-xs-5']/*[@id='inputStructure']//span[@class='ng-binding ng-scope']")
     TOTAL_SCORE = (By.ID, "inputMark")
     GRADING_SCALE = (By.XPATH, ".//*[@id='markScale']//i[@class='caret pull-right']")
     TEXT_FROM_GRADING_SCALE = (By.XPATH, ".//*[@id='markScale']//span[@class='ng-binding ng-scope']")
     CHECKBOX_DOCUMENT_IS_ORIGINAL = (By.XPATH, ".//*[@ng-init='enrolment.isOriginal = 0']")
     PRIORITY = (By.ID, "inputPriority")
     STRUCTURAL_UNIT = (By.XPATH, ".//*[@class='col-xs-3']/*[@id='inputStructure']//i[@class='caret pull-right']")
+    STRUCTURAL_UNIT_TEXT = (By.XPATH, ".//*[@class='col-xs-3']/*[@id='inputStructure']//span[@class='ng-binding ng-scope']")
     DATE_OF_CREATION_STATEMENTS = (By.ID, "evDate")
     DATE_OF_ENTRY_STATEMENTS = (By.ID, "begDate")
     DATE_CLOSING_STATEMENTS = (By.ID, "endDate")
     BUTTON_SAVE = (By.XPATH, ".//*[@class='btn btn-primary'][@ng-click='sendToServer()']")
-    ID_DETAILING_START_MENU = "inputEnrolmentTypeId"
-    ID_TYPE_OF_ENTRY_MENU = "inputChiefEnrolTypes"
+    ID_DETAILING_START_MENU = (By.ID, "inputEnrolmentTypeId")
+    ID_TYPE_OF_ENTRY_MENU = (By.ID, "inputChiefEnrolTypes")
     IS_ENROLLMENT_IN_PERSON = (By.XPATH, ".//*[@id='movieForm']/div[1]/div[2]/table/tbody/tr/td[1]")
     SEARCH_PERSON_BY_SELECT = (By.XPATH, "//select[@ng-model='fieldSearchBy']")
     SEARCH_PERSON_BY_INPUT = (By.XPATH, "//input[@ng-model='querySearchBy']")
-    ALL_FOUND_PERSONS_PIB = (By.XPATH, "//tbody[@class='pointer']//tr//td[2]")
-    ALL_FOUND_PERSONS_ID = (By.XPATH, "//tbody[@class='pointer']//tr//td[1]")
+    ALL_FOUND_PERSONS_PIB = (By.XPATH, "//div[@search='personSearch']//tbody[@class='pointer']//tr//td[2]")
+    ALL_FOUND_PERSONS_ID = (By.XPATH, "//div[@search='personSearch']//tbody[@class='pointer']//tr//td[1]")
     CANCEL_BUTTON = (By.XPATH, "//div[@class='modal-footer ng-scope']//button[@ng-click='cancel()']")
     IS_ENROLLMENT_IN_PERSON = (By.XPATH, ".//*[@class='pointer']/tr/td[1]")
 
@@ -72,7 +76,13 @@ class EnrollmentsMainPage(InternalPage):
         return self.driver.find_element(*self.FIRST_SPECIALTIES_ID)
 
     def find_first_specialities_id_in_view_table(self):
-        return self.driver.find_elements(*self.FIRST_SPECIALTIES_ID_IN_VIEW_TABLE)[1]
+        return self.driver.find_element(*self.FIRST_SPECIALTIES_ID_IN_VIEW_TABLE)
+
+    def find_first_specialities_fio_in_view_table(self):
+        return self.driver.find_elements(*self.FIRST_SPECIALTIES_FIO_IN_VIEW_TABLE)[1]
+
+    def person_fio_already_added_view(self):
+        return self.driver.find_element(*self.PERSON_FIO_ALREADY_ADDED_VIEW)
 
     def search_person_by(self, index):
         self.is_element_present(self.SPINNER_OFF)
@@ -253,11 +263,26 @@ class EnrollmentsMainPage(InternalPage):
     def button_save(self):
         return self.is_element_visible(self.BUTTON_SAVE)
 
+    def get_document_title(self):
+        return self.driver.find_element(*self.DOCUMENT_TITLE)
+
+    def get_structural_unit_text(self):
+        return self.driver.find_element(*self.STRUCTURAL_UNIT_TEXT)
+
+    def get_detailing_start_menu(self):
+        return self.driver.find_element(*self.ID_DETAILING_START_MENU)
+
+    def get_type_of_entry(self):
+        return self.driver.find_element(*self.ID_TYPE_OF_ENTRY_MENU)
+
     def get_text_add_enrollment(self):
         return self.driver.find_element(*self.TEXT_CORRECT_PAGE_ENROLLMENT_ADD)
 
     def get_form_input_total_score(self):
         return self.driver.find_element(*self.TOTAL_SCORE)
+
+    def get_priority(self):
+        return self.driver.find_element(*self.PRIORITY)
 
     def clear_form_input_total_score(self):
         toClear = self.driver.find_element(*self.TOTAL_SCORE)
@@ -349,11 +374,11 @@ class EnrollmentsMainPage(InternalPage):
         This method is to select the radiobutton "Вища освіта" on its value.
         :param education: is value for radiobutton select.
         """
-        if education == "Не отримую освіти":
+        if education == u"Не отримую освіти":
             self.radiobutton_dont_getting_education.click()
-        elif education == "Отримую освіту":
+        elif education == u"Отримую освіту":
             self.radiobutton_getting_education.click()
-        elif education == "Є вища освіта":
+        elif education == u"Є вища освіта":
             self.radiobutton_is_education.click()
 
     def radiobutton_evaluation_of_the_interview(self, evaluation):
@@ -361,13 +386,13 @@ class EnrollmentsMainPage(InternalPage):
         This method is to select the radiobutton "Відмітка про співбесіду" on its value.
         :param evaluation: is value for radiobutton select.
         """
-        if evaluation == "Не пройшов співбесіду":
+        if evaluation == u"Не пройшов співбесіду":
             self.radiobutton_not_passed_interview.click()
-        elif evaluation == "Не потрібно співбесіди":
+        elif evaluation == u"Не потрібно співбесіди":
             self.radiobutton_dont_need_interview.click()
-        elif evaluation == "Потрібна співбесіда":
+        elif evaluation == u"Потрібна співбесіда":
             self.radiobutton_need_interview.click()
-        elif evaluation == "Співпебісда пройдена":
+        elif evaluation == u"Співпебісда пройдена":
             self.radiobutton_interview_passed.click()
 
     def search_offers(self, offer, form_of_education):
@@ -432,7 +457,7 @@ class EnrollmentsMainPage(InternalPage):
         :param type_of_entry: is name of entry type.
         """
         self.find_element_in_select(
-            Select(self.driver.find_element_by_id(self.ID_TYPE_OF_ENTRY_MENU)).options, type_of_entry)
+            Select(self.driver.find_element(*self.ID_TYPE_OF_ENTRY_MENU)).options, type_of_entry)
 
     def specification_of_entry(self, specification):
         """
@@ -440,7 +465,7 @@ class EnrollmentsMainPage(InternalPage):
         :param specification: is name of specification.
         """
         self.find_element_in_select(
-            Select(self.driver.find_element_by_id(self.ID_DETAILING_START_MENU)).options, specification)
+            Select(self.driver.find_element(*self.ID_DETAILING_START_MENU)).options, specification)
 
     def click_all_checkbox(self, state, contract, privilege, hostel, document):
         """
