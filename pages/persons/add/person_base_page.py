@@ -21,26 +21,31 @@ class AddPersonPage(InternalPage):
     PERSON_PAPERS_TAB = (By.XPATH, "//li//a[contains(., 'Документи')]")
     PERSON_ENROLLMENTS_TAB = (By.XPATH, "//li//a[contains(., 'Заяви')][@ng-click='select()']")
 
-    @property
     def is_this_page(self):
         return self.is_element_visible(self.SAVE_NEW_PERSON_BUTTON)
 
+    # web elements
     @property
-    def click_next_button(self):
-        self.driver.find_element(*self.NEXT_BUTTON).click()
-        self.is_element_present(self.SPINNER_OFF)
+    def next_button(self):
+        return self.driver.find_element(*self.NEXT_BUTTON)
 
     @property
-    def click_back_button(self):
-        return self.driver.find_element(*self.BACK_BUTTON).click()
+    def back_button(self):
+        return self.driver.find_element(*self.BACK_BUTTON)
 
     @property
-    def click_main_tab(self):
-        return self.driver.find_element(*self.PERSON_MAIN_TAB).click()
+    def main_tab(self):
+        return self.driver.find_element(*self.PERSON_MAIN_TAB)
 
     @property
-    def click_extra_tab(self):
-        return self.driver.find_element(*self.PERSON_EXTRA_INFO_TAB).click()
+    def extra_tab(self):
+        return self.driver.find_element(*self.PERSON_EXTRA_INFO_TAB)
+
+
+
+
+
+
 
     @property
     def click_contacts_tab(self):
@@ -69,17 +74,7 @@ class AddPersonPage(InternalPage):
             if el.text == value:
                 return el
 
-    def checkbox_manager(self, checkbox_element, needed_value):
-        """
-        Method checks or unchecks checkbox. It depends on current checkbox element status and needed value.
-        :param checkbox_element: WebDriver (checkbox) element
-        :param needed_value: Boolean parameter. If need that element was checked, the needed_value must be True
-        :return:
-        """
-        if not checkbox_element.get_attribute("checked") and needed_value:
-            checkbox_element.click()
-        elif checkbox_element.get_attribute("checked") and not needed_value:
-            checkbox_element.click()
+
 
     def save_new_person(self):
         """
@@ -87,4 +82,18 @@ class AddPersonPage(InternalPage):
         :return:
         """
         self.driver.find_element(*self.SAVE_NEW_PERSON_BUTTON).click()
-        self.is_element_present(self.SPINNER_OFF)
+        self.wait_until_page_generate()
+
+    # web elememts function
+    def next_button_click(self):
+        self.next_button.click()
+        self.wait_until_page_generate()
+
+    def back_button_click(self):
+        self.back_button.click()
+
+    def click_main_tab(self):
+        return self.main_tab.click()
+
+    def click_extra_tab(self):
+        self.extra_tab.click()

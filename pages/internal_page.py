@@ -17,17 +17,13 @@ class InternalPage(Page):
     PERSON_PAGE_LINK = (By.XPATH, "//a[@ui-sref='root.person.list']")
     ENROLLMENTS_PAGE_LINK = (By.XPATH, "//a[@ui-sref='root.enrolment.list']")
     DICTIONARIES_PAGE_LINK = (By.XPATH, "//a[@ui-sref='root.dictionaries']")
-    SPINNER_OFF = (By.XPATH, "//div[@id='spinnerDiv' and @style='display: none;']")
+
     SELECT_FIRST_SHOWED_YEAR = (By.XPATH, "//div//ul[@ng-model='date']//tbody//tr[1]//td[1]//button//span")
     # SELECT_ALL_VISIBLE_YEARS_MONTHS_OR_DAYS = (By.XPATH, "//ul[@ng-model='date']//tbody//tr//td//button//span[@class='ng-binding']")
     SELECT_ALL_VISIBLE_YEARS_MONTHS_OR_DAYS = (By.XPATH, "//ul[@ng-model='date']//tbody//tr//td//button//span")
     GO_TO_LEFT_BUTTON_IN_DATE_PICKER = (By.CSS_SELECTOR, "button.btn.btn-default.btn-sm.pull-left")
     GO_TO_RIGHT_BUTTON_IN_DATE_PICKER = (By.CSS_SELECTOR, "button.btn.btn-default.btn-sm.pull-right")
     ACTIVATE_MONTH_OR_YEAR_CHANGE_BUTTON = (By.CSS_SELECTOR, "button[id*='-title']")
-
-    @ErrorHandlerPO("current page is not internal page")
-    def is_current_page(self):
-        return self.wait.until(visibility_of_element_located(self.INTERNAL_PAGE))
 
     @property
     def user_dropdown(self):
@@ -39,7 +35,6 @@ class InternalPage(Page):
         self.is_element_visible(self.LOGOUT_BUTTON)
         return self.driver.find_element(*self.LOGOUT_BUTTON)
 
-    @property
     def is_this_page(self):
         return self.is_element_visible(self.INTERNAL_PAGE)
 
@@ -54,6 +49,11 @@ class InternalPage(Page):
     @property
     def dictionaries_page_link(self):
         return self.driver.find_element(*self.DICTIONARIES_PAGE_LINK)
+
+    # function
+    def dictionaries_page_link_click(self):
+        self.dictionaries_page_link.click()
+        self.wait_until_page_generate()
 
     def is_element_present(self, locator):
         try:

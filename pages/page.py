@@ -1,15 +1,17 @@
 import abc
-from decorators.error_handling_dec import  ErrorHandlerPO
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support.expected_conditions import *
+from decorators.error_handling_dec import ErrorHandlerPO
 
 __author__ = 'Evgen'
-
-from selenium.webdriver.support.ui import WebDriverWait
-
-from selenium.webdriver.support.expected_conditions import *
 
 
 class Page(object):
     __metaclass__ = abc.ABCMeta
+
+    SPINNER_OFF = (By.XPATH, "//div[@id='spinnerDiv' and @style='display: none;']")
+
     def __init__(self, driver, base_url):
         self.driver = driver
         self.base_url = base_url
@@ -29,5 +31,5 @@ class Page(object):
         return self.wait.until(presence_of_element_located(self.SPINNER_OFF))
 
     @abc.abstractmethod
-    def is_current_page(self):
+    def is_this_page(self):
         return

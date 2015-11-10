@@ -1,5 +1,4 @@
 # coding: utf8
-import time
 from pages.internal_page import InternalPage
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -25,6 +24,7 @@ class PersonsPage(InternalPage):
     # in table
     SEARCHED_SURNAME = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[2]")
     SEARCHED_PERSON_ID = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[1]")
+    PERSON_ID_FOR_SEARCH = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][2]/td[1]")
     SEARCHED_NUM_OS = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[11]")
     SEARCHED_SERIES_OS = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[10]")
     ROWS_IN_RABLE = (By.XPATH, "//tbody[@class='pointer']/tr")
@@ -157,11 +157,6 @@ class PersonsPage(InternalPage):
     # END OF SELECTORS SECTION
     #
 
-    @ErrorHandlerPO("current page is not Persons page")
-    def is_current_page(self):
-        return self.wait.until(visibility_of_element_located(self.ADD_PERSON_BUTTON))
-
-    @property
     def is_this_page(self):
         return self.is_element_visible(self.ADD_PERSON_BUTTON)
 
@@ -177,7 +172,7 @@ class PersonsPage(InternalPage):
     def delete_first_person_in_page(self):
         if self.is_element_visible(self.DELETE_FIRST_PERSON_IN_TABLE):
             self.driver.find_element(*self.DELETE_FIRST_PERSON_IN_TABLE).click()
-            self.is_element_present(self.SPINNER_OFF)
+            self.wait_until_page_generate()
 
     @property
     def view_first_person_in_page(self):
@@ -196,7 +191,7 @@ class PersonsPage(InternalPage):
         :param given_surname: String parameter. Added persons surname.
         :return:
         """
-        self.is_element_present(self.SPINNER_OFF)
+        self.wait_until_page_generate()
         if len(self.rows_in_body) == 0:
             return None
         if self.is_element_present(self.SEARCHED_SURNAME):
@@ -375,8 +370,7 @@ class PersonsPage(InternalPage):
 
     # surname search
     def try_get_choose_surname(self):
-        self.is_element_visible(self.CHOOSE_SURNAME_SEARCH)
-        return self.driver.find_element(*self.CHOOSE_SURNAME_SEARCH)
+        return self.is_element_visible(self.CHOOSE_SURNAME_SEARCH)
 
     def try_get_searched_surname(self, given_surname):
         self.wait.until(EC.text_to_be_present_in_element(self.SEARCHED_SURNAME, given_surname))
@@ -385,6 +379,9 @@ class PersonsPage(InternalPage):
     # person_id search
     def try_get_choose_person_id(self):
         return self.is_element_visible(self.CHOOSE_PERSON_ID_SEARCH)
+
+    def try_get_id_for_search(self):
+        return self.is_element_visible(self.PERSON_ID_FOR_SEARCH)
 
     def try_get_searched_person_id(self, given_person_id):
         self.wait.until(EC.text_to_be_present_in_element(self.SEARCHED_PERSON_ID, given_person_id))
@@ -396,7 +393,7 @@ class PersonsPage(InternalPage):
 
     def try_get_searched_num_os(self, given_num_os):
         self.wait.until(EC.text_to_be_present_in_element(self.SEARCHED_NUM_OS, given_num_os))
-        return self.driver.find_element(*self.SEARCHED_NUM_OS)
+        return self.is_element_visible(self.SEARCHED_NUM_OS)
 
     # series_os search
     def try_get_choose_series_os(self):
@@ -464,7 +461,7 @@ class PersonsPage(InternalPage):
         :param person: persons model in Person format
         :return: finded person's surname
         """
-        self.is_this_page
+        self.is_this_page()
         self.try_get_choose_surname().click()
         self.try_get_input_group().clear()
         self.try_get_input_group().send_keys(person.surname_ukr)
@@ -472,14 +469,14 @@ class PersonsPage(InternalPage):
         return self.try_get_searched_surname(person.surname_ukr).text.partition(' ')[0]
 
     def del_newly_created_person(self, person):
-        self.is_this_page
+        self.is_this_page()
         expected_person = self.try_get_searched_surname(person.surname_ukr).text.partition(' ')[0]
         if expected_person:
             self.delete_first_person_in_page
 
     def return_to_persons_main_page(self, app):
         app.internal_page.persons_page_link.click()
-        self.is_element_present(self.SPINNER_OFF)
+        self.wait_until_page_generate()
         self.try_get_refresh_upper_button().click()
 
     def search_person_by_surname(self, given_surname):
@@ -488,9 +485,9 @@ class PersonsPage(InternalPage):
         :param given_surname: wanted surname
         :return:
         """
-        self.is_this_page
+        self.is_this_page()
         self.try_get_choose_surname().click()
         self.try_get_input_group().clear()
         self.try_get_input_group().send_keys(given_surname)
         self.try_get_ok_button().click()
-        self.is_element_present(self.SPINNER_OFF)
+        self.wait_until_page_generate()

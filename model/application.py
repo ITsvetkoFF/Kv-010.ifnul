@@ -58,7 +58,7 @@ class Application:
         :param checkbox: True with checkbox remember me and False without it. Default value is False
         """
         lp = self.login_page
-        lp.is_this_page
+        lp.is_this_page()
         lp.username_field.clear()
         lp.username_field.send_keys(user.username)
         lp.password_field.clear()
@@ -66,10 +66,10 @@ class Application:
         if checkbox:
             lp.login_checkbox.click()
             lp.submit_button.click()
-            self.internal_page.is_element_present(self.internal_page.SPINNER_OFF)
+            self.internal_page.wait_until_page_generate()
         else:
             lp.submit_button.click()
-            self.internal_page.is_element_present(self.internal_page.SPINNER_OFF)
+            self.internal_page.wait_until_page_generate()
 
     def ensure_logged_in(self):
         """
@@ -84,7 +84,7 @@ class Application:
         Method performs logout from application
         """
         ip = self.internal_page
-        ip.is_this_page
+        ip.is_this_page()
         ip.user_dropdown.click()
         ip.logout_button.click()
 
@@ -101,11 +101,11 @@ class Application:
         Method checks you are logged in
         :return True or False
         """
-        return self.internal_page.is_this_page
+        return self.internal_page.is_this_page()
 
     def is_not_logged_in(self):
         """
         Method checks you are not logged in
         :return: True or False
         """
-        return self.login_page.is_this_page
+        return self.login_page.is_this_page()

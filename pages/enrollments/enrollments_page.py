@@ -99,28 +99,23 @@ class EnrollmentsPage(InternalPage):
     EDIT_BUTTON_ON_FIRST_ROW = (By.XPATH, "//tbody[@class='pointer']/tr[1]/td//i[@class='fa fa-pencil-square-o']")
     DELETE_BUTTON_ON_FIRST_ROW = (By.XPATH, "//tbody[@class='pointer']/tr[1]/td//i[@class='fa fa-times']")
 
-    @ErrorHandlerPO("current page is not Enrollments page")
-    def is_current_page(self):
-        return self.wait.until(visibility_of_element_located(self.ADD_NEW_ENROLLMENT_BUTTON))
-
     def delete_button_on_first_row_click(self):
         self.is_element_visible(self.DELETE_BUTTON_ON_FIRST_ROW)
         self.driver.find_element(*self.DELETE_BUTTON_ON_FIRST_ROW).click()
-        self.is_element_present(self.SPINNER_OFF)
+        self.wait_until_page_generate()
 
     def edit_button_on_first_row_click(self):
         self.is_element_visible(self.EDIT_BUTTON_ON_FIRST_ROW)
         self.driver.find_element(*self.EDIT_BUTTON_ON_FIRST_ROW).click()
-        self.is_element_present(self.SPINNER_OFF)
+        self.wait_until_page_generate()
 
-    @property
     def is_this_page(self):
-        return self.is_element_visible(self.ADD_NEW_ENROLLMENT_BUTTON)\
+        return self.is_element_visible(self.ADD_NEW_ENROLLMENT_BUTTON)
 
     @property
     def add_new_enrollment_button_click(self):
         return self.driver.find_element(*self.ADD_NEW_ENROLLMENT_BUTTON).click()
-        self.is_element_present(self.SPINNER_OFF)
+        wait_until_page_generate()
 
     @property
     def search_select_dropdown(self):
@@ -176,15 +171,15 @@ class EnrollmentsPage(InternalPage):
         :param search_by:  SEARCH_METHOD["method"]
         :param req: Any wanted string request
         """
-        self.is_this_page
+        self.is_this_page()
         self.hundred_button.click()
-        self.is_element_present(self.SPINNER_OFF)
+        self.wait_until_page_generate()
         select = Select(self.search_select_dropdown)
         select.select_by_value(search_by)
         self.search_field_enr.clear()
         self.search_field_enr.send_keys(req)
         self.submit_search_button_enr.click()
-        self.is_element_present(self.SPINNER_OFF)
+        self.wait_until_page_generate()
 
     def search_text_in_column(self, column, req):
         """
@@ -221,7 +216,7 @@ class EnrollmentsPage(InternalPage):
                 if new_elem.get_attribute("class") == "ng-scope disabled":
                     break
                 self.driver.find_element(*self.NEXT_TABLE_PAGE_BUTTON).click()
-                self.is_element_present(self.SPINNER_OFF)
+                self.wait_until_page_generate()
             if len(incorrect):
                 return incorrect
             else:
@@ -251,7 +246,7 @@ class EnrollmentsPage(InternalPage):
         Method adds one or more columns in table
         :param columns: Column selectors, separated with comas
         """
-        self.is_this_page
+        self.is_this_page()
         self.column_chooser_button.click()
         for column in columns:
             self.is_element_visible(column)
@@ -264,11 +259,11 @@ class EnrollmentsPage(InternalPage):
         Method adds one or more wanted filters
         :param selectors_tuple: Selectors, separated with comas
         """
-        self.is_this_page
+        self.is_this_page()
         for selector in selectors_tuple:
             self.driver.find_element(*selector).click()
         self.filter_refresh_button_enr.click()
-        self.is_element_present(self.SPINNER_OFF)
+        self.wait_until_page_generate()
 
     def get_columns_text(self, *column_tuple):
         """
@@ -297,19 +292,19 @@ class EnrollmentsPage(InternalPage):
                 if new_elem.get_attribute("class") == "ng-scope disabled":
                     break
                 self.driver.find_element(*self.NEXT_TABLE_PAGE_BUTTON).click()
-                self.is_element_present(self.SPINNER_OFF)
+                self.wait_until_page_generate()
             return found
 
     def delete_all_filters(self):
         """
         Method deletes all filters
         """
-        self.is_this_page
+        self.is_this_page()
         elements = self.driver.find_elements(*self.DELETE_FILTER_BUTTON)
         for element in elements:
             element.click()
         self.filter_refresh_button_enr.click()
-        self.is_element_present(self.SPINNER_OFF)
+        self.wait_until_page_generate()
 
     def search_enrollment_in_table(self):
         """
