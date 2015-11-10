@@ -61,7 +61,7 @@ def test_verification_fields_in_person(logout_login, invalid_person, screenshot)
         screenshot.assert_and_get_screenshot(app, assert_expression)
 
     with pytest.allure.step('Verification of fields in extra page.'):
-        app.person_base_page.click_extra_tab
+        app.person_base_page.click_extra_tab()
         fill_extra_person_page_with_invalid_data(app, invalid_person)
         assert_expression = app.extra_page.private_case_number_input_incorrect
         screenshot.assert_and_get_screenshot(app, assert_expression)

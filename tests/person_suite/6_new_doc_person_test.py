@@ -18,7 +18,7 @@ def test_add_new_document(app, person, screenshot):
         person_page.edit_first_person_in_page.click()
     with pytest.allure.step("Go to documents page"):
         base_page = app.person_base_page
-        base_page.click_extra_tab
+        base_page.click_extra_tab()
         base_page.wait_until_page_generate()
         base_page.click_addresses_tab
         base_page.wait_until_page_generate()
@@ -35,7 +35,7 @@ def test_add_new_document(app, person, screenshot):
     with pytest.allure.step("Open editing of person with clicking edit button"):
         person_page.edit_first_person_in_page.click()
         base_page = app.person_base_page
-        base_page.click_extra_tab
+        base_page.click_extra_tab()
         base_page.wait_until_page_generate()
         base_page.click_addresses_tab
         base_page.wait_until_page_generate()

@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from utils.web_elem_utils import checkbox_set_state
+
 __author__ = 'Deorditsa'
 
 
@@ -33,6 +35,10 @@ class AddPersonAddressesPage(AddPersonPage):
 
     def is_this_page(self):
         return self.is_element_visible(self.INDEX_INPUT)
+
+    @property
+    def chechbox_adress_match(self):
+        return self.driver.find_element(*self.IS_ADDRESSES_MATCH)
 
     def get_selector_for_current_block_and_level(self, selector, level):
         """
@@ -116,7 +122,7 @@ class AddPersonAddressesPage(AddPersonPage):
         :param is_addresses_match: Boolean format. Must be True, if registration address and post address are the same.
         :return:
         """
-        self.checkbox_manager(self.driver.find_element(*self.IS_ADDRESSES_MATCH), is_addresses_match)
+        checkbox_set_state(self.chechbox_adress_match, is_addresses_match)
 
     def fill_in_address_page(self, person):
         """
