@@ -1,5 +1,4 @@
 # coding: utf8
-import time
 from pages.internal_page import InternalPage
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -25,6 +24,7 @@ class PersonsPage(InternalPage):
     # in table
     SEARCHED_SURNAME = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[2]")
     SEARCHED_PERSON_ID = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[1]")
+    PERSON_ID_FOR_SEARCH = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][2]/td[1]")
     SEARCHED_NUM_OS = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[11]")
     SEARCHED_SERIES_OS = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[10]")
     ROWS_IN_RABLE = (By.XPATH, "//tbody[@class='pointer']/tr")
@@ -100,7 +100,7 @@ class PersonsPage(InternalPage):
     # Columns dictionary binding number of column to it's name
     DELETE_FIRST_PERSON_IN_TABLE = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[18]//button[3]")
     VIEW_FIRST_PERSON_IN_TABLE = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[18]//button[2]")
-    EDIT_FIRST_PERSON_IN_TABLE = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[18]//button[1]")
+    EDIT_FIRST_PERSON_IN_TABLE = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][3]/td[18]//button[1]")
 
     COLUMN_NUMBER_ADD = (By.XPATH, "//li[1]//*[@id='showHideHeader']")
     COLUMN_FIO_ADD = (By.XPATH, "//li[2]//*[@id='showHideHeader']")
@@ -119,6 +119,7 @@ class PersonsPage(InternalPage):
     COLUMN_VZ_ADD = (By.XPATH, "//li[15]//*[@id='showHideHeader']")
     COLUMN_HOSTEL_ADD = (By.XPATH, "//li[16]//*[@id='showHideHeader']")
     COLUMN_MATERIAL_LIABILITY_ADD = (By.XPATH, "//li[17]//*[@id='showHideHeader']")
+    ID_OF_PERSON_IN_FIRST_ROW = (By.XPATH, "//*[@class='pointer']/tr[1]/td[1]")
 
     COLUMNS_DICT = {
         1: '№',
@@ -157,7 +158,16 @@ class PersonsPage(InternalPage):
     # END OF SELECTORS SECTION
     #
 
+    @ErrorHandlerPO("current page is not Persons page")
+    def is_current_page(self):
+        return self.wait.until(visibility_of_element_located(self.ADD_PERSON_BUTTON))
+
+    def id_of_person_in_first_row(self):
+        return self.driver.find_element(*self.ID_OF_PERSON_IN_FIRST_ROW)
+
+    @property
     def is_this_page(self):
+        self.is_element_visible(self.ADD_PERSON_BUTTON)
         return self.is_element_visible(self.ADD_PERSON_BUTTON)
 
     @property
@@ -370,8 +380,7 @@ class PersonsPage(InternalPage):
 
     # surname search
     def try_get_choose_surname(self):
-        self.is_element_visible(self.CHOOSE_SURNAME_SEARCH)
-        return self.driver.find_element(*self.CHOOSE_SURNAME_SEARCH)
+        return self.is_element_visible(self.CHOOSE_SURNAME_SEARCH)
 
     def try_get_searched_surname(self, given_surname):
         self.wait.until(EC.text_to_be_present_in_element(self.SEARCHED_SURNAME, given_surname))
@@ -380,6 +389,9 @@ class PersonsPage(InternalPage):
     # person_id search
     def try_get_choose_person_id(self):
         return self.is_element_visible(self.CHOOSE_PERSON_ID_SEARCH)
+
+    def try_get_id_for_search(self):
+        return self.is_element_visible(self.PERSON_ID_FOR_SEARCH)
 
     def try_get_searched_person_id(self, given_person_id):
         self.wait.until(EC.text_to_be_present_in_element(self.SEARCHED_PERSON_ID, given_person_id))
@@ -391,7 +403,7 @@ class PersonsPage(InternalPage):
 
     def try_get_searched_num_os(self, given_num_os):
         self.wait.until(EC.text_to_be_present_in_element(self.SEARCHED_NUM_OS, given_num_os))
-        return self.driver.find_element(*self.SEARCHED_NUM_OS)
+        return self.is_element_visible(self.SEARCHED_NUM_OS)
 
     # series_os search
     def try_get_choose_series_os(self):

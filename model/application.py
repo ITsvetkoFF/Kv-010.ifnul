@@ -50,6 +50,7 @@ class Application:
         self.papers_page = AddPersonPapersPage(driver, base_url)
         self.person_base_page = AddPersonPage(driver, base_url)
         self.person_enrollment = PersonEnrollmentPage(driver, base_url)
+        self.common_methods = CommonMethods(driver)
 
     def login(self, user, checkbox=False):
         """

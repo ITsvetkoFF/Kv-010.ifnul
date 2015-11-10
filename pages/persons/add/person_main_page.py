@@ -1,3 +1,5 @@
+from utils.common_methods import CommonMethods
+
 __author__ = 'Evgen'
 
 from person_base_page import AddPersonPage
@@ -6,7 +8,8 @@ from selenium.webdriver.common.by import By
 
 class AddPersonMainPage(AddPersonPage):
 
-    PERSON_TYPE_SELECT = (By.XPATH, "//div[@id='personTypeId']//span")
+    PERSON_TYPE_SELECT = (By.XPATH, "//div[@id='personTypeId']//i[contains(@class, 'caret pull-right')]")
+    PERSON_TYPE_TEXT = (By.XPATH, ".//*[@id='personTypeId']//span[@class='ng-binding ng-scope']")
     ALL_PERSON_TYPES_SELECT = (By.XPATH, "//a[@class='ui-select-choices-row-inner']//div[@class='ng-binding ng-scope']")
     PERSON_SURNAME_UKR_INPUT = (By.XPATH, "//input[@id='surname']")
     PERSON_SURNAME_ENG_INPUT = (By.XPATH, "//input[@id='surnameEng']")
@@ -35,6 +38,21 @@ class AddPersonMainPage(AddPersonPage):
 
     # old
 
+    def person_surname_ukr_input(self):
+        return self.is_element_visible(self.PERSON_SURNAME_UKR_INPUT)
+
+    def person_surname_eng_input(self):
+        return self.is_element_visible(self.PERSON_SURNAME_ENG_INPUT)
+
+    def person_farther_name_ukr_input(self):
+        return self.is_element_visible(self.PERSON_FARTHER_NAME_UKR_INPUT)
+
+    def person_first_name_ukr_input(self):
+        return self.is_element_visible(self.PERSON_FIRST_NAME_UKR_INPUT)
+
+    def person_first_name_eng_input(self):
+        return self.is_element_visible(self.PERSON_FIRST_NAME_ENG_INPUT)
+
     @property
     def person_surname_ukr_input_incorrect(self):
         return self.is_element_visible(self.PERSON_SURNAME_UKR_INPUT_INCORRECT)
@@ -62,6 +80,14 @@ class AddPersonMainPage(AddPersonPage):
         """
         self.is_element_present(self.PERSON_TYPE_SELECT)
         self.driver.find_element(*self.PERSON_TYPE_SELECT).click()
+
+    def person_type_text(self):
+        """
+        Method get text from person type select field
+        :return:
+        """
+        self.is_element_present(self.PERSON_TYPE_TEXT)
+        return self.driver.find_element(*self.PERSON_TYPE_TEXT)
 
     def choose_person_type(self, person_type):
         """
@@ -128,3 +154,19 @@ class AddPersonMainPage(AddPersonPage):
         self.set_father_ukr_name(person.second_name_ukr)
         self.set_eng_surname(person.surname_eng)
         self.set_first_eng_name(person.first_name_eng)
+
+    def read_in_main_person_page(self, person_new):
+        """
+        Method read the data on the main persons page
+        :param person_new: is persons model in Person format
+        :return: person_new
+        """
+        self.is_this_page
+        common_methods = CommonMethods(self.driver)
+        person_new.person_type = self.person_type_text().text
+        person_new.surname_ukr = common_methods.get_value_from_text_field(self.driver.find_element(*self.PERSON_SURNAME_UKR_INPUT))
+        person_new.first_name_ukr = common_methods.get_value_from_text_field(self.driver.find_element(*self.PERSON_FIRST_NAME_UKR_INPUT))
+        person_new.second_name_ukr = common_methods.get_value_from_text_field(self.driver.find_element(*self.PERSON_FARTHER_NAME_UKR_INPUT))
+        person_new.surname_eng = common_methods.get_value_from_text_field(self.driver.find_element(*self.PERSON_SURNAME_ENG_INPUT))
+        person_new.first_name_eng = common_methods.get_value_from_text_field(self.driver.find_element(*self.PERSON_FIRST_NAME_ENG_INPUT))
+        return person_new
