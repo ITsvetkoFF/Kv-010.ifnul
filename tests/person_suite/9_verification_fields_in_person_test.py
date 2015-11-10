@@ -14,7 +14,7 @@ def fill_main_person_page_with_invalid_data(app, invalid_person):
     :return:
     """
     main_page = app.main_page
-    main_page.is_this_page
+    main_page.is_this_page()
     main_page.set_ukr_surname(invalid_person.surname_ukr)
     main_page.set_first_ukr_name(invalid_person.first_name_ukr)
     main_page.set_father_ukr_name(invalid_person.second_name_ukr)
@@ -30,7 +30,7 @@ def fill_extra_person_page_with_invalid_data(app, invalid_person):
     :return:
     """
     extra_page = app.extra_page
-    extra_page.is_this_page
+    extra_page.is_this_page()
     app.extra_page.set_private_case_numbers(invalid_person.private_case_number)
 
 
@@ -39,7 +39,7 @@ def test_verification_fields_in_person(logout_login, invalid_person, screenshot)
     with pytest.allure.step('The test verifies the correct operation of inspection fields.'):
         # login and follow up to person's page
         app = logout_login
-        assert_expression = app.persons_page.is_this_page
+        assert_expression = app.persons_page.is_this_page()
         screenshot.assert_and_get_screenshot(app, assert_expression)
 
     with pytest.allure.step('Verification of fields in main page.'):
@@ -61,7 +61,7 @@ def test_verification_fields_in_person(logout_login, invalid_person, screenshot)
         screenshot.assert_and_get_screenshot(app, assert_expression)
 
     with pytest.allure.step('Verification of fields in extra page.'):
-        app.person_base_page.click_extra_tab
+        app.person_base_page.click_extra_tab()
         fill_extra_person_page_with_invalid_data(app, invalid_person)
         assert_expression = app.extra_page.private_case_number_input_incorrect
         screenshot.assert_and_get_screenshot(app, assert_expression)

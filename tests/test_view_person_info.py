@@ -8,7 +8,7 @@ __author__ = 'Vadym'
 def test_global_info_about_person(app, person):
     app.ensure_logout()
     app.login(User.Admin())
-    app.internal_page.is_this_page
+    app.internal_page.is_this_page()
 
     # Find new person by surname (Alexey test 'add person')
     person_page = app.persons_page

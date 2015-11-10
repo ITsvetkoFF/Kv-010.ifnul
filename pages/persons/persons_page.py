@@ -157,7 +157,6 @@ class PersonsPage(InternalPage):
     # END OF SELECTORS SECTION
     #
 
-    @property
     def is_this_page(self):
         return self.is_element_visible(self.ADD_PERSON_BUTTON)
 
@@ -462,7 +461,7 @@ class PersonsPage(InternalPage):
         :param person: persons model in Person format
         :return: finded person's surname
         """
-        self.is_this_page
+        self.is_this_page()
         self.try_get_choose_surname().click()
         self.try_get_input_group().clear()
         self.try_get_input_group().send_keys(person.surname_ukr)
@@ -470,7 +469,7 @@ class PersonsPage(InternalPage):
         return self.try_get_searched_surname(person.surname_ukr).text.partition(' ')[0]
 
     def del_newly_created_person(self, person):
-        self.is_this_page
+        self.is_this_page()
         expected_person = self.try_get_searched_surname(person.surname_ukr).text.partition(' ')[0]
         if expected_person:
             self.delete_first_person_in_page
@@ -486,7 +485,7 @@ class PersonsPage(InternalPage):
         :param given_surname: wanted surname
         :return:
         """
-        self.is_this_page
+        self.is_this_page()
         self.try_get_choose_surname().click()
         self.try_get_input_group().clear()
         self.try_get_input_group().send_keys(given_surname)

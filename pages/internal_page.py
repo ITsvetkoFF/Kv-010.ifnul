@@ -35,7 +35,6 @@ class InternalPage(Page):
         self.is_element_visible(self.LOGOUT_BUTTON)
         return self.driver.find_element(*self.LOGOUT_BUTTON)
 
-    @property
     def is_this_page(self):
         return self.is_element_visible(self.INTERNAL_PAGE)
 
@@ -50,6 +49,11 @@ class InternalPage(Page):
     @property
     def dictionaries_page_link(self):
         return self.driver.find_element(*self.DICTIONARIES_PAGE_LINK)
+
+    # function
+    def dictionaries_page_link_click(self):
+        self.dictionaries_page_link.click()
+        self.wait_until_page_generate()
 
     def is_element_present(self, locator):
         try:

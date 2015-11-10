@@ -2,8 +2,9 @@
 import os
 import json
 import datetime
-from model.enrollment import AddEnrollment, TableEnrollment
+# from model.enrollment import AddEnrollment, TableEnrollment
 from datetime import date
+from model.enrollment import Enrollment
 
 __author__ = 'stako'
 
@@ -40,7 +41,8 @@ class FillEnrollment(object):
         :param name_of_dict: is name one of the dictionaries in json file.
         :return: instance of AddEnrollment.
         """
-        enrollment = AddEnrollment()
+        # enrollment = AddEnrollment()
+        enrollment = Enrollment()
         enrollment_json = self.parseJson(file_name, name_of_dict)
         enrollment.person_name = enrollment_json["person_name"].encode('utf8')
         enrollment.series_of_statements = enrollment_json["series_of_statements"]
