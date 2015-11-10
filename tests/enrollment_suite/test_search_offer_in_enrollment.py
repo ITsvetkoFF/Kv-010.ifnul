@@ -27,10 +27,10 @@ def forms_of_education(request):
 def test_open_add_enrollment(app):
     with pytest.allure.step('Test of open page add enrollment'):
         app.ensure_logged_in()
-        app.internal_page.is_this_page
+        app.internal_page.is_this_page()
         app.internal_page.enrollments_page_link.click()
-        app.enrollments_page.is_this_page
-        app.enrollments_page.is_this_page.click()
+        app.enrollments_page.is_this_page()
+        app.enrollments_page.is_this_page().click()
 
 @pytest.allure.severity(pytest.allure.severity_level.NORMAL)
 def test_check_correct_structural_subdivision(app, offers):

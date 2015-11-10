@@ -10,7 +10,7 @@ def test_add_enrollment_in_new_person(logout_login, person, dictionary_with_json
     with pytest.allure.step('Test of add enrollment in new person.'):
         add_person = AddPersonPattern()
         app = logout_login
-        assert app.persons_page.is_this_page
+        assert app.persons_page.is_this_page()
         add_person.search_person_by_surname(app, person.surname_ukr)
         app.internal_page.wait_until_page_generate()
         app.persons_page.edit_first_person_in_page.click()

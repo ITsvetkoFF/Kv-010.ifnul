@@ -65,7 +65,6 @@ class EnrollmentsMainPage(InternalPage):
     def cancel_click(self):
         self.driver.find_element(*self.CANCEL_BUTTON).click()
 
-    @property
     def is_this_page(self):
         return self.is_element_visible(self.SEARCH_PERSON_BY_SELECT)
     
@@ -100,10 +99,6 @@ class EnrollmentsMainPage(InternalPage):
     def find_date_of_creation(self):
         self.is_element_visible(self.DATE_OF_CREATION_STATEMENTS)
         return self.driver.find_elements(*self.DATE_OF_CREATION_STATEMENTS)
-
-    @property
-    def is_this_page(self):
-        return self.is_element_visible(self.SEARCH_PERSON_BY_SELECT)
 
     @property
     def cancel_click(self):

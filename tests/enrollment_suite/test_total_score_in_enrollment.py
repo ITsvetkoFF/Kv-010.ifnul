@@ -31,10 +31,10 @@ def number_and_character(request):
 def test_open_add_enrollment(app):
     with pytest.allure.step('Test of open page add enrollment'):
         app.ensure_logged_in()
-        app.internal_page.is_this_page
+        app.internal_page.is_this_page()
         app.internal_page.enrollments_page_link.click()
-        app.enrollments_page.is_this_page
-        app.enrollments_page.is_this_page.click()
+        app.enrollments_page.is_this_page()
+        app.enrollments_page.is_this_page().click()
         enr_page = app.enrollments_main_page
         enr_page.wait_until_page_generate()
 

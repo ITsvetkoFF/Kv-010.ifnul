@@ -12,6 +12,7 @@ from utils.data_provider_from_json import DataProviderJSON
 from utils.configuration import Configuration
 import datetime
 
+
 def pytest_addoption(parser):
     parser.addoption("--browser", action="store", default="firefox")
     parser.addoption("--base_url", action="store", default="http://192.168.96.134:9000/")
@@ -79,6 +80,15 @@ def pre_login(request, app):
     app.login(User.Admin(), True)
     request.cls.app = app
 
+
 @pytest.fixture(scope="session")
 def screenshot():
     return Configuration()
+
+
+@pytest.fixture(scope="function")
+def stand_for_dictionary_tests(request, app):
+    app.login(User.Admin(), True)
+    app.dictionaries_page.dictionaries_page_link_click()
+    request.addfinalizer(app.logout)
+    request.cls.app = app

@@ -15,9 +15,9 @@ class TestEnrollmentsDates(object):
         :return: Creation date in Datetime format
         """
         app.internal_page.enrollments_page_link.click()
-        app.enrollments_page.is_this_page
+        app.enrollments_page.is_this_page()
         app.enrollments_page.add_new_enrollment_button_click
-        app.enrollments_main_page.is_this_page
+        app.enrollments_main_page.is_this_page()
         return self.convert_string_to_datetime(app.enrollments_main_page.find_date_of_creation().get_attribute("value"))
 
     @pytest.allure.severity(pytest.allure.severity_level.CRITICAL)

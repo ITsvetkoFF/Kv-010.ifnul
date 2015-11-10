@@ -20,7 +20,7 @@ class AddPersonPattern(object):
     def del_created_person(self, app, person):
         #Delete new added person
         person_page = app.persons_page
-        person_page.is_this_page
+        person_page.is_this_page()
         expected_person = person_page.try_get_searched_surname(person.surname_ukr).text.partition(' ')[0]
         if expected_person:
             person_page.delete_first_person_in_page
