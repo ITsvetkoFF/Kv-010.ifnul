@@ -1,17 +1,18 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from utils.web_elem_utils import checkbox_set_state
 
 __author__ = 'Deorditsa'
 
-from person_base_page import AddPersonPage
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 from utils.common_methods import CommonMethods
 from selenium.webdriver.support import expected_conditions as EC
 
+from person_base_page import AddPersonPage
+
 
 class AddPersonPapersPage(AddPersonPage):
-
     ADD_DOCUMENT_BUTTON = (By.XPATH, "//div[@class='row']//div[@class='col-xs-2']//button")
     SAVE_DOCUMENT_BUTTON = (By.XPATH, "//button[@ng-click='addToTable()']")
     DOCUMENT_CATEGORY_SELECT = (By.XPATH, "//select[@ng-model='currentObj.abbrName']")
@@ -30,7 +31,6 @@ class AddPersonPapersPage(AddPersonPage):
     EDIT_DOCUMENT_FIELDS = (
         By.XPATH, ".//*[@id='person']//*[@ng-show='!personView']//*[@class='row']//div[@class='col-xs-4']")
 
-    @property
     def is_this_page(self):
         return self.is_element_visible(self.ADD_DOCUMENT_BUTTON)
 
@@ -38,16 +38,49 @@ class AddPersonPapersPage(AddPersonPage):
     def number_of_fields(self):
         return len(self.driver.find_elements(*self.EDIT_DOCUMENT_FIELDS))
 
+    # web elements
     @property
-    def press_add_new_document_button(self):
-        self.driver.find_element(*self.ADD_DOCUMENT_BUTTON).click()
-        self.is_element_present(self.SPINNER_OFF)
+    def new_document_button(self):
+        return self.driver.find_element(*self.ADD_DOCUMENT_BUTTON)
 
     @property
-    def press_save_new_document_button(self):
-        self.is_element_visible(self.SAVE_DOCUMENT_BUTTON)
-        self.driver.find_element(*self.SAVE_DOCUMENT_BUTTON).click()
-        self.is_element_present(self.SPINNER_OFF)
+    def save_new_document_button(self):
+        return self.driver.find_element(*self.SAVE_DOCUMENT_BUTTON)
+
+    @property
+    def is_original_checkbox(self):
+        return self.driver.find_element(*self.DOCUMENT_IS_ORIGINAL)
+
+    @property
+    def is_foreign_checkbox(self):
+        return self.driver.find_element(*self.DOCUMENT_IS_FOREIGN)
+
+    # web elements function
+    def add_new_document_button_click(self):
+        self.new_document_button.click()
+        self.wait_until_page_generate()
+
+    def save_new_document_button_click(self):
+        self.save_new_document_button.click()
+        self.wait_until_page_generate()
+
+    def check_is_original_document(self, is_original):
+        """
+        Method checks or unchecks "Is original document?" checkbox
+        :param is_original: Boolean format. Must be True, if document was compared with original.
+        :return:
+        """
+        checkbox_set_state(self.is_original_checkbox, is_original)
+
+    def check_is_foreign_document(self, is_foreign):
+        """
+        Method checks or unchecks "Is foreign document?" checkbox
+        :param is_foreign: Boolean format. Must be True, if document is foreign.
+        :return:
+        """
+        checkbox_set_state(self.is_foreign_checkbox, is_foreign)
+
+    # old
 
     def list_with_all_visible_element_in_document(self):
         return self.driver.find_elements(
@@ -103,23 +136,9 @@ class AddPersonPapersPage(AddPersonPage):
         """
         self.emulation_of_input(self.DOCUMENT_ISSUED_BY, maker)
 
-    def check_is_original_document(self, is_original):
-        """
-        Method checks or unchecks "Is original document?" checkbox
-        :param is_original: Boolean format. Must be True, if document was compared with original.
-        :return:
-        """
-        common_methods = CommonMethods(self.driver)
-        common_methods.checkbox_manager(self.driver.find_element(*self.DOCUMENT_IS_ORIGINAL), is_original)
 
-    def check_is_foreign_document(self, is_foreign):
-        """
-        Method checks or unchecks "Is foreign document?" checkbox
-        :param is_foreign: Boolean format. Must be True, if document is foreign.
-        :return:
-        """
-        common_methods = CommonMethods(self.driver)
-        common_methods.checkbox_manager(self.driver.find_element(*self.DOCUMENT_IS_FOREIGN), is_foreign)
+
+
 
     def try_get_searched_doc_num(self, given_num):
         if type(given_num) == int:
@@ -128,12 +147,32 @@ class AddPersonPapersPage(AddPersonPage):
         return self.driver.find_element(*self.TABLE_DOCUMENTS_NUM_ROW)
 
     def delete_first_document_in_page(self):
-        if self.is_element_visible(self.DELETE_FIRST_DOCUMENT_BUTTON):
-            self.driver.find_element(*self.DELETE_FIRST_DOCUMENT_BUTTON).click()
-            self.is_element_present(self.SPINNER_OFF)
+        if self.is_element_visible(self.DELETE_FIRST_DOCUMENT):
+            self.driver.find_element(*self.DELETE_FIRST_DOCUMENT).click()
+            self.wait_until_page_generate()
 
     def get_number_of_person_documents(self):
         return len(self.driver.find_elements(*self.DELETE_DOCUMENT_BUTTONS))
+
+    # general functions
+
+    def fill_in_document_page(self, person):
+        """
+        Method fill in data on the papers persons page
+        :param person: persons model in Person format
+        :return:
+        """
+        self.is_this_page()
+        self.add_new_document_button_click()
+        self.document_type_select(person.documents[0].category)
+        self.document_name_select(person.documents[0].document_name)
+        self.set_document_series(person.documents[0].document_case_char)
+        self.set_document_number(person.documents[0].document_case_number)
+        self.set_day_of_issue(person.documents[0].day_of_issue)
+        self.set_document_maker(person.documents[0].issued_by)
+        self.check_is_original_document(person.documents[0].document_is_original)
+        self.check_is_foreign_document(person.documents[0].document_is_foreign)
+        self.save_new_document_button_click()
 
     def delete_all_person_documents(self):
         """
@@ -144,25 +183,8 @@ class AddPersonPapersPage(AddPersonPage):
         if elements:
             for element in elements:
                 element.click()
-                self.is_element_present(self.SPINNER_OFF)
+                self.wait_until_page_generate()
 
-    def fill_in_document_page(self, person):
-        """
-        Method fill in data on the papers persons page
-        :param person: persons model in Person format
-        :return:
-        """
-        self.is_this_page
-        self.press_add_new_document_button
-        self.document_type_select(person.documents[0].category)
-        self.document_name_select(person.documents[0].document_name)
-        self.set_document_series(person.documents[0].document_case_char)
-        self.set_document_number(person.documents[0].document_case_number)
-        self.set_day_of_issue(person.documents[0].day_of_issue)
-        self.set_document_maker(person.documents[0].issued_by)
-        self.check_is_original_document(person.documents[0].document_is_original)
-        self.check_is_foreign_document(person.documents[0].document_is_foreign)
-        self.press_save_new_document_button
 
     def read_in_document_page(self, person_new):
         """

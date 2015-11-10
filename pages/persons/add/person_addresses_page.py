@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 __author__ = 'Deorditsa'
 
 from utils.common_methods import CommonMethods
@@ -44,7 +43,6 @@ class AddPersonAddressesPage(AddPersonPage):
     SELECTED_ADDRESS_TYPE = (By.XPATH, ".//*[@id='inputStreetTypeReg']/option[@selected='selected']")
     SELECTED_ADDRESS_TYPE_POST = (By.XPATH, ".//*[@id='inputStreetTypePost']/option[@selected='selected']")
 
-    @property
     def is_this_page(self):
         return self.is_element_visible(self.INDEX_INPUT)
 
@@ -87,6 +85,10 @@ class AddPersonAddressesPage(AddPersonPage):
     def apartment_post_input(self):
         return self.is_element_visible(self.APARTMENT_POST_INPUT)
 
+    @property
+    def chechbox_adress_match(self):
+        return self.driver.find_element(*self.IS_ADDRESSES_MATCH)
+
     def get_selector_for_current_block_and_level(self, selector, level):
         """
         Method makes selector for current block and drop-down current level
@@ -110,7 +112,7 @@ class AddPersonAddressesPage(AddPersonPage):
         all_level_addresses = self.driver.find_elements(
             *self.get_selector_for_current_block_and_level(self.BIRTH_PLACE_SELECTOR, address_level + 1))
         self.find_element_in_select(all_level_addresses, address).click()
-        self.is_element_present(self.SPINNER_OFF)
+        self.wait_until_page_generate()
 
     def select_registration_address(self, address, address_level):
         """
@@ -126,7 +128,7 @@ class AddPersonAddressesPage(AddPersonPage):
         all_level_addresses = self.driver.find_elements(
             *self.get_selector_for_current_block_and_level(self.REG_ADDRESS_PLACE_SELECTOR, address_level + 1))
         self.find_element_in_select(all_level_addresses, address).click()
-        self.is_element_present(self.SPINNER_OFF)
+        self.wait_until_page_generate()
 
     def select_post_registration_address(self, address, address_level):
         """
@@ -232,8 +234,7 @@ class AddPersonAddressesPage(AddPersonPage):
         :param is_addresses_match: Boolean format. Must be True, if registration address and post address are the same.
         :return:
         """
-        common_methods = CommonMethods(self.driver)
-        common_methods.checkbox_manager(self.driver.find_element(*self.IS_ADDRESSES_MATCH), is_addresses_match)
+        checkbox_set_state(self.chechbox_adress_match, is_addresses_match)
 
     def fill_in_address_page(self, person):
         """
@@ -241,8 +242,7 @@ class AddPersonAddressesPage(AddPersonPage):
         :param person: persons model in Person format
         :return:
         """
-        common_methods = CommonMethods(self.driver)
-        self.is_this_page
+        self.is_this_page()
         for i in range(0, len(person.burn_place)):
             self.select_birth_place(person.burn_place[i], i)
 

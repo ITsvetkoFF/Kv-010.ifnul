@@ -6,20 +6,18 @@ from utils.add_person_pattern import AddPersonPattern
 
 
 @pytest.allure.severity(pytest.allure.severity_level.CRITICAL)
-def test_add_enrollment_in_new_person(app, person, dictionary_with_json_files, screenshot):
+def test_add_enrollment_in_new_person(logout_login, person, dictionary_with_json_files, screenshot):
     with pytest.allure.step('Test of add enrollment in new person.'):
         add_person = AddPersonPattern()
-        app.ensure_logout()
-        app.login(User.Admin(), True)
-        app.internal_page.is_element_present(app.internal_page.SPINNER_OFF)
-        assert app.persons_page.is_this_page
+        app = logout_login
+        assert app.persons_page.is_this_page()
         add_person.search_person_by_surname(app, person.surname_ukr)
-        app.internal_page.is_element_present(app.internal_page.SPINNER_OFF)
+        app.internal_page.wait_until_page_generate()
         app.persons_page.edit_first_person_in_page.click()
         app.person_base_page.enrollments_tab.click()
         enrollment = fill_enrollment_in_person(app, dictionary_with_json_files["fill_enrollment_main"])
         expected_number = enrollment.number_statements
-        app.internal_page.is_element_present(app.internal_page.SPINNER_OFF)
+        app.internal_page.wait_until_page_generate()
         list_with_actual_numbers = app.person_enrollment.enrollment_doc_number
         assert_expression = is_doc_number_in_list_of_numbers(expected_number, list_with_actual_numbers)
         screenshot.assert_and_get_screenshot(app, assert_expression)

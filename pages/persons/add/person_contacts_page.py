@@ -19,7 +19,6 @@ class AddPersonContactsPage(AddPersonPage):
     SITE_INPUT = (By.ID, "site")
     ICQ_INPUT = (By.ID, "ICQ")
 
-    @property
     def is_this_page(self):
         return self.is_element_visible(self.SKYPE_INPUT)
 
@@ -117,7 +116,7 @@ class AddPersonContactsPage(AddPersonPage):
         :param person: persons model in Person format
         :return:
         """
-        self.is_this_page
+        self.is_this_page()
         self.set_first_mobile_phone(person.mobile_phone1)
         self.set_second_mobile_phone(person.mobile_phone2)
         self.set_home_phone(person.home_phone)

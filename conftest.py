@@ -10,13 +10,13 @@ from pyvirtualdisplay import Display
 from model.application import Application
 from utils.data_provider_from_json import DataProviderJSON
 from utils.configuration import Configuration
+import datetime
 
 
 def pytest_addoption(parser):
     parser.addoption("--browser", action="store", default="firefox")
-    # parser.addoption("--base_url", action="store", default="http://localhost:9000/")
+    parser.addoption("--base_url", action="store", default="http://192.168.96.134:9000/")
     # parser.addoption("--base_url", action="store", default="http://194.44.198.221/")
-    parser.addoption("--base_url", action="store", default="http://192.168.96.134:9000")
     parser.addoption("--jenkins_display", action="store_true")
 
 
@@ -50,6 +50,7 @@ def app(request, browser_type, base_url, jenkins_display):
     you can write in the console something like >>> py.test --browser "chrome"
     :return: new Application with chosen or default params
     """
+    start_time = datetime.datetime.now()
     if jenkins_display:
         display = Display(visible=0, size=(1366, 768))
         display.start()
@@ -59,6 +60,8 @@ def app(request, browser_type, base_url, jenkins_display):
         driver = webdriver.Chrome()
     elif browser_type == "ie":
         driver = webdriver.Ie()
+    elif browser_type == "phantom":
+        driver = webdriver.PhantomJS('/phantomjs/bin/./phantomjs')
     request.addfinalizer(driver.quit)
     return Application(driver, base_url)
 
@@ -67,7 +70,7 @@ def app(request, browser_type, base_url, jenkins_display):
 def logout_login(app):
     app.ensure_logout()
     app.login(User.Admin(), True)
-    app.internal_page.is_element_present(app.internal_page.SPINNER_OFF)
+    app.internal_page.wait_until_page_generate()
     yield app
 
 
@@ -77,6 +80,15 @@ def pre_login(request, app):
     app.login(User.Admin(), True)
     request.cls.app = app
 
+
 @pytest.fixture(scope="session")
 def screenshot():
     return Configuration()
+
+
+@pytest.fixture(scope="function")
+def stand_for_dictionary_tests(request, app):
+    app.login(User.Admin(), True)
+    app.dictionaries_page.dictionaries_page_link_click()
+    request.addfinalizer(app.logout)
+    request.cls.app = app

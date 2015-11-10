@@ -26,7 +26,6 @@ class AddPersonMainPage(AddPersonPage):
     PERSON_FIRST_NAME_ENG_INPUT_INCORRECT = \
         (By.XPATH, "//input[@id='firstNameEng'][contains (@class, 'ng-invalid-pattern')]")
 
-    @property
     def is_this_page(self):
         return self.is_element_visible(self.PERSON_TYPE_SELECT)
 
@@ -65,13 +64,13 @@ class AddPersonMainPage(AddPersonPage):
     def person_first_name_eng_input_incorrect(self):
         return self.is_element_visible(self.PERSON_FIRST_NAME_ENG_INPUT_INCORRECT)
 
-    def person_type_select(self):
+    def person_type_select_click(self):
         """
         Method performs clicking on person type select field
         :return:
         """
         self.is_element_present(self.PERSON_TYPE_SELECT)
-        return self.driver.find_element(*self.PERSON_TYPE_SELECT)
+        self.driver.find_element(*self.PERSON_TYPE_SELECT).click()
 
     def person_type_text(self):
         """
@@ -138,8 +137,8 @@ class AddPersonMainPage(AddPersonPage):
         :param person: persons model in Person format
         :return:
         """
-        self.is_this_page
-        self.person_type_select().click()
+        self.is_this_page()
+        self.person_type_select_click()
         self.choose_person_type(person.person_type)
         self.set_ukr_surname(person.surname_ukr)
         self.set_first_ukr_name(person.first_name_ukr)

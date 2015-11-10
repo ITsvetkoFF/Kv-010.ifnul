@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 __author__ = 'Deorditsa'
 
+from utils.web_elem_utils import checkbox_set_state
 from utils.common_methods import CommonMethods
 from person_base_page import AddPersonPage
 from selenium.webdriver.common.by import By
 
-class AddPersonExtraPage(AddPersonPage):
 
+class AddPersonExtraPage(AddPersonPage):
     ACTIVATE_BIRTH_DAY_CHOOSER = (By.XPATH, "//input[@ng-model='person.begDate']")
     SEX_TYPES_SELECT = (By.XPATH, "//div[@id='genderTypeId']//div//span")
     ALL_SEX_TYPES_SELECT = (By.XPATH, "//div[@id='genderTypeId']//a//div")
@@ -24,7 +24,6 @@ class AddPersonExtraPage(AddPersonPage):
     IS_A_MILITARY_CHECKER = (By.XPATH, "//input[@ng-checked='person.isMilitary']")
     NEED_HOSTEL_CHECKER = (By.XPATH, "//input[@ng-checked='person.isHostel']")
 
-    @property
     def is_this_page(self):
         return self.is_element_visible(self.ACTIVATE_BIRTH_DAY_CHOOSER)
 
@@ -45,6 +44,19 @@ class AddPersonExtraPage(AddPersonPage):
 
     def private_case_number_input(self):
         return self.is_element_visible(self.PRIVATE_CASE_NUMBER_INPUT)
+
+    # web element
+    @property
+    def checkbox_is_outlander(self):
+        return self.driver.find_element(*self.IS_A_OUTLANDER_CHECKER)
+
+    @property
+    def checkbox_is_hostel_need(self):
+        return self.driver.find_element(*self.NEED_HOSTEL_CHECKER)
+
+    @property
+    def checkbox_is_military(self):
+        return self.driver.find_element(*self.IS_A_MILITARY_CHECKER)
 
     @property
     def private_case_number_input_incorrect(self):
@@ -76,7 +88,8 @@ class AddPersonExtraPage(AddPersonPage):
         """
         self.is_element_present(self.MARITAL_STATUS_SELECT)
         self.driver.find_element(*self.MARITAL_STATUS_SELECT).click()
-        self.find_element_in_select(self.driver.find_elements(*self.ALL_MARITAL_STATUSES_SELECT), person_martial_status).click()
+        self.find_element_in_select(self.driver.find_elements(*self.ALL_MARITAL_STATUSES_SELECT),
+                                    person_martial_status).click()
 
     def choose_person_nationality(self, person_nationality):
         """
@@ -86,7 +99,8 @@ class AddPersonExtraPage(AddPersonPage):
         """
         self.is_element_present(self.NATIONALITY_SELECT)
         self.driver.find_element(*self.NATIONALITY_SELECT).click()
-        self.find_element_in_select(self.driver.find_elements(*self.ALL_NATIONALITIES_SELECT), person_nationality).click()
+        self.find_element_in_select(self.driver.find_elements(*self.ALL_NATIONALITIES_SELECT),
+                                    person_nationality).click()
 
     def set_private_case_chars(self, chars):
         """
@@ -104,14 +118,16 @@ class AddPersonExtraPage(AddPersonPage):
         """
         self.emulation_of_input(self.PRIVATE_CASE_NUMBER_INPUT, numbers)
 
+
+
+    # web element function
     def check_resident_status(self, is_outlander):
         """
         Method checks or unchecks "Is person outlander?" checkbox
         :param is_outlander: Boolean format. Must be True, if person is outlander.
         :return:
         """
-        common_methods = CommonMethods(self.driver)
-        common_methods.checkbox_manager(self.driver.find_element(*self.IS_A_OUTLANDER_CHECKER), is_outlander)
+        checkbox_set_state(self.checkbox_is_outlander, is_outlander)
 
     def check_needed_hostel_status(self, is_need):
         """
@@ -119,8 +135,7 @@ class AddPersonExtraPage(AddPersonPage):
         :param is_need: Boolean format. Must be True, if person need a hostel.
         :return:
         """
-        common_methods = CommonMethods(self.driver)
-        common_methods.checkbox_manager(self.driver.find_element(*self.NEED_HOSTEL_CHECKER), is_need)
+        checkbox_set_state(self.checkbox_is_hostel_need, is_need)
 
     def check_reservist_status(self, is_reservist):
         """
@@ -128,16 +143,16 @@ class AddPersonExtraPage(AddPersonPage):
         :param is_reservist: Boolean format. Must be True, if person is reservist.
         :return:
         """
-        common_methods = CommonMethods(self.driver)
-        common_methods.checkbox_manager(self.driver.find_element(*self.IS_A_MILITARY_CHECKER), is_reservist)
+        checkbox_set_state(self.checkbox_is_military, is_reservist)
 
+    # general functions
     def fill_in_extra_person_page(self, person):
         """
         Method fill in data on the extra persons page
         :param person: persons model in Person format
         :return:
         """
-        self.is_this_page
+        self.is_this_page()
         self.set_persons_birth_day(person.birth_day)
         self.choose_person_sex_type(person.sex)
         self.choose_person_martial_status(person.marital_status)

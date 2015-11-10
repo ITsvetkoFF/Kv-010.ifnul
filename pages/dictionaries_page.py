@@ -3,12 +3,14 @@ from selenium.webdriver.support.expected_conditions import visibility_of_element
 
 from decorators.error_handling_dec import ErrorHandlerPO
 from pages.internal_page import InternalPage
+from utils.web_elem_utils import dropdown_select_by_text, dropdown_select_by_index
 
 __author__ = 'Denys'
 
 
 class DictionariesPage(InternalPage):
-    DICTIONARIES_PAGE = (By.XPATH, "//i[@class ='fa fa-book text-danger']")
+    # locators
+    DICTIONARIES_PAGE_ID = (By.XPATH, "//i[@class ='fa fa-book text-danger']")
     DICTIONARIES_DROPDOWN = (By.XPATH, "//select[@ng-click ='pickDictionary()']")
     DICTIONARIES_PAGE_TABLE = (By.XPATH, "//table")
     BUTTON_DISPLAY_BY_10 = (By.XPATH, "//div[contains(@class,'ng-table-counts')]/button[1]")
@@ -18,58 +20,70 @@ class DictionariesPage(InternalPage):
     PAGE_BUTTON_NEXT = (By.XPATH, "//ul[@class='pagination ng-table-pagination']/li/a[@ng-switch-when='next']")
     PAGE_BUTTON_PREV = (By.XPATH, "//ul[@class='pagination ng-table-pagination']/li/a[@ng-switch-when='prev']")
 
-    TABLE_HEAD_CELL = "//table/thead/tr/td[%d]"
-    TABLE_HEAD_LAST_CELL = "//table/thead/tr/td[last()]"
+    # TABLE_HEAD_CELL = "//table/thead/tr/td[%d]"
+    # TABLE_HEAD_LAST_CELL = "//table/thead/tr/td[last()]"
+    #
+    # TABLE_BODY_CELL = ("//table/tbody/tr[%d]/td[%d]")
+    # TABLE_BODY_LAST_CELL_IN_I_ROW = ("//table/tbody/tr[%d]/td[last()]")
+    # TABLE_BODY_LAST_CELL_IN_LAST_ROW = ("//table/tbody/tr[last()]/td[last()]")
 
-    TABLE_BODY_CELL = ("//table/tbody/tr[%d]/td[%d]")
-    TABLE_BODY_LAST_CELL_IN_I_ROW = ("//table/tbody/tr[%d]/td[last()]")
-    TABLE_BODY_LAST_CELL_IN_LAST_ROW = ("//table/tbody/tr[last()]/td[last()]")
-
-    @ErrorHandlerPO("current page is not Dictionaries page")
-    def is_current_page(self):
-        return self.wait.until(visibility_of_element_located(self.DICTIONARIES_PAGE))
-
-    @property
     def is_this_page(self):
-        return self.is_element_visible(self.DICTIONARIES_PAGE)
+        return self.driver.find_element(*self.DICTIONARIES_PAGE_ID)
 
     @property
-    def try_get_table(self):
-        return self.is_element_visible(self.DICTIONARIES_PAGE_TABLE)
+    def table(self):
+        return self.driver.find_element(*self.DICTIONARIES_PAGE_TABLE)
 
     @property
-    def try_get_dictionaries_select_elem(self):
-        return self.is_element_visible(self.DICTIONARIES_DROPDOWN)
+    def dictionaries_select_elem(self):
+        return self.driver.find_element(*self.DICTIONARIES_DROPDOWN)
 
-    def try_get_button_10(self):
+    @property
+    def button_10(self):
         return self.driver.find_element(*self.BUTTON_DISPLAY_BY_10)
 
-    def try_get_button_25(self):
+    @property
+    def button_25(self):
         return self.driver.find_element(*self.BUTTON_DISPLAY_BY_25)
 
-    def try_get_button_50(self):
+    @property
+    def button_50(self):
         return self.driver.find_element(*self.BUTTON_DISPLAY_BY_50)
 
-    def try_get_button_100(self):
+    @property
+    def button_100(self):
         return self.driver.find_element(*self.BUTTON_DISPLAY_BY_100)
 
-    def try_get_page_button_next(self):
+    @property
+    def button_next(self):
         return self.is_element_visible(self.PAGE_BUTTON_NEXT)
 
-    def try_get_page_button_prev(self):
+    @property
+    def button_prev(self):
         return self.is_element_visible(self.PAGE_BUTTON_PREV)
 
-    def try_get_table_head_cell_i(self, i):
-        return self.is_element_visible((By.XPATH, self.TABLE_HEAD_CELL % i))
+    # web elem function
+    def select_dictionary_by_name(self, text):
+        dropdown_select_by_text(self.dictionaries_select_elem, text)
+        self.wait_until_page_generate()
 
-    def try_get_table_head_cell_last(self):
-        return self.is_element_visible((By.XPATH, self.TABLE_HEAD_LAST_CELL))
+    def select_dictionary_by_option_value(self, index):
+        dropdown_select_by_index(self.dictionaries_select_elem, index)
+        self.wait_until_page_generate()
 
-    def try_get_table_body_cell_i_j(self, i, j):
-        return self.is_element_visible((By.XPATH, self.TABLE_BODY_CELL % (i, j)))
 
-    def try_get_table_body_last_cell_in_i_row(self, i):
-        return self.is_element_visible((By.XPATH, self.TABLE_BODY_LAST_CELL_IN_I_ROW % i))
 
-    def try_get_table_body_last_cell_in_last_row(self):
-        return self.is_element_visible((By.XPATH, self.TABLE_BODY_LAST_CELL_IN_LAST_ROW))
+        # def try_get_table_head_cell_i(self, i):
+        #     return self.is_element_visible((By.XPATH, self.TABLE_HEAD_CELL % i))
+        #
+        # def try_get_table_head_cell_last(self):
+        #     return self.is_element_visible((By.XPATH, self.TABLE_HEAD_LAST_CELL))
+        #
+        # def try_get_table_body_cell_i_j(self, i, j):
+        #     return self.is_element_visible((By.XPATH, self.TABLE_BODY_CELL % (i, j)))
+        #
+        # def try_get_table_body_last_cell_in_i_row(self, i):
+        #     return self.is_element_visible((By.XPATH, self.TABLE_BODY_LAST_CELL_IN_I_ROW % i))
+        #
+        # def try_get_table_body_last_cell_in_last_row(self):
+        #     return self.is_element_visible((By.XPATH, self.TABLE_BODY_LAST_CELL_IN_LAST_ROW))
