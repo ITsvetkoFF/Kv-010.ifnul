@@ -65,12 +65,22 @@ class EnrollmentsMainPage(InternalPage):
     CANCEL_BUTTON = (By.XPATH, "//div[@class='modal-footer ng-scope']//button[@ng-click='cancel()']")
     IS_ENROLLMENT_IN_PERSON = (By.XPATH, ".//*[@class='pointer']/tr/td[1]")
 
+    # overriding functions
+    def is_this_page(self):
+        return self.is_element_visible(self.SEARCH_PERSON_BY_SELECT)
+
+    # web elements
+
+    # web element's functions
+
+    # general functions
+
+    # old
     @property
     def cancel_click(self):
         self.driver.find_element(*self.CANCEL_BUTTON).click()
 
-    def is_this_page(self):
-        return self.is_element_visible(self.SEARCH_PERSON_BY_SELECT)
+
     
     @property
     def is_enrollment_in_person(self):

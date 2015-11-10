@@ -3,12 +3,12 @@ from selenium.webdriver.support.select import Select
 __author__ = 'dmakstc'
 
 
-def input_text_in_field(text_field_web_elem, text, by_symbols):
+def input_text_in_field(text_field_web_elem, text, by_symbols=True):
     """
     Method emulates one by one symbols input into input form or block text input
     :param text_field_web_elem: textfield to input:
     :param text: message to input:
-    :param by_symbols: boolean value(if true input by symbols else insert text block)
+    :param by_symbols: boolean value(if true input by symbols else insert text block), default = by symbol input
     :return:
     """
     text_field_web_elem.clear()
@@ -42,6 +42,7 @@ def dropdown_select_by_text(dropdown_web_elem, text):
     """
     case_value = Select(dropdown_web_elem)
     case_value.select_by_visible_text(text)
+
 
 def dropdown_select_by_index(dropdown_web_elem, index):
     """

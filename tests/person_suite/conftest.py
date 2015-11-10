@@ -12,6 +12,13 @@ def person(dictionary_with_json_files):
 
 
 @pytest.fixture(scope="session")
+def person_for_edit(dictionary_with_json_files):
+    create_person = PersonCreator(dictionary_with_json_files["person_for_edit"])
+    person = create_person.create_person_from_json()
+    return person
+
+
+@pytest.fixture(scope="session")
 def invalid_person(dictionary_with_json_files):
     create_person = PersonCreator(dictionary_with_json_files["person_incorrect"])
     person = create_person.create_person_from_json()

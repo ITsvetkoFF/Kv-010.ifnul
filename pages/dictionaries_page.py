@@ -27,9 +27,11 @@ class DictionariesPage(InternalPage):
     # TABLE_BODY_LAST_CELL_IN_I_ROW = ("//table/tbody/tr[%d]/td[last()]")
     # TABLE_BODY_LAST_CELL_IN_LAST_ROW = ("//table/tbody/tr[last()]/td[last()]")
 
+    # overriding functions
     def is_this_page(self):
         return self.driver.find_element(*self.DICTIONARIES_PAGE_ID)
 
+    # web elements
     @property
     def table(self):
         return self.driver.find_element(*self.DICTIONARIES_PAGE_TABLE)
@@ -62,7 +64,7 @@ class DictionariesPage(InternalPage):
     def button_prev(self):
         return self.is_element_visible(self.PAGE_BUTTON_PREV)
 
-    # web elem function
+    # web element's functions
     def select_dictionary_by_name(self, text):
         dropdown_select_by_text(self.dictionaries_select_elem, text)
         self.wait_until_page_generate()
@@ -71,6 +73,7 @@ class DictionariesPage(InternalPage):
         dropdown_select_by_index(self.dictionaries_select_elem, index)
         self.wait_until_page_generate()
 
+    # general functions
 
 
         # def try_get_table_head_cell_i(self, i):
