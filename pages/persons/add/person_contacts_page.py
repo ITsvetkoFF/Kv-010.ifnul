@@ -1,11 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from utils.web_elem_utils import input_text_in_field
-
-__author__ = 'Deorditsa'
-
 from person_base_page import AddPersonPage
 from selenium.webdriver.common.by import By
+__author__ = 'Deorditsa'
 
 
 class AddPersonContactsPage(AddPersonPage):
@@ -59,7 +57,7 @@ class AddPersonContactsPage(AddPersonPage):
     def set_first_mobile_phone(self, phone):
         """
         Method sets the first mobile phone
-        :param phone: String parametr. Pattern is "(xxx) xxx-xx-xx"
+        :param phone: String parameter. Pattern is "(xxx) xxx-xx-xx"
         :return:
         """
         input_text_in_field(self.first_mobile_phone_field, phone)
@@ -67,7 +65,7 @@ class AddPersonContactsPage(AddPersonPage):
     def set_second_mobile_phone(self, phone):
         """
         Method sets the first mobile phone
-        :param phone: String parametr. Pattern is "(xxx) xxx-xx-xx"
+        :param phone: String parameter. Pattern is "(xxx) xxx-xx-xx"
         :return:
         """
         input_text_in_field(self.second_mobile_phone_field, phone)
@@ -75,7 +73,7 @@ class AddPersonContactsPage(AddPersonPage):
     def set_home_phone(self, phone):
         """
         Method sets the first mobile phone
-        :param phone: String parametr. Pattern is "(xxx) xxx-xx-xx"
+        :param phone: String parameter. Pattern is "(xxx) xxx-xx-xx"
         :return:
         """
         input_text_in_field(self.home_phone_field, phone)
@@ -83,7 +81,7 @@ class AddPersonContactsPage(AddPersonPage):
     def set_work_phone(self, phone):
         """
         Method sets the first mobile phone
-        :param phone: String parametr. Pattern is "(xxx) xxx-xx-xx"
+        :param phone: String parameter. Pattern is "(xxx) xxx-xx-xx"
         :return:
         """
         input_text_in_field(self.work_phone_field, phone)
@@ -91,7 +89,7 @@ class AddPersonContactsPage(AddPersonPage):
     def set_email(self, email):
         """
         Method sets the e-mail address.
-        :param email: String parametr.
+        :param email: String parameter.
         :return:
         """
         input_text_in_field(self.email_field, email)
@@ -99,7 +97,7 @@ class AddPersonContactsPage(AddPersonPage):
     def set_skype(self, skype):
         """
         Method sets the persons Skype ID
-        :param skype: String parametr.
+        :param skype: String parameter.
         :return:
         """
         input_text_in_field(self.skype_field, skype)
@@ -107,7 +105,7 @@ class AddPersonContactsPage(AddPersonPage):
     def set_site(self, site):
         """
         Method sets the persons web-site
-        :param site: String parametr.
+        :param site: String parameter.
         :return:
         """
         input_text_in_field(self.site_field, site)
@@ -115,7 +113,7 @@ class AddPersonContactsPage(AddPersonPage):
     def set_icq(self, icq):
         """
         Method sets the persons ICQ ID
-        :param icq: Integer parametr.
+        :param icq: Integer parameter.
         :return:
         """
         input_text_in_field(self.icq_field, icq)
