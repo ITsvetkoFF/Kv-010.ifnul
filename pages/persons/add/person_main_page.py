@@ -1,3 +1,5 @@
+from utils.common_methods import CommonMethods
+
 __author__ = 'Evgen'
 
 from person_base_page import AddPersonPage
@@ -6,7 +8,8 @@ from selenium.webdriver.common.by import By
 
 class AddPersonMainPage(AddPersonPage):
 
-    PERSON_TYPE_SELECT = (By.XPATH, "//div[@id='personTypeId']//span")
+    PERSON_TYPE_SELECT = (By.XPATH, "//div[@id='personTypeId']//i[contains(@class, 'caret pull-right')]")
+    PERSON_TYPE_TEXT = (By.XPATH, ".//*[@id='personTypeId']//span[@class='ng-binding ng-scope']")
     ALL_PERSON_TYPES_SELECT = (By.XPATH, "//a[@class='ui-select-choices-row-inner']//div[@class='ng-binding ng-scope']")
     PERSON_SURNAME_UKR_INPUT = (By.XPATH, "//input[@id='surname']")
     PERSON_SURNAME_ENG_INPUT = (By.XPATH, "//input[@id='surnameEng']")
@@ -68,7 +71,15 @@ class AddPersonMainPage(AddPersonPage):
         :return:
         """
         self.is_element_present(self.PERSON_TYPE_SELECT)
-        self.driver.find_element(*self.PERSON_TYPE_SELECT)
+        return self.driver.find_element(*self.PERSON_TYPE_SELECT)
+
+    def person_type_text(self):
+        """
+        Method get text from person type select field
+        :return:
+        """
+        self.is_element_present(self.PERSON_TYPE_TEXT)
+        return self.driver.find_element(*self.PERSON_TYPE_TEXT)
 
     def choose_person_type(self, person_type):
         """
@@ -143,10 +154,11 @@ class AddPersonMainPage(AddPersonPage):
         :return: person_new
         """
         self.is_this_page
-        person_new.person_type = self.person_type_select().text
-        person_new.surname_ukr = self.person_surname_ukr_input().text
-        person_new.first_name_ukr = self.person_first_name_ukr_input().text
-        person_new.second_name_ukr = self.person_farther_name_ukr_input().text
-        person_new.surname_eng = self.person_surname_eng_input().text
-        person_new.first_name_eng = self.person_first_name_eng_input().text
+        common_methods = CommonMethods(self.driver)
+        person_new.person_type = self.person_type_text().text
+        person_new.surname_ukr = common_methods.get_value_from_text_field(self.driver.find_element(*self.PERSON_SURNAME_UKR_INPUT))
+        person_new.first_name_ukr = common_methods.get_value_from_text_field(self.driver.find_element(*self.PERSON_FIRST_NAME_UKR_INPUT))
+        person_new.second_name_ukr = common_methods.get_value_from_text_field(self.driver.find_element(*self.PERSON_FARTHER_NAME_UKR_INPUT))
+        person_new.surname_eng = common_methods.get_value_from_text_field(self.driver.find_element(*self.PERSON_SURNAME_ENG_INPUT))
+        person_new.first_name_eng = common_methods.get_value_from_text_field(self.driver.find_element(*self.PERSON_FIRST_NAME_ENG_INPUT))
         return person_new

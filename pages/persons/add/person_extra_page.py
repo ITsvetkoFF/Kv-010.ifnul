@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from utils.common_methods import CommonMethods
 
 __author__ = 'Deorditsa'
 
+from utils.common_methods import CommonMethods
 from person_base_page import AddPersonPage
 from selenium.webdriver.common.by import By
 
@@ -110,7 +110,8 @@ class AddPersonExtraPage(AddPersonPage):
         :param is_outlander: Boolean format. Must be True, if person is outlander.
         :return:
         """
-        self.checkbox_manager(self.driver.find_element(*self.IS_A_OUTLANDER_CHECKER), is_outlander)
+        common_methods = CommonMethods(self.driver)
+        common_methods.checkbox_manager(self.driver.find_element(*self.IS_A_OUTLANDER_CHECKER), is_outlander)
 
     def check_needed_hostel_status(self, is_need):
         """
@@ -118,7 +119,8 @@ class AddPersonExtraPage(AddPersonPage):
         :param is_need: Boolean format. Must be True, if person need a hostel.
         :return:
         """
-        self.checkbox_manager(self.driver.find_element(*self.NEED_HOSTEL_CHECKER), is_need)
+        common_methods = CommonMethods(self.driver)
+        common_methods.checkbox_manager(self.driver.find_element(*self.NEED_HOSTEL_CHECKER), is_need)
 
     def check_reservist_status(self, is_reservist):
         """
@@ -126,7 +128,8 @@ class AddPersonExtraPage(AddPersonPage):
         :param is_reservist: Boolean format. Must be True, if person is reservist.
         :return:
         """
-        self.checkbox_manager(self.driver.find_element(*self.IS_A_MILITARY_CHECKER), is_reservist)
+        common_methods = CommonMethods(self.driver)
+        common_methods.checkbox_manager(self.driver.find_element(*self.IS_A_MILITARY_CHECKER), is_reservist)
 
     def fill_in_extra_person_page(self, person):
         """
@@ -151,14 +154,17 @@ class AddPersonExtraPage(AddPersonPage):
         :param person_new: persons model in Person format
         :return:
         """
+        common_methods = CommonMethods(self.driver)
         self.is_this_page
-        common_methods = CommonMethods()
-        person_new.birth_day = self.active_birth_day_chooser().text
+        person_new.birth_day = common_methods.get_value_from_text_field(
+            self.driver.find_element(*self.ACTIVATE_BIRTH_DAY_CHOOSER))
         person_new.sex = self.sex_types_select().text
         person_new.marital_status = self.marital_status_select().text
         person_new.nationality = self.nationality_select().text
-        person_new.private_case_chars = self.private_case_chars_input().text
-        person_new.private_case_number = self.private_case_number_input().text
+        person_new.private_case_chars = common_methods.get_value_from_text_field(
+            self.driver.find_element(*self.PRIVATE_CASE_CHARS_INPUT)).encode('cp1251')
+        person_new.private_case_number = common_methods.get_value_from_text_field(
+            self.driver.find_element(*self.PRIVATE_CASE_NUMBER_INPUT))
         person_new.is_outlander = common_methods.is_checkbox_checked(
             self.driver.find_element(*self.IS_A_OUTLANDER_CHECKER))
         person_new.reservist = common_methods.is_checkbox_checked(

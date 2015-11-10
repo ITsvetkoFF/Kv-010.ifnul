@@ -4,7 +4,7 @@ from utils.add_person_pattern import AddPersonPattern
 __author__ = 'stako'
 
 
-# @pytest.allure.severity(pytest.allure.severity_level.NORMAL)
+@pytest.allure.severity(pytest.allure.severity_level.NORMAL)
 def test_delete_person(app, person, screenshot):
     with pytest.allure.step('Test delete the created person.'):
         add_person_pattern = AddPersonPattern()

@@ -69,18 +69,6 @@ class AddPersonPage(InternalPage):
             if el.text == value:
                 return el
 
-    def checkbox_manager(self, checkbox_element, needed_value):
-        """
-        Method checks or unchecks checkbox. It depends on current checkbox element status and needed value.
-        :param checkbox_element: WebDriver (checkbox) element
-        :param needed_value: Boolean parameter. If need that element was checked, the needed_value must be True
-        :return:
-        """
-        if not checkbox_element.get_attribute("checked") and needed_value:
-            checkbox_element.click()
-        elif checkbox_element.get_attribute("checked") and not needed_value:
-            checkbox_element.click()
-
     def save_new_person(self):
         """
         Method saves new person

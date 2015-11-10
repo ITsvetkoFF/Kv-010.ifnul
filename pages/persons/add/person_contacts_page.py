@@ -5,7 +5,7 @@ __author__ = 'Deorditsa'
 
 from person_base_page import AddPersonPage
 from selenium.webdriver.common.by import By
-from selenium.webdriver.remote.webelement import WebElement
+from utils.common_methods import CommonMethods
 
 
 class AddPersonContactsPage(AddPersonPage):
@@ -134,12 +134,13 @@ class AddPersonContactsPage(AddPersonPage):
         :return:
         """
         self.is_this_page
-        person_new.mobile_phone1 = self.mobile_phone1_input().test
-        person_new.mobile_phone2 = self.mobile_phone2_input().test
-        person_new.home_phone = self.home_phone_input().test
-        person_new.work_phone = self.work_phone_input().test
-        person_new.email = self.email_input().test
-        person_new.skype = self.skype_input().test
-        person_new.web_site = self.site_input().test
-        person_new.icq = self.icq_input().test
+        common_methods = CommonMethods(self.driver)
+        person_new.mobile_phone1 = common_methods.get_value_from_text_field(self.driver.find_element(*self.MOBILE_PHONE1_INPUT))
+        person_new.mobile_phone2 = common_methods.get_value_from_text_field(self.driver.find_element(*self.MOBILE_PHONE2_INPUT))
+        person_new.home_phone = common_methods.get_value_from_text_field(self.driver.find_element(*self.HOME_PHONE_INPUT))
+        person_new.work_phone = common_methods.get_value_from_text_field(self.driver.find_element(*self.WORK_PHONE_INPUT))
+        person_new.email = common_methods.get_value_from_text_field(self.driver.find_element(*self.EMAIL_INPUT))
+        person_new.skype = common_methods.get_value_from_text_field(self.driver.find_element(*self.SKYPE_INPUT))
+        person_new.web_site = common_methods.get_value_from_text_field(self.driver.find_element(*self.SITE_INPUT))
+        person_new.icq = common_methods.get_value_from_text_field(self.driver.find_element(*self.ICQ_INPUT))
         return person_new

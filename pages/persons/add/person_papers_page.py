@@ -1,16 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import execjs
 
 __author__ = 'Deorditsa'
 
 from person_base_page import AddPersonPage
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
+from utils.common_methods import CommonMethods
 from selenium.webdriver.support import expected_conditions as EC
 
+
 class AddPersonPapersPage(AddPersonPage):
-    __row_of_document = 1
 
     ADD_DOCUMENT_BUTTON = (By.XPATH, "//div[@class='row']//div[@class='col-xs-2']//button")
     SAVE_DOCUMENT_BUTTON = (By.XPATH, "//button[@ng-click='addToTable()']")
@@ -26,17 +26,17 @@ class AddPersonPapersPage(AddPersonPage):
     TABLE_DOCUMENTS_NUM_ROW = (By.XPATH, "//div[@class='col-xs-12']/table/tbody/tr/td[3]")
     DELETE_FIRST_DOCUMENT_BUTTON = (By.XPATH, "//div[@class='col-xs-12']/table/tbody/tr[1]/td[13]/button[2]")
     DELETE_DOCUMENT_BUTTONS = (By.XPATH, "//div[@class='col-xs-12']/table/tbody/tr/td[13]/button[2]")
-    EDIT_DOCUMENT_BUTTON = (By.XPATH, "//div[@class='col-xs-12']/table/tbody/tr[" + __row_of_document + "]/td[13]/button[1]")
 
-    EDIT_DOCUMENT_FIELDS = (By.XPATH, ".//*[@id='person']//*[@ng-show='!personView']//*[@class='row']//div[@class='col-xs-4']")
+    EDIT_DOCUMENT_FIELDS = (
+        By.XPATH, ".//*[@id='person']//*[@ng-show='!personView']//*[@class='row']//div[@class='col-xs-4']")
 
     @property
     def is_this_page(self):
         return self.is_element_visible(self.ADD_DOCUMENT_BUTTON)
 
     @property
-    def edit_document_button(self):
-        return self.is_element_visible(self.EDIT_DOCUMENT_BUTTON)
+    def number_of_fields(self):
+        return len(self.driver.find_elements(*self.EDIT_DOCUMENT_FIELDS))
 
     @property
     def press_add_new_document_button(self):
@@ -45,8 +45,13 @@ class AddPersonPapersPage(AddPersonPage):
 
     @property
     def press_save_new_document_button(self):
+        self.is_element_visible(self.SAVE_DOCUMENT_BUTTON)
         self.driver.find_element(*self.SAVE_DOCUMENT_BUTTON).click()
         self.is_element_present(self.SPINNER_OFF)
+
+    def list_with_all_visible_element_in_document(self):
+        return self.driver.find_elements(
+            *(By.XPATH, ".//*[@id='person']//*[@ng-show='!personView']//*[@class='row']//div[@class='col-xs-4']/*[2]"))
 
     def document_type_select(self, document_type):
         """
@@ -104,7 +109,8 @@ class AddPersonPapersPage(AddPersonPage):
         :param is_original: Boolean format. Must be True, if document was compared with original.
         :return:
         """
-        self.checkbox_manager(self.driver.find_element(*self.DOCUMENT_IS_ORIGINAL), is_original)
+        common_methods = CommonMethods(self.driver)
+        common_methods.checkbox_manager(self.driver.find_element(*self.DOCUMENT_IS_ORIGINAL), is_original)
 
     def check_is_foreign_document(self, is_foreign):
         """
@@ -112,7 +118,8 @@ class AddPersonPapersPage(AddPersonPage):
         :param is_foreign: Boolean format. Must be True, if document is foreign.
         :return:
         """
-        self.checkbox_manager(self.driver.find_element(*self.DOCUMENT_IS_FOREIGN), is_foreign)
+        common_methods = CommonMethods(self.driver)
+        common_methods.checkbox_manager(self.driver.find_element(*self.DOCUMENT_IS_FOREIGN), is_foreign)
 
     def try_get_searched_doc_num(self, given_num):
         if type(given_num) == int:
@@ -121,8 +128,8 @@ class AddPersonPapersPage(AddPersonPage):
         return self.driver.find_element(*self.TABLE_DOCUMENTS_NUM_ROW)
 
     def delete_first_document_in_page(self):
-        if self.is_element_visible(self.DELETE_FIRST_DOCUMENT):
-            self.driver.find_element(*self.DELETE_FIRST_DOCUMENT).click()
+        if self.is_element_visible(self.DELETE_FIRST_DOCUMENT_BUTTON):
+            self.driver.find_element(*self.DELETE_FIRST_DOCUMENT_BUTTON).click()
             self.is_element_present(self.SPINNER_OFF)
 
     def get_number_of_person_documents(self):
@@ -157,28 +164,35 @@ class AddPersonPapersPage(AddPersonPage):
         self.check_is_foreign_document(person.documents[0].document_is_foreign)
         self.press_save_new_document_button
 
-    def read_in_document_page(self, app, person_new):
+    def read_in_document_page(self, person_new):
         """
         Method read the data on the papers persons page
         :param person_new: persons model in Person format
-        :return:
+        :return: person_new
         """
+        common_methods = CommonMethods(self.driver)
         self.is_this_page
-        # for index in range(1, len(self.get_number_of_person_documents()) + 1):
-        #     self.__row_of_document = index
-        self.edit_document_button.click()
-        labels = app.driver.find_element_by_xpath(".//*[@id='person']/div/div[3]/form/div[2]/div[3]/div[2]/input")
-        inputs = app.driver.execute_script(
-            "console.log", labels)
+        self.wait_until_page_generate()
+        for index in range(1, self.get_number_of_person_documents() + 1):
+            self.click_on_edit_document(index)
+            document = []
+            self.wait_until_page_generate()
+            for web_element in self.list_with_all_visible_element_in_document():
+                if web_element.tag_name == "input":
+                    value_of_webelement_by_js = common_methods.get_value_from_text_field(web_element)
+                    document.append(value_of_webelement_by_js)
+                elif web_element.tag_name == "select":
+                    value_of_webelement_by_js = common_methods.get_value_from_select(web_element)
+                    document.append(value_of_webelement_by_js)
 
-        #
-        # self.document_type_select(person.documents[0].category)
-        # self.document_name_select(person.documents[0].document_name)
-        # self.set_document_series(person.documents[0].document_case_char)
-        # self.set_document_number(person.documents[0].document_case_number)
-        # self.set_day_of_issue(person.documents[0].day_of_issue)
-        # self.set_document_maker(person.documents[0].issued_by)
-        # self.check_is_original_document(person.documents[0].document_is_original)
-        # self.check_is_foreign_document(person.documents[0].document_is_foreign)
-        # self.press_save_new_document_button
-        # return person_new
+            document.append(
+                common_methods.is_checkbox_checked(self.driver.find_element(*self.DOCUMENT_IS_ORIGINAL)))
+            document.append(
+                common_methods.is_checkbox_checked(self.driver.find_element(*self.DOCUMENT_IS_FOREIGN)))
+            person_new.documents.append(document)
+
+        return person_new
+
+    def click_on_edit_document(self, count):
+        self.driver.find_element(By.XPATH, "//div[@class='col-xs-12']/table/tbody/tr[" + str(
+            count) + "]/td[13]/button[1]").click()
