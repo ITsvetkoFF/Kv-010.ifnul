@@ -4,6 +4,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.expected_conditions import visibility_of_element_located
 
+import time
+
 
 from decorators.error_handling_dec import ErrorHandlerPO
 from pages.internal_page import InternalPage
@@ -381,6 +383,7 @@ class PersonsPage(InternalPage):
         return self.is_element_visible(self.CHOOSE_PERSON_ID_SEARCH)
 
     def try_get_id_for_search(self):
+        time.sleep(5)
         return self.is_element_visible(self.PERSON_ID_FOR_SEARCH)
 
     def try_get_searched_person_id(self, given_person_id):

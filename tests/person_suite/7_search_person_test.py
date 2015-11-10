@@ -10,6 +10,7 @@ __author__ = 'Denys'
 @pytest.allure.severity(pytest.allure.severity_level.NORMAL)
 @pytest.mark.usefixtures('pre_login')
 class TestSearchPerson:
+
     def test_surname_search(self, person):
         try:
             with pytest.allure.step("Prepare Data"):
@@ -26,9 +27,10 @@ class TestSearchPerson:
         try:
             with pytest.allure.step("Prepare Data"):
                 person_page = self.app.persons_page
-                person_page.try_get_choose_person_id().click()
                 person_page.try_get_input_group().clear()
+                person_page.try_get_ok_button().click()
                 id = person_page.try_get_id_for_search().text
+                person_page.try_get_choose_person_id().click()
                 person_page.try_get_input_group().send_keys(id)
                 person_page.try_get_ok_button().click()
             with pytest.allure.step("Check Data"):
@@ -41,13 +43,14 @@ class TestSearchPerson:
     def test_num_os_search(self, person):
         try:
             with pytest.allure.step("Prepare Data"):
+                num_os = person.private_case_number
                 person_page = self.app.persons_page
                 person_page.try_get_choose_num_os().click()
                 person_page.try_get_input_group().clear()
-                person_page.try_get_input_group().send_keys(person.private_case_number)
+                person_page.try_get_input_group().send_keys(num_os)
                 person_page.try_get_ok_button().click()
             with pytest.allure.step("Check Data"):
-                assert person_page.try_get_searched_num_os(str(person.private_case_number)).text == str(person.private_case_number)
+                assert person_page.try_get_searched_num_os(str(num_os)).text == str(num_os)
         except Exception:
             allure.attach('screenshot', self.app.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
             raise
@@ -55,13 +58,14 @@ class TestSearchPerson:
     def test_series_os_search(self, person):
         try:
             with pytest.allure.step("Prepare Data"):
+                series_os = person.private_case_chars
                 person_page = self.app.persons_page
                 person_page.try_get_choose_series_os().click()
                 person_page.try_get_input_group().clear()
-                person_page.try_get_input_group().send_keys(person.private_case_chars)
+                person_page.try_get_input_group().send_keys(series_os)
                 person_page.try_get_ok_button().click()
             with pytest.allure.step("Check Data"):
-                assert person_page.try_get_searched_series_os(person.private_case_chars).text == person.private_case_chars
+                assert person_page.try_get_searched_series_os(series_os).text == series_os
         except Exception:
             allure.attach('screenshot', self.app.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
             raise
