@@ -54,7 +54,7 @@ class AddPersonContactsPage(AddPersonPage):
     def icq_field(self):
         return self.driver.find_element(*self.ICQ_INPUT)
     
-     def mobile_phone1_input(self):
+    def mobile_phone1_input(self):
         return self.is_element_visible(self.MOBILE_PHONE1_INPUT)
 
     def mobile_phone2_input(self):

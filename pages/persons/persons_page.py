@@ -165,7 +165,7 @@ class PersonsPage(InternalPage):
     def id_of_person_in_first_row(self):
         return self.driver.find_element(*self.ID_OF_PERSON_IN_FIRST_ROW)
 
-    @property
+
     def is_this_page(self):
         self.is_element_visible(self.ADD_PERSON_BUTTON)
         return self.is_element_visible(self.ADD_PERSON_BUTTON)
