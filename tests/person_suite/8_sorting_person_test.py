@@ -18,9 +18,9 @@ class TestSortingPerson():
 
             with pytest.allure.step("Prepare TestSortingPerson"):
                 pers_page = self.app.persons_page
-                pers_page.is_current_page()
-                # with pytest.allure.step("Check all checkbox"):
-                # pers_page.show_all_columns()
+                pers_page.is_this_page
+            with pytest.allure.step("Check all checkbox"):
+                pers_page.show_all_columns()
             with pytest.allure.step("start generate test array of value"):
                 pers_page.try_get_last_page_ref().click()
                 pers_page.wait_until_page_generate()

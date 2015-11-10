@@ -25,10 +25,6 @@ class InternalPage(Page):
     GO_TO_RIGHT_BUTTON_IN_DATE_PICKER = (By.CSS_SELECTOR, "button.btn.btn-default.btn-sm.pull-right")
     ACTIVATE_MONTH_OR_YEAR_CHANGE_BUTTON = (By.CSS_SELECTOR, "button[id*='-title']")
 
-    @ErrorHandlerPO("current page is not internal page")
-    def is_current_page(self):
-        return self.wait.until(visibility_of_element_located(self.INTERNAL_PAGE))
-
     @property
     def user_dropdown(self):
         self.is_element_visible(self.USER_DROPDOWN)

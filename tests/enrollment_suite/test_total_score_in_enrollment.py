@@ -7,16 +7,20 @@ data_provider_numbers = [1, 3, 5, 6, 11, 12, 13, 50, 60, 61, 75, 100, 101, 154, 
                          -3, -5, -6, -11, -12, -13, -50, -60, -61, -75, -100, -154, -200, -201, -1024]
 data_provider_character = ['A', 'B', 'C', 'D', 'E', 'Fx', 'F', 'l', 'o', 'q', 'dsf', 'a']
 
+
 @pytest.fixture(params=data_provider_numbers)
 def number(request):
     return request.param
+
 
 @pytest.fixture(params=data_provider_character)
 def character(request):
     return request.param
 
+
 def union_arr():
     return data_provider_numbers + data_provider_character
+
 
 @pytest.fixture(params=union_arr())
 def number_and_character(request):
@@ -37,6 +41,7 @@ def test_open_add_enrollment(app):
     with pytest.allure.step('Assert the text Додавання заяви on the page'):
         assert app.enrollments_main_page.get_text_add_enrollment().text == u"Додавання заяви"
 
+
 @pytest.allure.severity(pytest.allure.severity_level.NORMAL)
 def test_field_total_score_on_numbers(app, number):
     with pytest.allure.step('Test field total score by only numbers'):
@@ -49,6 +54,7 @@ def test_field_total_score_on_numbers(app, number):
     with pytest.allure.step('Assert the status field by typing there - %d' % number):
         assert 'ng-valid' in status_form_right_now
 
+
 @pytest.allure.severity(pytest.allure.severity_level.NORMAL)
 def test_field_total_score_on_characters(app, character):
     with pytest.allure.step('Test field total score by characters (strings etc)'):
@@ -60,6 +66,7 @@ def test_field_total_score_on_characters(app, character):
 
     with pytest.allure.step('Assert the status field by typing there - %s' % character):
         assert 'ng-invalid' in status_form_right_now
+
 
 @pytest.allure.severity(pytest.allure.severity_level.NORMAL)
 def test_twelve_scale(app, number_and_character):
@@ -81,6 +88,7 @@ def test_twelve_scale(app, number_and_character):
             # check form is red when type correct value by scale assessment
             assert 'ng-invalid' in status_form_right_now
 
+
 @pytest.allure.severity(pytest.allure.severity_level.NORMAL)
 def test_sixty_scale(app, number_and_character):
     with pytest.allure.step('Test field total score with scale sixty by numbers and characters'):
@@ -100,6 +108,7 @@ def test_sixty_scale(app, number_and_character):
         else:
             # check form is red when type correct value by scale assessment
             assert 'ng-invalid' in status_form_right_now
+
 
 @pytest.allure.severity(pytest.allure.severity_level.NORMAL)
 def test_one_hundred_scale(app, number_and_character):
@@ -121,6 +130,7 @@ def test_one_hundred_scale(app, number_and_character):
             # check form is red when type correct value by scale assessment
             assert 'ng-invalid' in status_form_right_now
 
+
 @pytest.allure.severity(pytest.allure.severity_level.NORMAL)
 def test_two_hundred_scale(app, number_and_character):
     with pytest.allure.step('Test field total score with scale two hundred by numbers and characters'):
@@ -140,6 +150,7 @@ def test_two_hundred_scale(app, number_and_character):
         else:
             # check form is red when type correct value by scale assessment
             assert 'ng-invalid' in status_form_right_now
+
 
 @pytest.allure.severity(pytest.allure.severity_level.NORMAL)
 def test_ECTS_scale(app, number_and_character):
@@ -162,6 +173,7 @@ def test_ECTS_scale(app, number_and_character):
             # check form is red when type correct value by scale assessment
             assert 'ng-invalid' in status_form_right_now
 
+
 @pytest.allure.severity(pytest.allure.severity_level.NORMAL)
 def test_five_point_scale(app, number_and_character):
     with pytest.allure.step('Test field total score with scale five point by numbers and characters'):
@@ -181,6 +193,7 @@ def test_five_point_scale(app, number_and_character):
         else:
             # check form is red when type correct value by scale assessment
             assert 'ng-invalid' in status_form_right_now
+
 
 @pytest.allure.severity(pytest.allure.severity_level.NORMAL)
 def test_interview_scale(app, number_and_character):

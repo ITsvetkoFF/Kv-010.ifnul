@@ -4,6 +4,7 @@ from datetime import date
 
 __author__ = 'acidroed'
 
+
 class EnrollmentCreator():
 
     __enrollment = Enrollment()

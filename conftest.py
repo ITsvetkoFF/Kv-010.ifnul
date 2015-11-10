@@ -10,6 +10,7 @@ from pyvirtualdisplay import Display
 from model.application import Application
 from utils.data_provider_from_json import DataProviderJSON
 from utils.configuration import Configuration
+import datetime
 
 
 def pytest_addoption(parser):
@@ -49,6 +50,7 @@ def app(request, browser_type, base_url, jenkins_display):
     you can write in the console something like >>> py.test --browser "chrome"
     :return: new Application with chosen or default params
     """
+    start_time = datetime.datetime.now()
     if jenkins_display:
         display = Display(visible=0, size=(1366, 768))
         display.start()
@@ -58,6 +60,8 @@ def app(request, browser_type, base_url, jenkins_display):
         driver = webdriver.Chrome()
     elif browser_type == "ie":
         driver = webdriver.Ie()
+    elif browser_type == "phantom":
+        driver = webdriver.PhantomJS('/phantomjs/bin/./phantomjs')
     request.addfinalizer(driver.quit)
     return Application(driver, base_url)
 
