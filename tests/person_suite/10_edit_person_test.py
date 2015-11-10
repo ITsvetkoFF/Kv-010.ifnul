@@ -51,7 +51,7 @@ def edit_person(app, actual_person):
     base_page = app.person_base_page
     with pytest.allure.step('Fill data on the main person page'):
         app.person_main_page.fill_in_main_person_page(actual_person)
-        base_page.click_extra_tab
+        base_page.click_extra_tab()
     with pytest.allure.step('Fill data on the extra person page'):
         app.extra_page.fill_in_extra_person_page(actual_person)
         base_page.click_addresses_tab

@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from utils.web_elem_utils import checkbox_set_state
+
 __author__ = 'Deorditsa'
 
 from utils.common_methods import CommonMethods
@@ -243,6 +245,7 @@ class AddPersonAddressesPage(AddPersonPage):
         :return:
         """
         self.is_this_page()
+        common_methods = CommonMethods(self.driver)
         for i in range(0, len(person.burn_place)):
             self.select_birth_place(person.burn_place[i], i)
 
