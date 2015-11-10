@@ -26,8 +26,17 @@ class AddPersonMainPage(AddPersonPage):
     PERSON_FIRST_NAME_ENG_INPUT_INCORRECT = \
         (By.XPATH, "//input[@id='firstNameEng'][contains (@class, 'ng-invalid-pattern')]")
 
+    # overriding functions
     def is_this_page(self):
         return self.is_element_visible(self.PERSON_TYPE_SELECT)
+
+    # web elements
+
+    # web element's functions
+
+    # general functions
+
+    # old
 
     def person_surname_ukr_input(self):
         return self.is_element_visible(self.PERSON_SURNAME_UKR_INPUT)

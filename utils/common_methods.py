@@ -12,19 +12,6 @@ class CommonMethods():
             return True
         return False
 
-    @staticmethod
-    def checkbox_manager(checkbox_element, needed_value):
-        """
-        Method checks or unchecks checkbox. It depends on current checkbox element status and needed value.
-        :param checkbox_element: WebDriver (checkbox) element
-        :param needed_value: Boolean parameter. If need that element was checked, the needed_value must be True
-        :return:
-        """
-        if not checkbox_element.get_attribute("checked") and needed_value:
-            checkbox_element.click()
-        elif checkbox_element.get_attribute("checked") and not needed_value:
-            checkbox_element.click()
-
     def get_value_from_select(self, web_element):
         ng_model = web_element.get_attribute("ng-model")
         list_from_ng_options = web_element.get_attribute("ng-options").split()

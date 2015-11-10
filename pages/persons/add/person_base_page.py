@@ -21,6 +21,7 @@ class AddPersonPage(InternalPage):
     PERSON_PAPERS_TAB = (By.XPATH, "//li//a[contains(., 'Документи')]")
     PERSON_ENROLLMENTS_TAB = (By.XPATH, "//li//a[contains(., 'Заяви')][@ng-click='select()']")
 
+    # overriding function
     def is_this_page(self):
         return self.is_element_visible(self.SAVE_NEW_PERSON_BUTTON)
 
@@ -84,16 +85,19 @@ class AddPersonPage(InternalPage):
         self.driver.find_element(*self.SAVE_NEW_PERSON_BUTTON).click()
         self.wait_until_page_generate()
 
-    # web elememts function
+    # web elements function
     def next_button_click(self):
         self.next_button.click()
         self.wait_until_page_generate()
 
     def back_button_click(self):
         self.back_button.click()
+        self.wait_until_page_generate()
 
     def click_main_tab(self):
-        return self.main_tab.click()
+        self.main_tab.click()
+        self.wait_until_page_generate()
 
     def click_extra_tab(self):
         self.extra_tab.click()
+        self.wait_until_page_generate()
