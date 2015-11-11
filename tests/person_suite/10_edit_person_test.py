@@ -10,7 +10,7 @@ def test_edit_person(logout_login, person_for_edit, screenshot):
     with pytest.allure.step('Testing of edit person.'):
         expected_person = person_for_edit
         app = logout_login
-        id_of_person_in_first_row = app.persons_page.id_of_person_in_first_row.text
+        id_of_person_in_first_row = app.persons_page.id_of_person_in_first_row().text
         app.persons_page.edit_first_person_in_page.click()
         edit_person(app, expected_person)
         # this variable changes unicode because there is invisible mistake in web application

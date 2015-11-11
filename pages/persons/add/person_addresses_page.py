@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from utils.web_elem_utils import checkbox_set_state
+from utils.web_elem_utils import checkbox_set_state, is_checkbox_checked
 
 __author__ = 'Deorditsa'
 
@@ -245,7 +245,6 @@ class AddPersonAddressesPage(AddPersonPage):
         :return:
         """
         self.is_this_page()
-        common_methods = CommonMethods(self.driver)
         for i in range(0, len(person.burn_place)):
             self.select_birth_place(person.burn_place[i], i)
 
@@ -258,7 +257,7 @@ class AddPersonAddressesPage(AddPersonPage):
         self.set_house(person.registration_place["house"])
         self.set_apartment(person.registration_place["apartment"])
         self.check_is_reg_and_post_addresses_the_same(person.registration_place["is_addresses_match"])
-        if not common_methods.is_checkbox_checked(self.driver.find_element(*self.IS_ADDRESSES_MATCH)):
+        if not is_checkbox_checked(self.driver.find_element(*self.IS_ADDRESSES_MATCH)):
 
             for i in range(0, len(person.post_registration_place["area"])):
                 self.select_post_registration_address(person.registration_place["area"][i], i)
@@ -292,7 +291,7 @@ class AddPersonAddressesPage(AddPersonPage):
         person_new.registration_place["street"] = common_methods.get_value_from_text_field(self.driver.find_element(*self.STREET_INPUT)).encode('cp1251')
         person_new.registration_place["house"] = common_methods.get_value_from_text_field(self.driver.find_element(*self.HOUSE_INPUT))
         person_new.registration_place["apartment"] = common_methods.get_value_from_text_field(self.driver.find_element(*self.APARTMENT_INPUT))
-        person_new.registration_place["is_addresses_match"] = common_methods.is_checkbox_checked(
+        person_new.registration_place["is_addresses_match"] = is_checkbox_checked(
             self.driver.find_element(*self.IS_ADDRESSES_MATCH))
 
         if person_new.registration_place["is_addresses_match"]:

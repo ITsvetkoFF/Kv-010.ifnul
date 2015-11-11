@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from utils.web_elem_utils import checkbox_set_state, input_text_in_field
+from utils.web_elem_utils import checkbox_set_state, input_text_in_field, is_checkbox_checked
 from utils.common_methods import CommonMethods
 from person_base_page import AddPersonPage
 from selenium.webdriver.common.by import By
@@ -191,10 +191,10 @@ class AddPersonExtraPage(AddPersonPage):
             self.driver.find_element(*self.PRIVATE_CASE_CHARS_INPUT)).encode('cp1251')
         person_new.private_case_number = common_methods.get_value_from_text_field(
             self.driver.find_element(*self.PRIVATE_CASE_NUMBER_INPUT))
-        person_new.is_outlander = common_methods.is_checkbox_checked(
+        person_new.is_outlander = is_checkbox_checked(
             self.driver.find_element(*self.IS_A_OUTLANDER_CHECKER))
-        person_new.reservist = common_methods.is_checkbox_checked(
+        person_new.reservist = is_checkbox_checked(
             self.driver.find_element(*self.IS_A_OUTLANDER_CHECKER))
-        person_new.hostel_need = common_methods.is_checkbox_checked(
+        person_new.hostel_need = is_checkbox_checked(
             self.driver.find_element(*self.IS_A_OUTLANDER_CHECKER))
         return person_new
