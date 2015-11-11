@@ -37,7 +37,7 @@ class TestSearchPersonBy(object):
         app.enrollments_main_page.is_this_page()
         app.enrollments_main_page.select_person_by(searched_by_option)
         app.enrollments_main_page.set_search_person_by(searched_value)
-        app.enrollments_main_page.ok_for_input_field
+        app.enrollments_main_page.ok_for_input_field_click()
 
     def search_by_pib_and_surname(self, app, searched_value, searched_by_option, is_valid_value):
         """
@@ -60,7 +60,7 @@ class TestSearchPersonBy(object):
                     break
         elif not is_valid_value and len(all_found_persons_pib) == 0:
             check = True
-        app.enrollments_main_page.cancel_click
+        app.enrollments_main_page.cancel_click()
         return check
 
     def search_by_person_id(self, app, searched_value, searched_by_option, is_valid_value):
@@ -79,7 +79,7 @@ class TestSearchPersonBy(object):
             check = True
         elif not is_valid_value and len(all_found_persons_id) == 0:
             check = True
-        app.enrollments_main_page.cancel_click
+        app.enrollments_main_page.cancel_click()
         return check
 
     def search_by_doc_number(self, app, searched_value, persons_surname, searched_by_option, is_valid_value):
@@ -103,7 +103,7 @@ class TestSearchPersonBy(object):
                     break
         elif not is_valid_value and len(all_found_persons_pib) == 0:
             check = True
-        app.enrollments_main_page.cancel_click
+        app.enrollments_main_page.cancel_click()
         return check
 
     @pytest.allure.severity(pytest.allure.severity_level.CRITICAL)
