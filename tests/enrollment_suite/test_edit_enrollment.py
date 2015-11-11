@@ -6,6 +6,7 @@ from selenium.common.exceptions import NoSuchElementException
 import pytest
 from utils.common_methods import CommonMethods
 from utils.enrollment_creator import EnrollmentCreator
+from utils.web_elem_utils import is_checkbox_checked
 
 __author__ = 'Vadym'
 
@@ -137,11 +138,11 @@ class TestEditEnrollment(object):
     @pytest.allure.severity(pytest.allure.severity_level.NORMAL)
     def test_verify_all_checkboxes(self, app, enrollment):
         with pytest.allure.step('Assert all checkboxes'):
-            is_state_checked = CommonMethods.is_checkbox_checked(app.enrollments_main_page.find_checkbox_is_state())
-            is_contract_checked = CommonMethods.is_checkbox_checked(app.enrollments_main_page.find_checkbox_is_contract())
-            is_privilege_checked = CommonMethods.is_checkbox_checked(app.enrollments_main_page.find_checkbox_is_privilege())
-            is_hostel_checked = CommonMethods.is_checkbox_checked(app.enrollments_main_page.find_checkbox_is_hostel())
-            document_is_original = CommonMethods.is_checkbox_checked(app.enrollments_main_page.checkbox_document_is_original)
+            is_state_checked = is_checkbox_checked(app.enrollments_main_page.find_checkbox_is_state())
+            is_contract_checked = is_checkbox_checked(app.enrollments_main_page.find_checkbox_is_contract())
+            is_privilege_checked = is_checkbox_checked(app.enrollments_main_page.find_checkbox_is_privilege())
+            is_hostel_checked = is_checkbox_checked(app.enrollments_main_page.find_checkbox_is_hostel())
+            document_is_original = is_checkbox_checked(app.enrollments_main_page.checkbox_document_is_original)
             try:
                 assert enrollment.checkbox_is_state == is_state_checked
                 assert enrollment.checkbox_is_contract == is_contract_checked
