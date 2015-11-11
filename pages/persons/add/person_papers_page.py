@@ -1,11 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from utils.web_elem_utils import checkbox_set_state, is_checkbox_checked
+from utils.web_elem_utils import checkbox_set_state, dropdown_select_by_text, input_text_in_field,checkbox_set_state
 
 __author__ = 'Deorditsa'
 
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import Select
 from utils.common_methods import CommonMethods
 from selenium.webdriver.support import expected_conditions as EC
 
@@ -13,6 +12,7 @@ from person_base_page import AddPersonPage
 
 
 class AddPersonPapersPage(AddPersonPage):
+    # locators
     ADD_DOCUMENT_BUTTON = (By.XPATH, "//div[@class='row']//div[@class='col-xs-2']//button")
     SAVE_DOCUMENT_BUTTON = (By.XPATH, "//button[@ng-click='addToTable()']")
     DOCUMENT_CATEGORY_SELECT = (By.XPATH, "//select[@ng-model='currentObj.abbrName']")
@@ -27,16 +27,11 @@ class AddPersonPapersPage(AddPersonPage):
     TABLE_DOCUMENTS_NUM_ROW = (By.XPATH, "//div[@class='col-xs-12']/table/tbody/tr/td[3]")
     DELETE_FIRST_DOCUMENT_BUTTON = (By.XPATH, "//div[@class='col-xs-12']/table/tbody/tr[1]/td[13]/button[2]")
     DELETE_DOCUMENT_BUTTONS = (By.XPATH, "//div[@class='col-xs-12']/table/tbody/tr/td[13]/button[2]")
-
     EDIT_DOCUMENT_FIELDS = (
         By.XPATH, ".//*[@id='person']//*[@ng-show='!personView']//*[@class='row']//div[@class='col-xs-4']")
 
     def is_this_page(self):
         return self.is_element_visible(self.ADD_DOCUMENT_BUTTON)
-
-    @property
-    def number_of_fields(self):
-        return len(self.driver.find_elements(*self.EDIT_DOCUMENT_FIELDS))
 
     # web elements
     @property
@@ -54,6 +49,23 @@ class AddPersonPapersPage(AddPersonPage):
     @property
     def is_foreign_checkbox(self):
         return self.driver.find_element(*self.DOCUMENT_IS_FOREIGN)
+
+    @property
+    def document_type_select_field(self):
+        return self.driver.find_element(*self.DOCUMENT_CATEGORY_SELECT)
+
+    @property
+    def document_name_select_field(self):
+        return self.driver.find_element(*self.DOCUMENT_NAME_SELECT)
+
+    @property
+    def document_series(self):
+        return self.driver.find_element(*self.DOCUMENT_SERIES_INPUT)
+
+    @property
+    def document_number(self):
+        return self.driver.find_element(*self.DOCUMENT_NUMBER_INPUT)
+
 
     # web elements function
     def add_new_document_button_click(self):
@@ -80,20 +92,13 @@ class AddPersonPapersPage(AddPersonPage):
         """
         checkbox_set_state(self.is_foreign_checkbox, is_foreign)
 
-    # old
-
-    def list_with_all_visible_element_in_document(self):
-        return self.driver.find_elements(
-            *(By.XPATH, ".//*[@id='person']//*[@ng-show='!personView']//*[@class='row']//div[@class='col-xs-4']/*[2]"))
-
     def document_type_select(self, document_type):
         """
         Method select type of document in select menu
         :param document_type: String document type. If type exists in select menu, then method will click on it, else will leave default value
         :return:
         """
-        self.is_element_visible(self.DOCUMENT_CATEGORY_SELECT)
-        Select(self.driver.find_element(*self.DOCUMENT_CATEGORY_SELECT)).select_by_visible_text(document_type)
+        dropdown_select_by_text(self.document_type_select_field, document_type)
 
     def document_name_select(self, document_name):
         """
@@ -101,8 +106,7 @@ class AddPersonPapersPage(AddPersonPage):
         :param document_name: String document name. If name exists in select menu, then method will click on it, else will leave default value
         :return:
         """
-        self.is_element_visible(self.DOCUMENT_NAME_SELECT)
-        Select(self.driver.find_element(*self.DOCUMENT_NAME_SELECT)).select_by_visible_text(document_name)
+        dropdown_select_by_text(self.document_name_select_field, document_name)
 
     def set_document_series(self, chars):
         """
@@ -110,7 +114,7 @@ class AddPersonPapersPage(AddPersonPage):
         :param chars: String parametr.
         :return:
         """
-        self.emulation_of_input(self.DOCUMENT_SERIES_INPUT, chars)
+        input_text_in_field(self.document_series, chars)
 
     def set_document_number(self, number):
         """
@@ -118,7 +122,22 @@ class AddPersonPapersPage(AddPersonPage):
         :param number: Integer parametr.
         :return:
         """
-        self.emulation_of_input(self.DOCUMENT_NUMBER_INPUT, number)
+        input_text_in_field(self.document_number, number)
+
+    # generals functions
+    def get_number_of_document_fields_in_add_document_(self):
+        return len(self.driver.find_elements(*self.EDIT_DOCUMENT_FIELDS))
+
+    def list_with_all_visible_element_in_document(self):
+        return self.driver.find_elements(
+            *(By.XPATH, ".//*[@id='person']//*[@ng-show='!personView']//*[@class='row']//div[@class='col-xs-4']/*[2]"))
+
+    # old
+
+
+
+
+
 
     def set_day_of_issue(self, day_of_issue):
         """
@@ -142,11 +161,6 @@ class AddPersonPapersPage(AddPersonPage):
         self.wait.until(EC.text_to_be_present_in_element(self.TABLE_DOCUMENTS_NUM_ROW, given_num))
         return self.driver.find_element(*self.TABLE_DOCUMENTS_NUM_ROW)
 
-    def delete_first_document_in_page(self):
-        if self.is_element_visible(self.DELETE_FIRST_DOCUMENT):
-            self.driver.find_element(*self.DELETE_FIRST_DOCUMENT).click()
-            self.wait_until_page_generate()
-
     def get_number_of_person_documents(self):
         return len(self.driver.find_elements(*self.DELETE_DOCUMENT_BUTTONS))
 
@@ -169,7 +183,6 @@ class AddPersonPapersPage(AddPersonPage):
         self.check_is_original_document(person.documents[0].document_is_original)
         self.check_is_foreign_document(person.documents[0].document_is_foreign)
         self.save_new_document_button_click()
-        self.wait_until_page_generate()
 
     def delete_all_person_documents(self):
         """
@@ -182,7 +195,6 @@ class AddPersonPapersPage(AddPersonPage):
                 element.click()
                 self.wait_until_page_generate()
 
-
     def read_in_document_page(self, person_new):
         """
         Method read the data on the papers persons page
@@ -190,7 +202,7 @@ class AddPersonPapersPage(AddPersonPage):
         :return: person_new
         """
         common_methods = CommonMethods(self.driver)
-        self.is_this_page
+        self.is_this_page()
         self.wait_until_page_generate()
         for index in range(1, self.get_number_of_person_documents() + 1):
             self.click_on_edit_document(index)

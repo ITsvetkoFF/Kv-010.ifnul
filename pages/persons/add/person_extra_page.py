@@ -112,7 +112,8 @@ class AddPersonExtraPage(AddPersonPage):
         :param numbers: Integer format. Persons private case number
         :return:
         """
-        input_text_in_field(self.private_case_numbers_field, str(numbers))
+
+        input_text_in_field(self.private_case_numbers_field, numbers)
 
     # general functions
     def fill_in_extra_person_page(self, person):

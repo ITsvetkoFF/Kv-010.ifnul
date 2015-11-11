@@ -20,11 +20,11 @@ def test_add_new_document(app, person, screenshot):
         base_page = app.person_base_page
         base_page.click_extra_tab()
         base_page.wait_until_page_generate()
-        base_page.click_addresses_tab
+        base_page.click_addresses_tab()
         base_page.wait_until_page_generate()
-        base_page.click_contacts_tab
+        base_page.click_contacts_tab()
         base_page.wait_until_page_generate()
-        base_page.click_papers_tab
+        base_page.click_papers_tab()
         base_page.wait_until_page_generate()
     with pytest.allure.step("Adding new document to the person"):
         app.papers_page.fill_in_document_page(person)
@@ -37,11 +37,11 @@ def test_add_new_document(app, person, screenshot):
         base_page = app.person_base_page
         base_page.click_extra_tab()
         base_page.wait_until_page_generate()
-        base_page.click_addresses_tab
+        base_page.click_addresses_tab()
         base_page.wait_until_page_generate()
-        base_page.click_contacts_tab
+        base_page.click_contacts_tab()
         base_page.wait_until_page_generate()
-        base_page.click_papers_tab
+        base_page.click_papers_tab()
     with pytest.allure.step("Checking that new person document is added "):
         actual = app.papers_page.try_get_searched_doc_num(person.documents[0].document_case_number).text
         expected = str(person.documents[0].document_case_number)

@@ -12,6 +12,8 @@ def input_text_in_field(text_field_web_elem, text, by_symbols=True):
     :return:
     """
     text_field_web_elem.clear()
+    if type(text) == int:
+        text = str(text)
     if by_symbols:
         for letter in text:
             text_field_web_elem.send_keys(letter)

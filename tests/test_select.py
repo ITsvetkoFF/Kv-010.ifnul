@@ -1,23 +1,15 @@
-from selenium import webdriver
-import time
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.select import Select
-from selenium.webdriver.support.wait import WebDriverWait
-from utils.web_elem_utils import dropdown_select_by_index
-
-__author__ = 'max'
+import pytest
+from utils.web_elem_utils import  get_text_from_select
 
 
-def test_01():
-    driver = webdriver.Firefox()
-    wait = WebDriverWait(driver, 15)
-    driver.get("http://www.ex.ua/")
-    s = (By.XPATH, ".//*[@id='menu']/tbody//select")
+@pytest.mark.usefixtures('stand_for_dictionary_tests')
+class Test_01(object):
+    def test_01(self):
+        self.app.internal_page.persons_page_link.click()
+        self.app.internal_page.wait_until_page_generate()
+        self.app.persons_page.edit_first_person_in_page.click()
+        self.app.persons_page.wait_until_page_generate()
+        self.app.person_base_page.click_addresses_tab()
+        print get_text_from_select(self.app.address_page.address_type_chooser())
 
-    elem = driver.find_element(*s)
-    print Select(elem).all_selected_options
-    dropdown_select_by_index(elem, 2)
-    time.sleep(1)
-    elem = driver.find_element(*s)
-    print Select(elem).all_selected_options
-    driver.quit()
+
