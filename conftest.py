@@ -49,6 +49,7 @@ def app(request, browser_type, base_url, jenkins_display):
     you can write in the console something like >>> py.test --browser "chrome"
     :return: new Application with chosen or default params
     """
+    print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+browser_type+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
     if jenkins_display:
         display = Display(visible=0, size=(1366, 768))
         display.start()
