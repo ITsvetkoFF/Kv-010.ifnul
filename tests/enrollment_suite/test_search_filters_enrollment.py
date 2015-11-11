@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from allure.constants import AttachmentType
+from datetime import time
 import pytest
 import allure
 import sys
@@ -34,8 +35,8 @@ class TestSearchFilters(object):
     def test_search_by_document_series(self, app):
         en_page = app.enrollments_page
         with pytest.allure.step("Searching by document's series"):
-            expected_document_series = u'авіа'
-            actual_search = en_page.search_enrollment(en_page.SEARCH_METHOD["document_series"], u'аві')
+            expected_document_series = 'TORETTO'
+            actual_search = en_page.search_enrollment(en_page.SEARCH_METHOD["document_series"], 'TORETTO')
             try:
                 assert expected_document_series in actual_search
                 allure.attach('screenshot', en_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
@@ -48,8 +49,8 @@ class TestSearchFilters(object):
     def test_search_by_document_number(self, app):
         en_page = app.enrollments_page
         with pytest.allure.step("Searching by document's number"):
-            expected_number = "3333"
-            actual_search = en_page.search_enrollment(en_page.SEARCH_METHOD["document_number"], "3333")
+            expected_number = "11111"
+            actual_search = en_page.search_enrollment(en_page.SEARCH_METHOD["document_number"], "11111")
             try:
                 assert expected_number in actual_search
                 allure.attach('screenshot', en_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
@@ -62,8 +63,8 @@ class TestSearchFilters(object):
     def test_search_by_proposal_id(self, app):
         en_page = app.enrollments_page
         with pytest.allure.step("Searching by proposal ID"):
-            expected_id = "5"
-            actual_search_results = en_page.search_enrollment(en_page.SEARCH_METHOD["proposal_id"], "5")
+            expected_id = "71"
+            actual_search_results = en_page.search_enrollment(en_page.SEARCH_METHOD["proposal_id"], "71")
             try:
                 assert expected_id in actual_search_results
             except AssertionError:

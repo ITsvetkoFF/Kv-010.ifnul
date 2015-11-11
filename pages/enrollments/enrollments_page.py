@@ -270,6 +270,7 @@ class EnrollmentsPage(InternalPage):
         self.is_this_page()
         for selector in selectors_tuple:
             self.driver.find_element(*selector).click()
+            self.wait_until_page_generate()
         self.filter_refresh_button_enr.click()
         self.wait_until_page_generate()
 
