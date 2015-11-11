@@ -31,6 +31,7 @@ def fill_extra_person_page_with_invalid_data(app, invalid_person):
     """
     extra_page = app.extra_page
     extra_page.is_this_page()
+    print type(invalid_person.private_case_number)
     app.extra_page.set_private_case_numbers(invalid_person.private_case_number)
 
 

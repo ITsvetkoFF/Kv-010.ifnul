@@ -12,6 +12,8 @@ def input_text_in_field(text_field_web_elem, text, by_symbols=True):
     :return:
     """
     text_field_web_elem.clear()
+    if type(text) == int:
+        text = str(text)
     if by_symbols:
         for letter in text:
             text_field_web_elem.send_keys(letter)
@@ -31,6 +33,11 @@ def checkbox_set_state(check_box_web_elem, is_checked):
     else:
         if check_box_web_elem.is_selected():
             check_box_web_elem.click()
+
+def is_checkbox_checked(checkbox_web_elem):
+    if checkbox_web_elem.is_selected():
+        return True
+    return False
 
 
 def dropdown_select_by_text(dropdown_web_elem, text):

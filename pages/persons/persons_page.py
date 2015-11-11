@@ -100,7 +100,7 @@ class PersonsPage(InternalPage):
     # Columns dictionary binding number of column to it's name
     DELETE_FIRST_PERSON_IN_TABLE = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[18]//button[3]")
     VIEW_FIRST_PERSON_IN_TABLE = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[18]//button[2]")
-    EDIT_FIRST_PERSON_IN_TABLE = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][3]/td[18]//button[1]")
+    EDIT_FIRST_PERSON_IN_TABLE = (By.XPATH, "//tbody[@class='pointer']/tr[@class='ng-scope'][1]/td[18]//button[1]")
 
     COLUMN_NUMBER_ADD = (By.XPATH, "//li[1]//*[@id='showHideHeader']")
     COLUMN_FIO_ADD = (By.XPATH, "//li[2]//*[@id='showHideHeader']")
