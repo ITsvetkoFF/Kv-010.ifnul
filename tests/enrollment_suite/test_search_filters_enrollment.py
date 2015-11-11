@@ -11,6 +11,14 @@ __author__ = 'Evgen'
 
 
 class TestSearchFilters(object):
+
+    DataProvider = {
+        'filter_id' : '4',
+        'filter_document_series' : 'MR',
+        'filter_number_document' : '457895',
+        'filter_proposal_id' : '71',
+    }
+
     @pytest.allure.severity(pytest.allure.severity_level.NORMAL)
     def test_search_by_person_id(self, app):
         with pytest.allure.step("Authorize on the site with admin credentials"):
@@ -21,8 +29,8 @@ class TestSearchFilters(object):
             app.enrollments_page.is_this_page()
         with pytest.allure.step("Searching by person ID"):
             en_page = app.enrollments_page
-            expected_id = "9"
-            actual_search = en_page.search_enrollment(en_page.SEARCH_METHOD["person_id"], "9")
+            expected_id = TestSearchFilters.DataProvider['filter_id']
+            actual_search = en_page.search_enrollment(en_page.SEARCH_METHOD["person_id"], expected_id)
             try:
                 assert expected_id in actual_search
                 allure.attach('screenshot', en_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
@@ -35,8 +43,8 @@ class TestSearchFilters(object):
     def test_search_by_document_series(self, app):
         en_page = app.enrollments_page
         with pytest.allure.step("Searching by document's series"):
-            expected_document_series = 'TORETTO'
-            actual_search = en_page.search_enrollment(en_page.SEARCH_METHOD["document_series"], 'TORETTO')
+            expected_document_series = TestSearchFilters.DataProvider['filter_document_series']
+            actual_search = en_page.search_enrollment(en_page.SEARCH_METHOD["document_series"], expected_document_series)
             try:
                 assert expected_document_series in actual_search
                 allure.attach('screenshot', en_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
@@ -49,10 +57,10 @@ class TestSearchFilters(object):
     def test_search_by_document_number(self, app):
         en_page = app.enrollments_page
         with pytest.allure.step("Searching by document's number"):
-            expected_number = "11111"
-            actual_search = en_page.search_enrollment(en_page.SEARCH_METHOD["document_number"], "11111")
+            expected_number_document = TestSearchFilters.DataProvider['filter_number_document']
+            actual_search = en_page.search_enrollment(en_page.SEARCH_METHOD["document_number"], expected_number_document)
             try:
-                assert expected_number in actual_search
+                assert expected_number_document in actual_search
                 allure.attach('screenshot', en_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
             except AssertionError:
                 allure.attach('screenshot', en_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
@@ -63,10 +71,10 @@ class TestSearchFilters(object):
     def test_search_by_proposal_id(self, app):
         en_page = app.enrollments_page
         with pytest.allure.step("Searching by proposal ID"):
-            expected_id = "71"
-            actual_search_results = en_page.search_enrollment(en_page.SEARCH_METHOD["proposal_id"], "71")
+            expected_proposal_id = TestSearchFilters.DataProvider['filter_proposal_id']
+            actual_search_results = en_page.search_enrollment(en_page.SEARCH_METHOD["proposal_id"], expected_proposal_id)
             try:
-                assert expected_id in actual_search_results
+                assert expected_proposal_id in actual_search_results
             except AssertionError:
                 allure.attach('screenshot', en_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
                 self.print_simple_stacktrace()
