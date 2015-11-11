@@ -285,6 +285,10 @@ class EnrollmentsMainPage(InternalPage):
         self.is_element_visible(self.CHECKBOX_IS_PRIVILEGE)
         return self.driver.find_element(*self.CHECKBOX_IS_PRIVILEGE)
 
+    def find_checkbox_document_is_original(self):
+        self.is_element_visible(self.CHECKBOX_DOCUMENT_IS_ORIGINAL)
+        return self.driver.find_element(*self.CHECKBOX_DOCUMENT_IS_ORIGINAL)
+
     def find_radiobutton_getting_education(self):
         self.is_element_visible(self.RADIOBUTTON_GETTING_EDUCATION)
         return self.driver.find_element(*self.RADIOBUTTON_GETTING_EDUCATION)
