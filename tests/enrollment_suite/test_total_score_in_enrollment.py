@@ -1,4 +1,6 @@
 # /coding=utf-8
+import allure
+from allure.constants import AttachmentType
 import pytest
 
 author = "Vadym"
@@ -164,7 +166,7 @@ def test_ECTS_scale(app, number_and_character):
 def test_five_point_scale(app, number_and_character):
     with pytest.allure.step('Test field total score with scale five point by numbers and characters'):
         enr_page = app.enrollments_main_page
-        scale = u"п'ятибальна"
+        scale = u"п\"ятибальна"
         if(enr_page.get_text_choose_grading_scale().text != scale):
             enr_page.choose_grading_scale(scale)
         enr_page.add_total_score(enr_page.TOTAL_SCORE, number_and_character)
