@@ -153,8 +153,8 @@ class TestEditEnrollment(object):
                 raise
 
     @pytest.allure.severity(pytest.allure.severity_level.NORMAL)
-    def test_verify_edited_suggestion(self, app):
-        with pytest.allure.step('Assert added before speciality id with actual'):
+    def test_verify_edited_proposition(self, app):
+        with pytest.allure.step('Assert speciality id (proposition) edited'):
             try:
                 assert str(TestEditEnrollment.speciality_id) == app.enrollments_main_page.find_first_specialities_id_in_view_table().text
             except AssertionError:
