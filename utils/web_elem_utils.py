@@ -53,3 +53,14 @@ def dropdown_select_by_index(dropdown_web_elem, index):
     """
     case_value = Select(dropdown_web_elem)
     case_value.select_by_index(index)
+
+
+def is_checkbox_checked(checkbox):
+    """
+    This method gets the value of checkbox.
+    :param checkbox: is the verifiable checkbox.
+    :return: the value of checkbox.
+    """
+    if checkbox.get_attribute("checked"):
+        return True
+    return False

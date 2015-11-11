@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from utils.web_elem_utils import checkbox_set_state
+from utils.web_elem_utils import checkbox_set_state, is_checkbox_checked
 
 __author__ = 'Deorditsa'
 
@@ -136,10 +136,6 @@ class AddPersonPapersPage(AddPersonPage):
         """
         self.emulation_of_input(self.DOCUMENT_ISSUED_BY, maker)
 
-
-
-
-
     def try_get_searched_doc_num(self, given_num):
         if type(given_num) == int:
             given_num = str(given_num)
@@ -173,6 +169,7 @@ class AddPersonPapersPage(AddPersonPage):
         self.check_is_original_document(person.documents[0].document_is_original)
         self.check_is_foreign_document(person.documents[0].document_is_foreign)
         self.save_new_document_button_click()
+        self.wait_until_page_generate()
 
     def delete_all_person_documents(self):
         """
@@ -200,17 +197,13 @@ class AddPersonPapersPage(AddPersonPage):
             document = []
             self.wait_until_page_generate()
             for web_element in self.list_with_all_visible_element_in_document():
-                if web_element.tag_name == "input":
-                    value_of_webelement_by_js = common_methods.get_value_from_text_field(web_element)
-                    document.append(value_of_webelement_by_js)
-                elif web_element.tag_name == "select":
-                    value_of_webelement_by_js = common_methods.get_value_from_select(web_element)
-                    document.append(value_of_webelement_by_js)
+                value_of_webelement_by_js = common_methods.get_value_from_web_element(web_element)
+                document.append(value_of_webelement_by_js)
 
             document.append(
-                common_methods.is_checkbox_checked(self.driver.find_element(*self.DOCUMENT_IS_ORIGINAL)))
+                is_checkbox_checked(self.driver.find_element(*self.DOCUMENT_IS_ORIGINAL)))
             document.append(
-                common_methods.is_checkbox_checked(self.driver.find_element(*self.DOCUMENT_IS_FOREIGN)))
+                is_checkbox_checked(self.driver.find_element(*self.DOCUMENT_IS_FOREIGN)))
             person_new.documents.append(document)
 
         return person_new

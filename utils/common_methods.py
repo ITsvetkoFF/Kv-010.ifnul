@@ -6,12 +6,6 @@ class CommonMethods():
     def __init__(self, driver):
         self.driver = driver
 
-    @staticmethod
-    def is_checkbox_checked(checkbox):
-        if checkbox.get_attribute("checked"):
-            return True
-        return False
-
     def get_value_from_select(self, web_element):
         ng_model = web_element.get_attribute("ng-model")
         list_from_ng_options = web_element.get_attribute("ng-options").split()
