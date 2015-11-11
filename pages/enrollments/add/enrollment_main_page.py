@@ -4,6 +4,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
 from pages.internal_page import InternalPage
 from utils.fill_enrollment import FillEnrollment
+from utils.web_elem_utils import checkbox_set_state
 
 __author__ = 'Stako'
 
@@ -57,72 +58,45 @@ class EnrollmentsMainPage(InternalPage):
     BUTTON_SAVE = (By.XPATH, ".//*[@class='btn btn-primary'][@ng-click='sendToServer()']")
     ID_DETAILING_START_MENU = (By.ID, "inputEnrolmentTypeId")
     ID_TYPE_OF_ENTRY_MENU = (By.ID, "inputChiefEnrolTypes")
-    IS_ENROLLMENT_IN_PERSON = (By.XPATH, ".//*[@id='movieForm']/div[1]/div[2]/table/tbody/tr/td[1]")
     SEARCH_PERSON_BY_SELECT = (By.XPATH, "//select[@ng-model='fieldSearchBy']")
     SEARCH_PERSON_BY_INPUT = (By.XPATH, "//input[@ng-model='querySearchBy']")
     ALL_FOUND_PERSONS_PIB = (By.XPATH, "//div[@search='personSearch']//tbody[@class='pointer']//tr//td[2]")
     ALL_FOUND_PERSONS_ID = (By.XPATH, "//div[@search='personSearch']//tbody[@class='pointer']//tr//td[1]")
     CANCEL_BUTTON = (By.XPATH, "//div[@class='modal-footer ng-scope']//button[@ng-click='cancel()']")
-    IS_ENROLLMENT_IN_PERSON = (By.XPATH, ".//*[@class='pointer']/tr/td[1]")
+    IS_ENROLLMENT_IN_PERSON = (By.XPATH, "//div[@search='personSearch']//*[@class='pointer']/tr/td[1]")
 
     # overriding functions
     def is_this_page(self):
         return self.is_element_visible(self.SEARCH_PERSON_BY_SELECT)
 
     # web elements
-
-    # web element's functions
-
-    # general functions
-
-    # old
     @property
-    def cancel_click(self):
-        self.driver.find_element(*self.CANCEL_BUTTON).click()
+    def checkbox_is_state(self):
+        return self.driver.find_element(*self.CHECKBOX_IS_STATE)
 
+    @property
+    def checkbox_is_contract(self):
+        return self.driver.find_element(*self.CHECKBOX_IS_CONTRACT)
 
-    
+    @property
+    def checkbox_is_privilege(self):
+        return self.driver.find_element(*self.CHECKBOX_IS_PRIVILEGE)
+
+    @property
+    def checkbox_is_hostel(self):
+        return self.driver.find_element(*self.CHECKBOX_IS_HOSTEL)
+
+    @property
+    def checkbox_document_is_original(self):
+        return self.driver.find_element(*self.CHECKBOX_DOCUMENT_IS_ORIGINAL)
+
+    @property
+    def cancel_button(self):
+        return self.driver.find_element(*self.CANCEL_BUTTON).click()
+
     @property
     def is_enrollment_in_person(self):
         return self.is_element_visible(self.IS_ENROLLMENT_IN_PERSON)
-
-    def find_first_specialities_id(self):
-        return self.driver.find_element(*self.FIRST_SPECIALTIES_ID)
-
-    def find_first_specialities_id_in_view_table(self):
-        return self.driver.find_element(*self.FIRST_SPECIALTIES_ID_IN_VIEW_TABLE)
-
-    def find_first_specialities_fio_in_view_table(self):
-        return self.driver.find_elements(*self.FIRST_SPECIALTIES_FIO_IN_VIEW_TABLE)[1]
-
-    def person_fio_already_added_view(self):
-        return self.driver.find_element(*self.PERSON_FIO_ALREADY_ADDED_VIEW)
-
-    def search_person_by(self, index):
-        self.wait_until_page_generate()
-        Select(self.driver.find_element(*self.SEARCH_PERSON_BY_SELECT)).select_by_index(index)
-
-    def set_search_person_by(self, searched_value):
-        """
-        Method sets the searched value
-        :param searched_value: String parametr.
-        :return:
-        """
-        self.emulation_of_input(self.SEARCH_PERSON_BY_INPUT, searched_value)
-
-    def get_all_found_persons_pib(self):
-        return self.driver.find_elements(*self.ALL_FOUND_PERSONS_PIB)
-
-    def get_all_found_persons_id(self):
-        return self.driver.find_elements(*self.ALL_FOUND_PERSONS_ID)
-
-    def find_date_of_creation(self):
-        self.is_element_visible(self.DATE_OF_CREATION_STATEMENTS)
-        return self.driver.find_elements(*self.DATE_OF_CREATION_STATEMENTS)
-
-    @property
-    def cancel_click(self):
-        self.driver.find_element(*self.CANCEL_BUTTON).click()
 
     @property
     def search_offers_field(self):
@@ -140,9 +114,53 @@ class EnrollmentsMainPage(InternalPage):
     def search_name_field(self):
         return self.is_element_visible(self.SEARCH_NAME_FIELD)
 
-    def list_form_ui_select(self):
-        self.is_element_visible(self.LIST_FROM_UI_SELECT)
-        return self.driver.find_elements(*self.LIST_FROM_UI_SELECT)
+    @property
+    def radiobutton_getting_education(self):
+        return self.is_element_visible(self.RADIOBUTTON_GETTING_EDUCATION)
+
+    @property
+    def radiobutton_dont_getting_education(self):
+        return self.is_element_visible(self.RADIOBUTTON_DONT_GETTING_EDUCATION)
+
+    @property
+    def radiobutton_is_education(self):
+        return self.is_element_visible(self.RADIOBUTTON_IS_EDUCATION)
+
+    @property
+    def radiobutton_not_passed_interview(self):
+        return self.is_element_visible(self.RADIOBUTTON_NOT_PASSED_INTERVIEW)
+
+    @property
+    def radiobutton_dont_need_interview(self):
+        return self.is_element_visible(self.RADIOBUTTON_DONT_NEED_INTERVIEW)
+
+    @property
+    def radiobutton_need_interview(self):
+        return self.is_element_visible(self.RADIOBUTTON_NEED_INTERVIEW)
+
+    @property
+    def radiobutton_interview_passed(self):
+        return self.is_element_visible(self.RADIOBUTTON_INTERVIEW_PASSED)
+
+    @property
+    def button_choose_specialties(self):
+        return self.is_element_visible(self.BUTTON_CHOOSE_SPECIALTIES)
+
+    @property
+    def document(self):
+        return self.is_element_visible(self.DOCUMENT)
+
+    @property
+    def total_score(self):
+        return self.is_element_visible(self.TOTAL_SCORE)
+
+    @property
+    def grading_scale(self):
+        return self.is_element_visible(self.GRADING_SCALE)
+
+    @property
+    def priority(self):
+        return self.is_element_visible(self.PRIORITY)
 
     @property
     def choose_form_of_education(self):
@@ -154,30 +172,7 @@ class EnrollmentsMainPage(InternalPage):
 
     @property
     def ok_for_input_field(self):
-        self.is_element_visible(self.OK_FOR_INPUT_FIELD).click()
-        self.wait_until_page_generate()
-
-    def find_series_of_statements(self):
-        self.is_element_visible(self.SERIES_OF_STATEMENTS)
-        return self.driver.find_element(*self.SERIES_OF_STATEMENTS)
-
-    def find_number_statements(self):
-        self.is_element_visible(self.NUMBER_STATEMENTS)
-        return self.driver.find_element(*self.NUMBER_STATEMENTS)
-
-    @property
-    def number_statements(self):
-        return self.is_element_present(self.NUMBER_STATEMENTS)
-
-    def certain_number_statements(self, c_number_statements):
-        try:
-            val = int(c_number_statements)
-            if val <= 0:
-                raise ValueError
-        except ValueError:
-            return self.is_element_visible(self.NUMBER_WRONG_STATMENTS)
-        else:
-            return self.is_element_visible(self.NUMBER_RIGHT_STATMENTS)
+        return self.driver.find_element(*self.OK_FOR_INPUT_FIELD)
 
     @property
     def certain_negative_number_statements(self):
@@ -186,6 +181,97 @@ class EnrollmentsMainPage(InternalPage):
     @property
     def certain_positive_number_statements(self):
         return self.is_element_visible(self.NUMBER_RIGHT_STATMENTS)
+
+    @property
+    def number_statements(self):
+        return self.is_element_present(self.NUMBER_STATEMENTS)
+
+    @property
+    def structural_unit(self):
+        return self.is_element_visible(self.STRUCTURAL_UNIT)
+
+    @property
+    def button_save(self):
+        return self.driver.find_element(*self.BUTTON_SAVE)
+
+
+    # web element's functions
+    def button_save_click(self):
+        self.button_save.click()
+        self.wait_until_page_generate()
+
+    def set_state_status(self, boolean):
+        checkbox_set_state(self.checkbox_is_state, boolean)
+
+    def set_contract_status(self, boolean):
+        checkbox_set_state(self.checkbox_is_contract, boolean)
+
+    def set_privilege_status(self, boolean):
+        checkbox_set_state(self.checkbox_is_privilege, boolean)
+
+    def set_hostel_status(self, boolean):
+        checkbox_set_state(self.checkbox_is_hostel, boolean)
+
+    def set_document_original_status(self, is_outlander):
+        checkbox_set_state(self.checkbox_document_is_original, is_outlander)
+
+    def list_form_ui_select(self):
+        self.is_element_visible(self.LIST_FROM_UI_SELECT)
+        return self.driver.find_elements(*self.LIST_FROM_UI_SELECT)
+
+    def ok_for_input_field_click(self):
+        self.is_element_visible(self.OK_FOR_INPUT_FIELD).click()
+        self.wait_until_page_generate()
+
+    def cancel_click(self):
+        self.cancel_button.click()
+        self.wait_until_page_generate()
+
+    def find_first_specialities_id(self):
+        return self.driver.find_element(*self.FIRST_SPECIALTIES_ID)
+
+    def find_first_specialities_id_in_view_table(self):
+        return self.driver.find_element(*self.FIRST_SPECIALTIES_ID_IN_VIEW_TABLE)
+
+    def find_first_specialities_fio_in_view_table(self):
+        return self.driver.find_elements(*self.FIRST_SPECIALTIES_FIO_IN_VIEW_TABLE)[1]
+
+    def person_fio_already_added_view(self):
+        return self.driver.find_element(*self.PERSON_FIO_ALREADY_ADDED_VIEW)
+
+    def search_person_by(self, index):
+        self.wait_until_page_generate()
+        Select(self.driver.find_element(*self.SEARCH_PERSON_BY_SELECT)).select_by_index(index)
+
+    def get_all_found_persons_pib(self):
+        """
+        Method find all elements with persons PIB
+        :return: list of elements with persons PIB
+        """
+        return self.driver.find_elements(*self.ALL_FOUND_PERSONS_PIB)
+
+    def get_all_found_persons_id(self):
+        """
+        Method find all elements with persons ID
+        :return: list of elements with persons ID
+        """
+        return self.driver.find_elements(*self.ALL_FOUND_PERSONS_ID)
+
+    def find_date_of_creation(self):
+        """
+        Method find date of creation input field
+        :return: element of date of creation input field
+        """
+        self.is_element_visible(self.DATE_OF_CREATION_STATEMENTS)
+        return self.driver.find_element(*self.DATE_OF_CREATION_STATEMENTS)
+
+    def find_series_of_statements(self):
+        self.is_element_visible(self.SERIES_OF_STATEMENTS)
+        return self.driver.find_element(*self.SERIES_OF_STATEMENTS)
+
+    def find_number_statements(self):
+        self.is_element_visible(self.NUMBER_STATEMENTS)
+        return self.driver.find_element(*self.NUMBER_STATEMENTS)
 
     def find_checkbox_is_state(self):
         self.is_element_visible(self.CHECKBOX_IS_STATE)
@@ -219,87 +305,6 @@ class EnrollmentsMainPage(InternalPage):
         self.is_element_visible(self.GRADING_SCALE)
         return self.driver.find_element(*self.GRADING_SCALE)
 
-    @property
-    def checkbox_is_state(self):
-        return self.is_element_visible(self.CHECKBOX_IS_STATE)
-
-    @property
-    def checkbox_is_contract(self):
-        return self.is_element_visible(self.CHECKBOX_IS_CONTRACT)
-
-    @property
-    def checkbox_is_privilege(self):
-        return self.is_element_visible(self.CHECKBOX_IS_PRIVILEGE)
-
-    @property
-    def radiobutton_getting_education(self):
-        return self.is_element_visible(self.RADIOBUTTON_GETTING_EDUCATION)
-
-    @property
-    def radiobutton_dont_getting_education(self):
-        return self.is_element_visible(self.RADIOBUTTON_DONT_GETTING_EDUCATION)
-
-    @property
-    def radiobutton_is_education(self):
-        return self.is_element_visible(self.RADIOBUTTON_IS_EDUCATION)
-
-    @property
-    def radiobutton_not_passed_interview(self):
-        return self.is_element_visible(self.RADIOBUTTON_NOT_PASSED_INTERVIEW)
-
-    @property
-    def radiobutton_dont_need_interview(self):
-        return self.is_element_visible(self.RADIOBUTTON_DONT_NEED_INTERVIEW)
-
-    @property
-    def radiobutton_need_interview(self):
-        return self.is_element_visible(self.RADIOBUTTON_NEED_INTERVIEW)
-
-    @property
-    def radiobutton_interview_passed(self):
-        return self.is_element_visible(self.RADIOBUTTON_INTERVIEW_PASSED)
-
-    @property
-    def checkbox_is_hostel(self):
-        return self.is_element_visible(self.CHECKBOX_IS_HOSTEL)
-
-    @property
-    def button_choose_specialties(self):
-        return self.is_element_visible(self.BUTTON_CHOOSE_SPECIALTIES)
-
-    @property
-    def document(self):
-        return self.is_element_visible(self.DOCUMENT)
-
-    @property
-    def total_score(self):
-        return self.is_element_visible(self.TOTAL_SCORE)
-
-    @property
-    def grading_scale(self):
-        return self.is_element_visible(self.GRADING_SCALE)
-
-    @property
-    def checkbox_document_is_original(self):
-        return self.is_element_visible(self.CHECKBOX_DOCUMENT_IS_ORIGINAL)
-
-    @property
-    def priority(self):
-        return self.is_element_visible(self.PRIORITY)
-
-    def certain_priority(self, c_priority):
-        if 0 < c_priority < 16:
-            return self.is_element_visible(self.PRIORITY_RIGHT)
-        return self.is_element_visible(self.PRIORITY_WRONG_DOWN) or self.is_element_visible(self.PRIORITY_WRONG_UP)
-
-    @property
-    def structural_unit(self):
-        return self.is_element_visible(self.STRUCTURAL_UNIT)
-
-    @property
-    def button_save(self):
-        return self.is_element_visible(self.BUTTON_SAVE)
-
     def get_document_title(self):
         return self.driver.find_element(*self.DOCUMENT_TITLE)
 
@@ -321,13 +326,51 @@ class EnrollmentsMainPage(InternalPage):
     def get_priority(self):
         return self.driver.find_element(*self.PRIORITY)
 
+
+    # general functions
+    def set_search_person_by(self, searched_value):
+        """
+        Method sets the searched value
+        :param searched_value: String parametr.
+        :return:
+        """
+        self.emulation_of_input(self.SEARCH_PERSON_BY_INPUT, searched_value)
+
+    def click_all_checkbox(self, state, contract, privilege, hostel, document):
+        """
+        This method sets value in all checkbox.
+        :param state: is value of checkbox "budget".
+        :param contract: is value of checkbox "contract".
+        :param privilege: is value of checkbox "privilege".
+        :param hostel: is value of checkbox "need hostel".
+        :param document: is value of checkbox "document is original".
+        """
+        self.set_state_status(state)
+        self.set_contract_status(contract)
+        self.set_privilege_status(privilege)
+        self.set_hostel_status(hostel)
+        self.set_document_original_status(document)
+
+    def certain_number_statements(self, c_number_statements):
+        try:
+            val = int(c_number_statements)
+            if val <= 0:
+                raise ValueError
+        except ValueError:
+            return self.is_element_visible(self.NUMBER_WRONG_STATMENTS)
+        else:
+            return self.is_element_visible(self.NUMBER_RIGHT_STATMENTS)
+
+    def certain_priority(self, c_priority):
+        if 0 < c_priority < 16:
+            return self.is_element_visible(self.PRIORITY_RIGHT)
+        return self.is_element_visible(self.PRIORITY_WRONG_DOWN) or self.is_element_visible(self.PRIORITY_WRONG_UP)
+
     def clear_form_input_total_score(self):
         toClear = self.driver.find_element(*self.TOTAL_SCORE)
         toClear.send_keys(Keys.CONTROL + "a")
         toClear.send_keys(Keys.DELETE)
 
-    def get_atrribute_of_element_by(self, element, value):
-        return element.get_attribute(value)
 
     def find_element_in_ui_select(self, elements, string):
         """
@@ -391,7 +434,7 @@ class EnrollmentsMainPage(InternalPage):
         self.set_date(self.DATE_OF_ENTRY_STATEMENTS, enrollment.date_of_entry)
         self.set_date(self.DATE_CLOSING_STATEMENTS, enrollment.date_closing)
         self.wait_until_page_generate()
-        self.button_save.click()
+        self.button_save_click()
         return enrollment
 
     def add_person_in_enrollment(self, name):
@@ -400,7 +443,7 @@ class EnrollmentsMainPage(InternalPage):
         :param name: is name of person.
         """
         self.wait_until_page_generate()
-        self.ok_for_input_field
+        self.ok_for_input_field.click()
         self.wait_until_page_generate()
         self.emulation_of_input(self.SEARCH_NAME_FIELD, name)
         self.first_person.click()
@@ -461,8 +504,6 @@ class EnrollmentsMainPage(InternalPage):
         self.grading_scale.click()
         self.find_element_in_ui_select(self.list_form_ui_select(), scale).click()
 
-    def get_text_choose_grading_scale(self):
-        return self.driver.find_element(*self.TEXT_FROM_GRADING_SCALE)
 
     def add_total_score(self, locator, score):
         """
@@ -504,26 +545,6 @@ class EnrollmentsMainPage(InternalPage):
         self.find_element_in_select(
             Select(self.driver.find_element(*self.ID_DETAILING_START_MENU)).options, specification)
 
-    def click_all_checkbox(self, state, contract, privilege, hostel, document):
-        """
-        This method sets value in all checkbox.
-        :param state: is value of checkbox "budget".
-        :param contract: is value of checkbox "contract".
-        :param privilege: is value of checkbox "privilege".
-        :param hostel: is value of checkbox "need hostel".
-        :param document: is value of checkbox "document is original".
-        """
-        if not state:
-            self.find_checkbox_is_state().click()
-        if not contract:
-            self.find_checkbox_is_contract().click()
-        if privilege:
-            self.find_checkbox_is_privilege().click()
-        if hostel:
-            self.find_checkbox_is_hostel().click()
-        if document:
-            self.checkbox_document_is_original.click()
-
     def select_person_by(self, index):
         """
         Method select searching type by index
@@ -532,36 +553,6 @@ class EnrollmentsMainPage(InternalPage):
         """
         self.wait_until_page_generate()
         Select(self.driver.find_element(*self.SEARCH_PERSON_BY_SELECT)).select_by_index(index)
-
-    def set_search_person_by(self, searched_value):
-        """
-        Method sets the searched value
-        :param searched_value: String parametr.
-        :return:
-        """
-        self.emulation_of_input(self.SEARCH_PERSON_BY_INPUT, searched_value)
-
-    def get_all_found_persons_pib(self):
-        """
-        Method find all elements with persons PIB
-        :return: list of elements with persons PIB
-        """
-        return self.driver.find_elements(*self.ALL_FOUND_PERSONS_PIB)
-
-    def get_all_found_persons_id(self):
-        """
-        Method find all elements with persons ID
-        :return: list of elements with persons ID
-        """
-        return self.driver.find_elements(*self.ALL_FOUND_PERSONS_ID)
-
-    def find_date_of_creation(self):
-        """
-        Method find date of creation input field
-        :return: element of date of creation input field
-        """
-        self.is_element_visible(self.DATE_OF_CREATION_STATEMENTS)
-        return self.driver.find_element(*self.DATE_OF_CREATION_STATEMENTS)
 
     def set_begin_date(self, date):
         """
@@ -614,4 +605,10 @@ class EnrollmentsMainPage(InternalPage):
 
     def __get_type_offer_specialist_by_number_in_table(self, number):
         return (By.XPATH, "//div[@class='table-responsive']//tbody[@class='pointer']/tr[" + str(number + 1) + "]/td[6]")
+
+    def get_atrribute_of_element_by(self, element, value):
+        return element.get_attribute(value)
+
+    def get_text_choose_grading_scale(self):
+        return self.driver.find_element(*self.TEXT_FROM_GRADING_SCALE)
 

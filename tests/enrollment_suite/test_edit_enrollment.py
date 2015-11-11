@@ -1,10 +1,10 @@
 # /coding=utf-8
-import datetime
 import allure
 from allure.constants import AttachmentType
 from selenium.common.exceptions import NoSuchElementException
 
 import pytest
+from utils.common_methods import CommonMethods
 from utils.enrollment_creator import EnrollmentCreator
 
 __author__ = 'Vadym'
@@ -12,7 +12,7 @@ __author__ = 'Vadym'
 class TestEditEnrollment(object):
 
     speciality_id = ""
-    DataProvider_filter_to_find_enrollment = "124988"
+    DataProvider_filter_to_find_enrollment = "124992"
 
     @pytest.fixture
     def enrollment(request):
@@ -27,7 +27,7 @@ class TestEditEnrollment(object):
         with pytest.allure.step('Authorize to the application and click enrollment page edit enrollment button by filter'):
             app = logout_login
             app.internal_page.enrollments_page_link.click()
-            app.enrollments_page.is_this_page
+            app.enrollments_page.is_this_page()
         with pytest.allure.step("Trying to find enrollment by filtering variable 'DataProvider_filter_to_find_enrollment'"):
             app.enrollments_page.search_enrollment(app.enrollments_page.SEARCH_METHOD["document_number"], TestEditEnrollment.DataProvider_filter_to_find_enrollment)
             try:
@@ -81,10 +81,10 @@ class TestEditEnrollment(object):
             app.enrollments_main_page.set_date(app.enrollments_main_page.DATE_CLOSING_STATEMENTS, enrollment.date_closing)
             app.enrollments_main_page.is_element_present(app.enrollments_main_page.SPINNER_OFF)
         with pytest.allure.step('Save data on the add enrollment page'):
-            app.enrollments_main_page.button_save.click()
+            app.enrollments_main_page.button_save_click()
         with pytest.allure.step('Assert the text after save enrollment Заяви on the page'):
             try:
-                assert app.enrollments_main_page.get_text_add_enrollment().text == u"Заяви"
+                assert app.enrollments_page.get_text_enrollment() == u"Заяви"
             except AssertionError:
                 allure.attach('screenshot', app.enrollments_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
                 raise
@@ -94,7 +94,7 @@ class TestEditEnrollment(object):
         with pytest.allure.step('Authorize to the application and click enrollment page edit enrollment button by filter'):
             app = logout_login
             app.internal_page.enrollments_page_link.click()
-            app.enrollments_page.is_this_page
+            app.enrollments_page.is_this_page()
         with pytest.allure.step("Trying to find enrollment by filtering edited variable 'DataProvider_filter_to_find_enrollment' (we changed this value when we were editing enrollmnet)"):
             app.enrollments_page.search_enrollment(app.enrollments_page.SEARCH_METHOD["document_number"], TestEditEnrollment.DataProvider_filter_to_find_enrollment)
             try:
@@ -124,8 +124,9 @@ class TestEditEnrollment(object):
         with pytest.allure.step('Assert serial and number enrollment'):
             field_serial_of_enroll = app.enrollments_main_page.find_series_of_statements()
             field_number_of_enroll = app.enrollments_main_page.find_number_statements()
-            actual_value_serial_enollment = app.driver.execute_script("return angular.element(arguments[0]).scope().enrolment.docSeries", field_serial_of_enroll)
-            actual_value_number_enollment = app.driver.execute_script("return angular.element(arguments[0]).scope().enrolment.docNum", field_number_of_enroll)
+            common_methods = CommonMethods(app.driver)
+            actual_value_serial_enollment = common_methods.get_value_from_text_field(field_serial_of_enroll)
+            actual_value_number_enollment = common_methods.get_value_from_text_field(field_number_of_enroll)
             try:
                 assert actual_value_serial_enollment == enrollment.series_of_statements
                 assert actual_value_number_enollment == str(enrollment.number_statements)
@@ -136,11 +137,11 @@ class TestEditEnrollment(object):
     @pytest.allure.severity(pytest.allure.severity_level.NORMAL)
     def test_verify_all_checkboxes(self, app, enrollment):
         with pytest.allure.step('Assert all checkboxes'):
-            is_state_checked = self.is_checkbox_checked(app.enrollments_main_page.find_checkbox_is_state())
-            is_contract_checked = self.is_checkbox_checked(app.enrollments_main_page.find_checkbox_is_contract())
-            is_privilege_checked = self.is_checkbox_checked(app.enrollments_main_page.find_checkbox_is_privilege())
-            is_hostel_checked = self.is_checkbox_checked(app.enrollments_main_page.find_checkbox_is_hostel())
-            document_is_original = self.is_checkbox_checked(app.enrollments_main_page.checkbox_document_is_original)
+            is_state_checked = CommonMethods.is_checkbox_checked(app.enrollments_main_page.find_checkbox_is_state())
+            is_contract_checked = CommonMethods.is_checkbox_checked(app.enrollments_main_page.find_checkbox_is_contract())
+            is_privilege_checked = CommonMethods.is_checkbox_checked(app.enrollments_main_page.find_checkbox_is_privilege())
+            is_hostel_checked = CommonMethods.is_checkbox_checked(app.enrollments_main_page.find_checkbox_is_hostel())
+            document_is_original = CommonMethods.is_checkbox_checked(app.enrollments_main_page.checkbox_document_is_original)
             try:
                 assert enrollment.checkbox_is_state == is_state_checked
                 assert enrollment.checkbox_is_contract == is_contract_checked
@@ -175,7 +176,8 @@ class TestEditEnrollment(object):
         with pytest.allure.step('Assert total score and scale enrollment'):
             field_total_score = app.enrollments_main_page.find_total_score()
             scale = app.enrollments_main_page.get_text_choose_grading_scale().text
-            actual_value_total_score = app.driver.execute_script("return angular.element(arguments[0]).scope().enrolment.mark", field_total_score)
+            common_methods = CommonMethods(app.driver)
+            actual_value_total_score = common_methods.get_value_from_text_field(field_total_score)
             try:
                 assert actual_value_total_score == enrollment.total_score
                 assert scale == enrollment.grading_scale
@@ -187,7 +189,8 @@ class TestEditEnrollment(object):
     def test_verify_priority_enrollment(self, app, enrollment):
         with pytest.allure.step('Assert priority'):
             field_priority = app.enrollments_main_page.get_priority()
-            actual_value_priority = app.driver.execute_script("return angular.element(arguments[0]).scope().enrolment.priority", field_priority)
+            common_methods = CommonMethods(app.driver)
+            actual_value_priority = common_methods.get_value_from_text_field(field_priority)
             try:
                 assert actual_value_priority == enrollment.priority
             except AssertionError:
@@ -209,8 +212,9 @@ class TestEditEnrollment(object):
         with pytest.allure.step('Assert type of entry and datailing start of fields'):
             field_type_of_entry = app.enrollments_main_page.get_type_of_entry()
             field_detailing_start = app.enrollments_main_page.get_detailing_start_menu()
-            actual_value_type_of_entry = app.driver.execute_script("var dummy_scope = angular.element(arguments[0]).scope(); return dummy_scope.chiefEnrolTypes[dummy_scope.enrolmentTypes.chiefs-1].name", field_type_of_entry)
-            actual_value_detailing_start = app.driver.execute_script("var res; var outer_scope = angular.element(arguments[0]).scope(); var ar= outer_scope.childEnrolTypes; ar.forEach(function(obj) {if (obj.id == outer_scope.enrolmentTypeId){res = obj};}); return res.name", field_detailing_start)
+            common_methods = CommonMethods(app.driver)
+            actual_value_type_of_entry = common_methods.get_value_from_select(field_type_of_entry)
+            actual_value_detailing_start = common_methods.get_value_from_select(field_detailing_start)
             try:
                 assert actual_value_type_of_entry == enrollment.type_of_entry
                 assert actual_value_detailing_start == enrollment.detailing_start
@@ -229,48 +233,3 @@ class TestEditEnrollment(object):
             except AssertionError:
                 allure.attach('screenshot', app.enrollments_page.driver.get_screenshot_as_png(), type=AttachmentType.PNG)
                 raise
-
-    def is_checkbox_checked(self, checkbox):
-        if checkbox.get_attribute("checked"):
-            return True
-        return False
-
-
-
-
-#     {
-#   "enrollment":
-#   {
-#       "person_name": "Комаров Володимир Михайлович",
-#       "series_of_statements": "ТЦ",
-#       "number_statements": 789654,
-#       "radiobutton_higher_education": "Є вища освіта",
-#       "radiobutton_evaluation_of_the_interview": "Не пройшов співбесіду",
-#       "checkbox_is_state": true,
-#       "checkbox_is_contract": false,
-#       "checkbox_is_privilege": true,
-#       "checkbox_is_hostel": true,
-#       "checkbox_document_is_original": true,
-#       "offers": "Фізичний",
-#       "form_of_education": "Бакалавр",
-#       "document": "Атестат про повну загальну середню освіту",
-#       "grading_scale": "двохсотбальна",
-#       "total_score": 250,
-#       "priority": 3,
-#       "structural_unit": "Фізичний",
-#       "type_of_entry": "За результатами іспитів",
-#       "detailing_start": "Учасник міжнародної олімпіади",
-#       "date_of_entry":
-#       {
-#           "day":17,
-#           "month":10,
-#           "year":2016
-#       },
-#       "date_closing":
-#       {
-#           "day":21,
-#           "month":11,
-#           "year":2017
-#       }
-#   }
-# }

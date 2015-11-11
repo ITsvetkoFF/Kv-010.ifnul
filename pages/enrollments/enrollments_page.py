@@ -30,6 +30,7 @@ class EnrollmentsPage(InternalPage):
                       "accommodation": u'потреб. гуртож.',
                       "not_accommodation": u'не потреб. гуртож.'
                       }
+    TEXT_CORRECT_PAGE_ENROLLMENT = (By.XPATH, "//div[@class='col-md-3']/h2")
     SEARCH_SELECT_DROPDOWN = (By.XPATH, "//select[contains(@class, 'form-control')]")
     SEARCH_FIELD = (By.XPATH, "//input[@ng-model='querySearchBy']")
     SUBMIT_SEARCH_BUTTON = (By.XPATH, "//button[contains(@ng-click, 'startSearch')]")
@@ -164,6 +165,13 @@ class EnrollmentsPage(InternalPage):
     @property
     def hundred_button(self):
         return self.driver.find_element(*self.HUNDRED_BUTTON)
+
+    @property
+    def text_enrollment(self):
+        return self.driver.find_element(*self.TEXT_CORRECT_PAGE_ENROLLMENT)
+
+    def get_text_enrollment(self):
+        return self.text_enrollment.text
 
     def execute_search(self, search_by, req):
         """
