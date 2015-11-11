@@ -6,7 +6,7 @@ __author__ = 'stako'
 
 @pytest.fixture(scope="session")
 def person(dictionary_with_json_files):
-    create_person = PersonCreator(dictionary_with_json_files["person"])
+    create_person = PersonCreator(dictionary_with_json_files["existing_person"])
     person = create_person.create_person_from_json()
     return person
 
