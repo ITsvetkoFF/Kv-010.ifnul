@@ -13,7 +13,6 @@ class CommonMethods():
         ng_options_name = list_from_ng_options.pop(index_ng_options_name).split('.')[1]
         index_ng_options = list_from_ng_options.index("in") + 1
         ng_options = list_from_ng_options.pop(index_ng_options)
-        print ng_model
         value_from_select = self.driver.execute_script("var res; var outer_scope = angular.element(arguments[0]).scope(); ar= outer_scope." + ng_options + \
                                                       "; ar.forEach(function(obj) {if (obj.id == outer_scope." + \
                                                       ng_model + "){res = obj};}); return res." + ng_options_name,
