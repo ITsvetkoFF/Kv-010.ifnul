@@ -61,7 +61,7 @@ class TestEnrollmentScenario(object):
             app.enrollments_main_page.set_date(app.enrollments_main_page.DATE_CLOSING_STATEMENTS, enrollment.date_closing)
             app.enrollments_main_page.iwait_until_page_generate()
         with pytest.allure.step('Save data on the add enrollment page'):
-            app.enrollments_main_page.button_save.click()
+            app.enrollments_main_page.button_save_click()
         with pytest.allure.step('Logout, login after adding enrollment'):
             app.internal_page.wait_until_page_generate()
             app.ensure_logout()

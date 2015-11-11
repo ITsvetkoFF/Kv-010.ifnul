@@ -436,6 +436,15 @@ class PersonsPage(InternalPage):
                 visible_columns_list.append(i + 1)
         return visible_columns_list
 
+    def search_person_by_id(self, person_id):
+        """
+        This method searches person by id.
+        :param person_id: is person id.
+        """
+        self.try_get_input_group().clear()
+        self.try_get_input_group().send_keys(person_id)
+        self.try_get_ok_button().click()
+
     def get_number_from_selector(self, selector):
         return self.driver.find_element(*selector).text
 
