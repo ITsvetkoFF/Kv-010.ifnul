@@ -54,13 +54,13 @@ def edit_person(app, actual_person):
         base_page.click_extra_tab()
     with pytest.allure.step('Fill data on the extra person page'):
         app.extra_page.fill_in_extra_person_page(actual_person)
-        base_page.click_addresses_tab
+        base_page.click_addresses_tab()
     with pytest.allure.step('Fill data on the address person page'):
         app.address_page.fill_in_address_page(actual_person)
-        base_page.click_contacts_tab
+        base_page.click_contacts_tab()
     with pytest.allure.step('Fill data on the contacts person page'):
         app.contact_page.fill_in_contact_page(actual_person)
-        base_page.click_papers_tab
+        base_page.click_papers_tab()
     with pytest.allure.step('Fill data on the documents person page'):
         app.papers_page.fill_in_document_page(actual_person)
         base_page.save_new_person()
@@ -78,13 +78,13 @@ def create_a_person_according_to_the_received_data_from_the_edited_person(app):
         base_page.click_extra_tab()
     with pytest.allure.step('Add info in new person from the extra person page'):
         expected_person = add_info_in_person_from_person_extra_page(app, expected_person)
-        base_page.click_addresses_tab
+        base_page.click_addresses_tab()
     with pytest.allure.step('Add info in new person from the address person page'):
         expected_person = add_info_in_person_from_person_address_page(app, expected_person)
-        base_page.click_contacts_tab
+        base_page.click_contacts_tab()
     with pytest.allure.step('Add info in new person from the contacts person page'):
         expected_person = add_info_in_person_from_person_contact_page(app, expected_person)
-        base_page.click_papers_tab
+        base_page.click_papers_tab()
     with pytest.allure.step('Add info in new person from the documents person page'):
         expected_person = add_info_in_person_from_person_document_page(app, expected_person)
         app.internal_page.persons_page_link

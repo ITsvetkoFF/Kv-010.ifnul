@@ -24,15 +24,15 @@ def test_add_person(app, person, screenshot):
     with pytest.allure.step('Fill data on the extra add person page'):
         extra_page = app.extra_page
         extra_page.fill_in_extra_person_page(person)
-        base_page.click_addresses_tab
+        base_page.click_addresses_tab()
     with pytest.allure.step('Fill data on the address add person page'):
         address_page = app.address_page
         address_page.fill_in_address_page(person)
-        base_page.click_contacts_tab
+        base_page.click_contacts_tab()
     with pytest.allure.step('Fill data on the contacts add person page'):
         contact_page = app.contact_page
         contact_page.fill_in_contact_page(person)
-        base_page.click_papers_tab
+        base_page.click_papers_tab()
     with pytest.allure.step('Fill data on the documents add person page'):
         papers_page = app.papers_page
         papers_page.fill_in_document_page(person)

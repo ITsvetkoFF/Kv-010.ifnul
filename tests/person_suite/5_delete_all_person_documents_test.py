@@ -19,11 +19,11 @@ def test_delete_person_documents(logout_login, person, screenshot):
         base_page = app.person_base_page
         base_page.click_extra_tab()
         base_page.wait_until_page_generate()
-        base_page.click_addresses_tab
+        base_page.click_addresses_tab()
         base_page.wait_until_page_generate()
-        base_page.click_contacts_tab
+        base_page.click_contacts_tab()
         base_page.wait_until_page_generate()
-        base_page.click_papers_tab
+        base_page.click_papers_tab()
         base_page.wait_until_page_generate()
     with pytest.allure.step("Deleting all person's document"):
         app.papers_page.delete_all_person_documents()
@@ -35,11 +35,11 @@ def test_delete_person_documents(logout_login, person, screenshot):
         base_page = app.person_base_page
         base_page.click_extra_tab()
         base_page.wait_until_page_generate()
-        base_page.click_addresses_tab
+        base_page.click_addresses_tab()
         base_page.wait_until_page_generate()
-        base_page.click_contacts_tab
+        base_page.click_contacts_tab()
         base_page.wait_until_page_generate()
-        base_page.click_papers_tab
+        base_page.click_papers_tab()
     with pytest.allure.step("Checking that all person's document are deleted"):
         actual = app.papers_page.get_number_of_person_documents()
         expected = 0

@@ -143,7 +143,7 @@ class AddPersonContactsPage(AddPersonPage):
         :param icq: Integer parameter.
         :return:
         """
-        input_text_in_field(self.icq_field, str(icq))
+        input_text_in_field(self.icq_field, icq)
 
     # general functions
     def fill_in_contact_page(self, person):
