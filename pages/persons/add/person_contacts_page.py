@@ -169,6 +169,7 @@ class AddPersonContactsPage(AddPersonPage):
         :return:
         """
         self.is_this_page
+        self.wait_until_page_generate()
         common_methods = CommonMethods(self.driver)
         person_new.mobile_phone1 = common_methods.get_value_from_text_field(self.driver.find_element(*self.MOBILE_PHONE1_INPUT))
         person_new.mobile_phone2 = common_methods.get_value_from_text_field(self.driver.find_element(*self.MOBILE_PHONE2_INPUT))

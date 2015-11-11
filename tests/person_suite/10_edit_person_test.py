@@ -13,9 +13,9 @@ def test_edit_person(logout_login, person_for_edit, screenshot):
         id_of_person_in_first_row = app.persons_page.id_of_person_in_first_row().text
         app.persons_page.edit_first_person_in_page.click()
         edit_person(app, expected_person)
+        app.persons_page.search_person_by_id(id_of_person_in_first_row)
         # this variable changes unicode because there is invisible mistake in web application
         expected_person.post_registration_place["type"] = expected_person.post_registration_place["type"].encode('cp1251')
-        app.persons_page.search_person_by_id(id_of_person_in_first_row)
         app.persons_page.edit_first_person_in_page.click()
         actual_person = create_a_person_according_to_the_received_data_from_the_edited_person(app)
         list_with_not_matching_fields = compare_fields_of_persons(expected_person, actual_person)
@@ -75,7 +75,7 @@ def create_a_person_according_to_the_received_data_from_the_edited_person(app):
     base_page = app.person_base_page
     with pytest.allure.step('Add info in new person from the main person page'):
         expected_person = add_info_in_person_from_person_main_page(app, expected_person)
-        base_page.click_extra_tab
+        base_page.click_extra_tab()
     with pytest.allure.step('Add info in new person from the extra person page'):
         expected_person = add_info_in_person_from_person_extra_page(app, expected_person)
         base_page.click_addresses_tab
