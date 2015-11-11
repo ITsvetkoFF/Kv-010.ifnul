@@ -10,11 +10,10 @@ from pyvirtualdisplay import Display
 from model.application import Application
 from utils.data_provider_from_json import DataProviderJSON
 from utils.configuration import Configuration
-import datetime
 
 
 def pytest_addoption(parser):
-    parser.addoption("--browser", action="store", default="firefox")
+    parser.addoption("--browser", action="store", default="phantom")
     parser.addoption("--base_url", action="store", default="http://192.168.96.134:9000/")
     # parser.addoption("--base_url", action="store", default="http://194.44.198.221/")
     parser.addoption("--jenkins_display", action="store_true")
@@ -50,7 +49,6 @@ def app(request, browser_type, base_url, jenkins_display):
     you can write in the console something like >>> py.test --browser "chrome"
     :return: new Application with chosen or default params
     """
-    start_time = datetime.datetime.now()
     if jenkins_display:
         display = Display(visible=0, size=(1366, 768))
         display.start()
