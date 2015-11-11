@@ -60,6 +60,8 @@ def app(request, browser_type, base_url, jenkins_display):
         driver = webdriver.Ie()
     elif browser_type == "phantom":
         driver = webdriver.PhantomJS('/phantomjs/bin/./phantomjs')
+    elif browser_type == "phantomWin":
+        driver = webdriver.PhantomJS()
     request.addfinalizer(driver.quit)
     return Application(driver, base_url)
 
