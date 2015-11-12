@@ -20,7 +20,7 @@ class TestSearchPersonBy(object):
         return create_person.create_person_from_json()
 
     @pytest.fixture
-    def values(request):
+    def values_for_enrollment_test(request):
         return DataProviderJSON("values_for_enrollment_test.json").get_dict_value()
 
     def search_by(self, app, searched_value, searched_by_option):
@@ -112,9 +112,9 @@ class TestSearchPersonBy(object):
             screenshot.assert_and_get_screenshot(logout_login, self.search_by_pib_and_surname(logout_login, real_person.second_name_ukr, 0, True))
 
     @pytest.allure.severity(pytest.allure.severity_level.NORMAL)
-    def test_search_by_pib_invalid(self, logout_login, values, screenshot):
+    def test_search_by_pib_invalid(self, logout_login, values_for_enrollment_test, screenshot):
         with pytest.allure.step('Assert that the search by person pib result is empty because searched value is invalid'):
-            screenshot.assert_and_get_screenshot(logout_login, self.search_by_pib_and_surname(logout_login, values["search_by"]["invalid_pib"], 0, False))
+            screenshot.assert_and_get_screenshot(logout_login, self.search_by_pib_and_surname(logout_login, values_for_enrollment_test["search_by"]["invalid_pib"], 0, False))
 
     @pytest.allure.severity(pytest.allure.severity_level.NORMAL)
     def test_search_by_surname_valid(self, logout_login, real_person, screenshot):
@@ -127,14 +127,14 @@ class TestSearchPersonBy(object):
             screenshot.assert_and_get_screenshot(logout_login, self.search_by_pib_and_surname(logout_login, real_person.second_name_ukr, 1, False))
 
     @pytest.allure.severity(pytest.allure.severity_level.NORMAL)
-    def test_search_by_person_id_valid(self, logout_login, values, screenshot):
+    def test_search_by_person_id_valid(self, logout_login, values_for_enrollment_test, screenshot):
         with pytest.allure.step('Assert that the search by person id result is the same as in the input field'):
-            screenshot.assert_and_get_screenshot(logout_login, self.search_by_person_id(logout_login, values["search_by"]["valid_person_id"], 2, True))
+            screenshot.assert_and_get_screenshot(logout_login, self.search_by_person_id(logout_login, values_for_enrollment_test["search_by"]["valid_person_id"], 2, True))
 
     @pytest.allure.severity(pytest.allure.severity_level.NORMAL)
-    def test_search_by_person_id_invalid(self, logout_login, values, screenshot):
+    def test_search_by_person_id_invalid(self, logout_login, values_for_enrollment_test, screenshot):
         with pytest.allure.step('Assert that the search by person id result is empty because searched value is invalid'):
-            screenshot.assert_and_get_screenshot(logout_login, self.search_by_person_id(logout_login, values["search_by"]["invalid_person_id"], 2, False))
+            screenshot.assert_and_get_screenshot(logout_login, self.search_by_person_id(logout_login, values_for_enrollment_test["search_by"]["invalid_person_id"], 2, False))
 
     @pytest.allure.severity(pytest.allure.severity_level.NORMAL)
     def test_search_by_doc_number_valid(self, logout_login, real_person, screenshot):
@@ -142,7 +142,7 @@ class TestSearchPersonBy(object):
             screenshot.assert_and_get_screenshot(logout_login, self.search_by_doc_number(logout_login, real_person.documents[0].document_case_number,
                                                                                          real_person.surname_ukr, 3, True))
     @pytest.allure.severity(pytest.allure.severity_level.NORMAL)
-    def test_search_by_doc_number_invalid(self, logout_login, values, screenshot):
+    def test_search_by_doc_number_invalid(self, logout_login, values_for_enrollment_test, screenshot):
         with pytest.allure.step('Assert that the search by document number result is empty because searched value is invalid'):
-            screenshot.assert_and_get_screenshot(logout_login, self.search_by_doc_number(logout_login, int(values["search_by"]["invalid_document_number"]),
-                                                                                         values["search_by"]["invalid_pib"], 3, False))
+            screenshot.assert_and_get_screenshot(logout_login, self.search_by_doc_number(logout_login, int(values_for_enrollment_test["search_by"]["invalid_document_number"]),
+                                                                                         values_for_enrollment_test["search_by"]["invalid_pib"], 3, False))
