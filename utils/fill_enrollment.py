@@ -39,9 +39,8 @@ class FillEnrollment(object):
         This method creates the instance of AddEnrollment with data from json file.
         :param file_name: is name of json file.
         :param name_of_dict: is name one of the dictionaries in json file.
-        :return: instance of AddEnrollment.
+        :return: instance of Enrollment.
         """
-        # enrollment = AddEnrollment()
         enrollment = Enrollment()
         enrollment_json = self.parseJson(file_name, name_of_dict)
         enrollment.person_name = enrollment_json["person_name"].encode('utf8')
@@ -72,46 +71,46 @@ class FillEnrollment(object):
                                                 enrollment_json["date_closing"]["day"])
         return enrollment
 
-    def get_enrollment_from_table(self, dict_values_of_enrollment):
-        """
-        This methods creates the instance of TableEnrollment with data from dictionary.
-        :param dict_values_of_enrollment: is dictionary for instance create.
-        :return: instance of TableEnrollment.
-        """
-        enrollment = TableEnrollment()
-        enrollment.budget = dict_values_of_enrollment["Бюджет".decode('utf8')]
-        enrollment.contract = dict_values_of_enrollment["Контракт".decode('utf8')]
-        enrollment.unit = dict_values_of_enrollment["Підрозділ".decode('utf8')].encode('utf8')
-        enrollment.total_score = dict_values_of_enrollment["Загальний бал".decode('utf8')]
-        enrollment.is_privilege = dict_values_of_enrollment["Наявність пільг".decode('utf8')]
-        enrollment.doc_series = dict_values_of_enrollment["Серія док.".decode('utf8')]
-        enrollment.doc_number = dict_values_of_enrollment["Номер док.".decode('utf8')]
-        enrollment.is_hostel = dict_values_of_enrollment["Потреб. гуртож".decode('utf8')]
-        enrollment.type_of_entry = dict_values_of_enrollment["Тип поступлення".decode('utf8')]
-        enrollment.date_of_create = dict_values_of_enrollment["Дата створення".decode('utf8')]
-        enrollment.date_from = dict_values_of_enrollment["Дата дії (з)".decode('utf8')]
-        enrollment.date_till = dict_values_of_enrollment["Дата дії (по)".decode('utf8')]
-        return enrollment
-
-    def table_enrollment_from_json(self, name_of_json, name_of_dict):
-        """
-        This methods creates the instance of TableEnrollment with data from json file.
-        :param name_of_json: is name of json file.
-        :param name_of_dict: is name one of the dictionaries in json file.
-        :return: instance of TableEnrollment.
-        """
-        enrollment = self.create_enrollment_from_json(name_of_json, name_of_dict)
-        table_enrollment = TableEnrollment()
-        table_enrollment.budget = enrollment.checkbox_is_state
-        table_enrollment.contract = enrollment.checkbox_is_contract
-        table_enrollment.unit = enrollment.structural_unit
-        table_enrollment.total_score = enrollment.total_score
-        table_enrollment.is_privilege = enrollment.checkbox_is_privilege
-        table_enrollment.doc_series = enrollment.series_of_statements
-        table_enrollment.doc_number = enrollment.number_statements
-        table_enrollment.is_hostel = enrollment.checkbox_is_hostel
-        table_enrollment.type_of_entry = enrollment.detailing_start.decode('utf8')
-        table_enrollment.date_of_create = date.today()
-        table_enrollment.date_from = enrollment.date_of_entry
-        table_enrollment.date_till = enrollment.date_closing
-        return table_enrollment
+    # def get_enrollment_from_table(self, dict_values_of_enrollment):
+    #     """
+    #     This methods creates the instance of TableEnrollment with data from dictionary.
+    #     :param dict_values_of_enrollment: is dictionary for instance create.
+    #     :return: instance of TableEnrollment.
+    #     """
+    #     enrollment = TableEnrollment()
+    #     enrollment.budget = dict_values_of_enrollment["Бюджет".decode('utf8')]
+    #     enrollment.contract = dict_values_of_enrollment["Контракт".decode('utf8')]
+    #     enrollment.unit = dict_values_of_enrollment["Підрозділ".decode('utf8')].encode('utf8')
+    #     enrollment.total_score = dict_values_of_enrollment["Загальний бал".decode('utf8')]
+    #     enrollment.is_privilege = dict_values_of_enrollment["Наявність пільг".decode('utf8')]
+    #     enrollment.doc_series = dict_values_of_enrollment["Серія док.".decode('utf8')]
+    #     enrollment.doc_number = dict_values_of_enrollment["Номер док.".decode('utf8')]
+    #     enrollment.is_hostel = dict_values_of_enrollment["Потреб. гуртож".decode('utf8')]
+    #     enrollment.type_of_entry = dict_values_of_enrollment["Тип поступлення".decode('utf8')]
+    #     enrollment.date_of_create = dict_values_of_enrollment["Дата створення".decode('utf8')]
+    #     enrollment.date_from = dict_values_of_enrollment["Дата дії (з)".decode('utf8')]
+    #     enrollment.date_till = dict_values_of_enrollment["Дата дії (по)".decode('utf8')]
+    #     return enrollment
+    #
+    # def table_enrollment_from_json(self, name_of_json, name_of_dict):
+    #     """
+    #     This methods creates the instance of TableEnrollment with data from json file.
+    #     :param name_of_json: is name of json file.
+    #     :param name_of_dict: is name one of the dictionaries in json file.
+    #     :return: instance of TableEnrollment.
+    #     """
+    #     enrollment = self.create_enrollment_from_json(name_of_json, name_of_dict)
+    #     table_enrollment = TableEnrollment()
+    #     table_enrollment.budget = enrollment.checkbox_is_state
+    #     table_enrollment.contract = enrollment.checkbox_is_contract
+    #     table_enrollment.unit = enrollment.structural_unit
+    #     table_enrollment.total_score = enrollment.total_score
+    #     table_enrollment.is_privilege = enrollment.checkbox_is_privilege
+    #     table_enrollment.doc_series = enrollment.series_of_statements
+    #     table_enrollment.doc_number = enrollment.number_statements
+    #     table_enrollment.is_hostel = enrollment.checkbox_is_hostel
+    #     table_enrollment.type_of_entry = enrollment.detailing_start.decode('utf8')
+    #     table_enrollment.date_of_create = date.today()
+    #     table_enrollment.date_from = enrollment.date_of_entry
+    #     table_enrollment.date_till = enrollment.date_closing
+    #     return table_enrollment

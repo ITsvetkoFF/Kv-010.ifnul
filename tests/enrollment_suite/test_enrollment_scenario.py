@@ -2,14 +2,13 @@ from model.user import User
 from utils.data_provider_from_json import DataProviderJSON
 from utils.enrollment_creator import EnrollmentCreator
 import pytest
-from time import sleep
+from utils.web_elem_utils import checkbox_set_state
+from utils.web_elem_utils import is_checkbox_checked
 
 __author__ = 'acidroed'
 
 
 class TestEnrollmentScenario(object):
-
-    speciality_id = ""
 
     @pytest.fixture
     def enrollment(request):
@@ -20,11 +19,11 @@ class TestEnrollmentScenario(object):
         return EnrollmentCreator("enrollment_valid.json").get_enrollment()
 
     @pytest.fixture
-    def values(request):
+    def values_for_enrollment_test(request):
         return DataProviderJSON("values_for_enrollment_test.json").get_dict_value()
 
     @pytest.allure.severity(pytest.allure.severity_level.CRITICAL)
-    def test_add_enrollment(self, logout_login, enrollment, values, screenshot):
+    def test_add_enrollment(self, logout_login, enrollment, screenshot):
         with pytest.allure.step('Authorize to the application and click add enrollment button'):
             app = logout_login
             app.internal_page.enrollments_page_link.click()
@@ -36,16 +35,15 @@ class TestEnrollmentScenario(object):
         with pytest.allure.step('Fill data on the add enrollment page'):
             app.enrollments_main_page.emulation_of_input(app.enrollments_main_page.SERIES_OF_STATEMENTS, enrollment.series_of_statements)
             app.enrollments_main_page.emulation_of_input(app.enrollments_main_page.NUMBER_STATEMENTS, enrollment.number_statements)
-            app.enrollments_main_page.click_all_checkbox(enrollment.checkbox_is_state,
-                                    enrollment.checkbox_is_contract,
-                                    enrollment.checkbox_is_privilege,
-                                    enrollment.checkbox_is_hostel,
-                                    enrollment.checkbox_document_is_original)
+            checkbox_set_state(app.enrollments_main_page.find_checkbox_is_state(), enrollment.checkbox_is_state)
+            checkbox_set_state(app.enrollments_main_page.find_checkbox_is_contract(), enrollment.checkbox_is_contract)
+            checkbox_set_state(app.enrollments_main_page.find_checkbox_is_privilege(), enrollment.checkbox_is_privilege)
+            checkbox_set_state(app.enrollments_main_page.find_checkbox_is_hostel(), enrollment.checkbox_is_hostel)
+            checkbox_set_state(app.enrollments_main_page.find_checkbox_document_is_original(), enrollment.checkbox_document_is_original)
             app.enrollments_main_page.radiobutton_higher_education(enrollment.radiobutton_higher_education)
             app.enrollments_main_page.radiobutton_evaluation_of_the_interview(enrollment.radiobutton_evaluation_of_the_interview)
         with pytest.allure.step('Search and choose proposition of speciality for person'):
             app.enrollments_main_page.search_offers(enrollment.offers, enrollment.form_of_education)
-            self.speciality_id = app.enrollments_main_page.find_first_specialities_id().text
             app.enrollments_main_page.choose_first_specialties.click()
         with pytest.allure.step('Choose document to attach to the enrollment'):
             app.enrollments_main_page.choose_document(enrollment.document)
@@ -59,68 +57,60 @@ class TestEnrollmentScenario(object):
         with pytest.allure.step('Choose beginning and closing dates on the add enrollment page'):
             app.enrollments_main_page.set_date(app.enrollments_main_page.DATE_OF_ENTRY_STATEMENTS, enrollment.date_of_entry)
             app.enrollments_main_page.set_date(app.enrollments_main_page.DATE_CLOSING_STATEMENTS, enrollment.date_closing)
-            app.enrollments_main_page.iwait_until_page_generate()
+            app.enrollments_main_page.wait_until_page_generate()
         with pytest.allure.step('Save data on the add enrollment page'):
             app.enrollments_main_page.button_save_click()
         with pytest.allure.step('Logout, login after adding enrollment'):
             app.internal_page.wait_until_page_generate()
             app.ensure_logout()
             app.login(User.Admin(), True)
-        with pytest.allure.step('Search person which enrollment was added to on the enrollment page'):
+        with pytest.allure.step('Search enrollment which was added'):
             app.internal_page.wait_until_page_generate()
             app.internal_page.enrollments_page_link.click()
             app.enrollments_page.is_this_page()
-            actual_search = app.enrollments_page.search_enrollment(app.enrollments_page.SEARCH_METHOD["person_id"], values["search_by"]["valid_person_id"])
-        with pytest.allure.step('Assert person ID is the same person ID which enrollment was added to'):
-            screenshot.assert_and_get_screenshot(app, values["search_by"]["valid_person_id"] == int(actual_search[0]))
-            # assert values["search_by"]["valid_person_id"] == int(actual_search[0])
+            actual_search = app.enrollments_page.search_enrollment(app.enrollments_page.SEARCH_METHOD["document_number"], str(enrollment.number_statements))
+        with pytest.allure.step('Assert document number is the same document number which was added'):
+            screenshot.assert_and_get_screenshot(app, str(enrollment.number_statements) == actual_search[0])
 
     @pytest.allure.severity(pytest.allure.severity_level.CRITICAL)
-    def test_view_enrollment(self, logout_login, values, enrollment, screenshot):
+    def test_view_enrollment(self, logout_login, enrollment, screenshot):
         with pytest.allure.step('Authorize to the application and view enrollment page'):
             app = logout_login
             app.internal_page.enrollments_page_link.click()
             app.enrollments_page.is_this_page()
-        with pytest.allure.step('Search person which enrollment was added to on the enrollment page'):
-            actual_search = app.enrollments_page.search_enrollment(app.enrollments_page.SEARCH_METHOD["person_id"], values["search_by"]["valid_person_id"])
-        with pytest.allure.step('Assert person ID is the same person ID which enrollment was added to'):
-            screenshot.assert_and_get_screenshot(app, values["search_by"]["valid_person_id"] == int(actual_search[0]))
-            # assert values["search_by"]["valid_person_id"] == int(actual_search[0])
+        with pytest.allure.step('Search enrollment which was added'):
+            actual_search = app.enrollments_page.search_enrollment(app.enrollments_page.SEARCH_METHOD["document_number"], str(enrollment.number_statements))
+        with pytest.allure.step('Assert document number is the same document number which was added'):
+            screenshot.assert_and_get_screenshot(app, str(enrollment.number_statements) == actual_search[0])
         with pytest.allure.step('View added enrollment'):
             app.enrollments_page.edit_button_on_first_row_click()
         with pytest.allure.step('Assert series of enrollment is the same as from input data'):
             screenshot.assert_and_get_screenshot(app, app.enrollments_main_page.find_series_of_statements().get_attribute("value") == enrollment.series_of_statements)
-            # assert app.enrollments_main_page.find_series_of_statements().get_attribute("value") == enrollment.series_of_statements
         with pytest.allure.step('Assert number of enrollment is the same as from input data'):
             screenshot.assert_and_get_screenshot(app, app.enrollments_main_page.find_number_statements().get_attribute("value") == str(enrollment.number_statements))
-            # assert app.enrollments_main_page.find_number_statements().get_attribute("value") == str(enrollment.number_statements)
         with pytest.allure.step('Assert "is state" checkbox of enrollment is the same as from input data'):
-            screenshot.assert_and_get_screenshot(app, self.is_checkbox_checked(app.enrollments_main_page.find_checkbox_is_state()) == enrollment.checkbox_is_state)
-            # assert self.is_checkbox_checked(app.enrollments_main_page.find_checkbox_is_state()) == enrollment.checkbox_is_state
+            screenshot.assert_and_get_screenshot(app, is_checkbox_checked(app.enrollments_main_page.find_checkbox_is_state()) == enrollment.checkbox_is_state)
         with pytest.allure.step('Assert "is contract" checkbox is the same as from input data'):
-            screenshot.assert_and_get_screenshot(app, self.is_checkbox_checked(app.enrollments_main_page.find_checkbox_is_contract()) == enrollment.checkbox_is_contract)
-            assert self.is_checkbox_checked(app.enrollments_main_page.find_checkbox_is_contract()) == enrollment.checkbox_is_contract
+            screenshot.assert_and_get_screenshot(app, is_checkbox_checked(app.enrollments_main_page.find_checkbox_is_contract()) == enrollment.checkbox_is_contract)
+            assert is_checkbox_checked(app.enrollments_main_page.find_checkbox_is_contract()) == enrollment.checkbox_is_contract
         with pytest.allure.step('Assert "is privilege" checkbox is the same as from input data'):
-            screenshot.assert_and_get_screenshot(app, self.is_checkbox_checked(app.enrollments_main_page.find_checkbox_is_contract()) == enrollment.checkbox_is_contract)
-            # assert self.is_checkbox_checked(app.enrollments_main_page.find_checkbox_is_privilege()) == enrollment.checkbox_is_privilege
+            screenshot.assert_and_get_screenshot(app, is_checkbox_checked(app.enrollments_main_page.find_checkbox_is_contract()) == enrollment.checkbox_is_contract)
         with pytest.allure.step('Assert "is hostel" checkbox is the same as from input data'):
-            screenshot.assert_and_get_screenshot(app, self.is_checkbox_checked(app.enrollments_main_page.find_checkbox_is_hostel()) == enrollment.checkbox_is_hostel)
-            assert self.is_checkbox_checked(app.enrollments_main_page.find_checkbox_is_hostel()) == enrollment.checkbox_is_hostel
+            screenshot.assert_and_get_screenshot(app, is_checkbox_checked(app.enrollments_main_page.find_checkbox_is_hostel()) == enrollment.checkbox_is_hostel)
+            assert is_checkbox_checked(app.enrollments_main_page.find_checkbox_is_hostel()) == enrollment.checkbox_is_hostel
         with pytest.allure.step('Assert total score is the same as from input data'):
             screenshot.assert_and_get_screenshot(app, app.enrollments_main_page.find_total_score().get_attribute("value") == str(enrollment.total_score))
-            # assert app.enrollments_main_page.find_total_score().get_attribute("value") == str(enrollment.total_score)
 
     @pytest.allure.severity(pytest.allure.severity_level.CRITICAL)
-    def test_delete_enrollment(self, logout_login, values, enrollment, screenshot):
+    def test_delete_enrollment(self, logout_login, values_for_enrollment_test, screenshot):
         with pytest.allure.step('Authorize to the application and view enrollment page'):
             app = logout_login
             app.internal_page.enrollments_page_link.click()
             app.enrollments_page.is_this_page()
         with pytest.allure.step('Search person which enrollment was added to on the enrollment page'):
-            actual_search = app.enrollments_page.search_enrollment(app.enrollments_page.SEARCH_METHOD["person_id"], values["search_by"]["valid_person_id"])
+            actual_search = app.enrollments_page.search_enrollment(app.enrollments_page.SEARCH_METHOD["person_id"], str(values_for_enrollment_test["search_by"]["valid_person_id"]))
         with pytest.allure.step('Assert person ID is the same person ID which enrollment was added to'):
-            screenshot.assert_and_get_screenshot(app, values["search_by"]["valid_person_id"] == int(actual_search[0]))
-            # assert values["search_by"]["valid_person_id"] == int(actual_search[0])
+            screenshot.assert_and_get_screenshot(app, values_for_enrollment_test["search_by"]["valid_person_id"] == int(actual_search[0]))
         with pytest.allure.step('Delete enrollment button click'):
             app.enrollments_page.delete_button_on_first_row_click()
             app.internal_page.wait_until_page_generate()
@@ -131,12 +121,8 @@ class TestEnrollmentScenario(object):
             app.internal_page.wait_until_page_generate()
             app.internal_page.enrollments_page_link.click()
             app.enrollments_page.is_this_page()
-            actual_search = app.enrollments_page.search_enrollment(app.enrollments_page.SEARCH_METHOD["person_id"], values["search_by"]["valid_person_id"])
+            actual_search = app.enrollments_page.search_enrollment(app.enrollments_page.SEARCH_METHOD["person_id"], str(values_for_enrollment_test["search_by"]["valid_person_id"]))
         with pytest.allure.step('Assert that the person id is not exist in searching result'):
-            screenshot.assert_and_get_screenshot(app, not values["search_by"]["valid_person_id"] == int(actual_search[0]))
-            # assert not values["search_by"]["valid_person_id"] == int(actual_search[0])
+            screenshot.assert_and_get_screenshot(app, not values_for_enrollment_test["search_by"]["valid_person_id"] == int(actual_search[0]))
 
-    def is_checkbox_checked(self, checkbox):
-        if checkbox.get_attribute("checked"):
-            return True
-        return False
+

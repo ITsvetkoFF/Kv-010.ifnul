@@ -285,6 +285,10 @@ class EnrollmentsMainPage(InternalPage):
         self.is_element_visible(self.CHECKBOX_IS_PRIVILEGE)
         return self.driver.find_element(*self.CHECKBOX_IS_PRIVILEGE)
 
+    def find_checkbox_document_is_original(self):
+        self.is_element_visible(self.CHECKBOX_DOCUMENT_IS_ORIGINAL)
+        return self.driver.find_element(*self.CHECKBOX_DOCUMENT_IS_ORIGINAL)
+
     def find_radiobutton_getting_education(self):
         self.is_element_visible(self.RADIOBUTTON_GETTING_EDUCATION)
         return self.driver.find_element(*self.RADIOBUTTON_GETTING_EDUCATION)
@@ -336,20 +340,20 @@ class EnrollmentsMainPage(InternalPage):
         """
         self.emulation_of_input(self.SEARCH_PERSON_BY_INPUT, searched_value)
 
-    def click_all_checkbox(self, state, contract, privilege, hostel, document):
-        """
-        This method sets value in all checkbox.
-        :param state: is value of checkbox "budget".
-        :param contract: is value of checkbox "contract".
-        :param privilege: is value of checkbox "privilege".
-        :param hostel: is value of checkbox "need hostel".
-        :param document: is value of checkbox "document is original".
-        """
-        self.set_state_status(state)
-        self.set_contract_status(contract)
-        self.set_privilege_status(privilege)
-        self.set_hostel_status(hostel)
-        self.set_document_original_status(document)
+    # def click_all_checkbox(self, state, contract, privilege, hostel, document):
+    #     """
+    #     This method sets value in all checkbox.
+    #     :param state: is value of checkbox "budget".
+    #     :param contract: is value of checkbox "contract".
+    #     :param privilege: is value of checkbox "privilege".
+    #     :param hostel: is value of checkbox "need hostel".
+    #     :param document: is value of checkbox "document is original".
+    #     """
+    #     self.set_state_status(state)
+    #     self.set_contract_status(contract)
+    #     self.set_privilege_status(privilege)
+    #     self.set_hostel_status(hostel)
+    #     self.set_document_original_status(document)
 
     def certain_number_statements(self, c_number_statements):
         try:
@@ -415,11 +419,11 @@ class EnrollmentsMainPage(InternalPage):
             self.add_person_in_enrollment(enrollment.person_name)
         self.emulation_of_input(self.SERIES_OF_STATEMENTS, enrollment.series_of_statements)
         self.emulation_of_input(self.NUMBER_STATEMENTS, enrollment.number_statements)
-        self.click_all_checkbox(enrollment.checkbox_is_state,
-                                enrollment.checkbox_is_contract,
-                                enrollment.checkbox_is_privilege,
-                                enrollment.checkbox_is_hostel,
-                                enrollment.checkbox_document_is_original)
+        checkbox_set_state(self.enrollments_main_page.find_checkbox_is_state(), enrollment.checkbox_is_state)
+        checkbox_set_state(self.enrollments_main_page.find_checkbox_is_contract(), enrollment.checkbox_is_contract)
+        checkbox_set_state(self.enrollments_main_page.find_checkbox_is_privilege(), enrollment.checkbox_is_privilege)
+        checkbox_set_state(self.enrollments_main_page.find_checkbox_is_hostel(), enrollment.checkbox_is_hostel)
+        checkbox_set_state(self.enrollments_main_page.find_checkbox_document_is_original(), enrollment.checkbox_document_is_original)
         self.radiobutton_higher_education(enrollment.radiobutton_higher_education)
         self.radiobutton_evaluation_of_the_interview(enrollment.radiobutton_evaluation_of_the_interview)
         self.search_offers(enrollment.offers, enrollment.form_of_education)
