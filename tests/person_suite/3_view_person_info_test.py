@@ -1,4 +1,5 @@
 # coding=utf-8
+
 import allure
 from allure.constants import AttachmentType
 import pytest

@@ -9,7 +9,6 @@ import datetime
 
 
 class PersonCreator(object):
-
     def __init__(self, file):
         self.file = file
 
@@ -75,4 +74,9 @@ class PersonCreator(object):
             document.average_rate = doc["average_rate"]
             document.pincode = doc["pincode"]
             person.documents.append(document)
+        return person
+
+    def create_readom_person(self):
+        person = Person()
+
         return person

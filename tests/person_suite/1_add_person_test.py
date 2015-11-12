@@ -16,6 +16,7 @@ def test_add_person(app, person, screenshot):
         person_page = app.persons_page
         person_page.is_this_page()
         person_page.add_person_link
+        person_page.wait_until_page_generate()
         base_page = app.person_base_page
     with pytest.allure.step('Fill data on the main add person page'):
         main_page = app.main_page
@@ -36,7 +37,9 @@ def test_add_person(app, person, screenshot):
     with pytest.allure.step('Fill data on the documents add person page'):
         papers_page = app.papers_page
         papers_page.fill_in_document_page(person)
+        papers_page.wait_until_page_generate()
         base_page.save_new_person()
+        #base_page.persons_page_link.click()
     with pytest.allure.step('Assert surname of added person is the same as from input data'):
         screenshot.assert_and_get_screenshot(app, app.persons_page.return_added_person_surname(person) == person.surname_ukr)
 #         try:

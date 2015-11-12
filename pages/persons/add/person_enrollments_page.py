@@ -1,4 +1,5 @@
 from selenium.webdriver.common.by import By
+
 from pages.internal_page import InternalPage
 
 __author__ = 'Evgen'
