@@ -19,7 +19,7 @@ class TestEnrollmentScenario(object):
         return EnrollmentCreator("enrollment_valid.json").get_enrollment()
 
     @pytest.fixture
-    def values(request):
+    def values_for_enrollment_test(request):
         return DataProviderJSON("values_for_enrollment_test.json").get_dict_value()
 
     @pytest.allure.severity(pytest.allure.severity_level.CRITICAL)
@@ -102,15 +102,15 @@ class TestEnrollmentScenario(object):
             screenshot.assert_and_get_screenshot(app, app.enrollments_main_page.find_total_score().get_attribute("value") == str(enrollment.total_score))
 
     @pytest.allure.severity(pytest.allure.severity_level.CRITICAL)
-    def test_delete_enrollment(self, logout_login, values, screenshot):
+    def test_delete_enrollment(self, logout_login, values_for_enrollment_test, screenshot):
         with pytest.allure.step('Authorize to the application and view enrollment page'):
             app = logout_login
             app.internal_page.enrollments_page_link.click()
             app.enrollments_page.is_this_page()
         with pytest.allure.step('Search person which enrollment was added to on the enrollment page'):
-            actual_search = app.enrollments_page.search_enrollment(app.enrollments_page.SEARCH_METHOD["person_id"], str(values["search_by"]["valid_person_id"]))
+            actual_search = app.enrollments_page.search_enrollment(app.enrollments_page.SEARCH_METHOD["person_id"], str(values_for_enrollment_test["search_by"]["valid_person_id"]))
         with pytest.allure.step('Assert person ID is the same person ID which enrollment was added to'):
-            screenshot.assert_and_get_screenshot(app, values["search_by"]["valid_person_id"] == int(actual_search[0]))
+            screenshot.assert_and_get_screenshot(app, values_for_enrollment_test["search_by"]["valid_person_id"] == int(actual_search[0]))
         with pytest.allure.step('Delete enrollment button click'):
             app.enrollments_page.delete_button_on_first_row_click()
             app.internal_page.wait_until_page_generate()
@@ -121,8 +121,8 @@ class TestEnrollmentScenario(object):
             app.internal_page.wait_until_page_generate()
             app.internal_page.enrollments_page_link.click()
             app.enrollments_page.is_this_page()
-            actual_search = app.enrollments_page.search_enrollment(app.enrollments_page.SEARCH_METHOD["person_id"], str(values["search_by"]["valid_person_id"]))
+            actual_search = app.enrollments_page.search_enrollment(app.enrollments_page.SEARCH_METHOD["person_id"], str(values_for_enrollment_test["search_by"]["valid_person_id"]))
         with pytest.allure.step('Assert that the person id is not exist in searching result'):
-            screenshot.assert_and_get_screenshot(app, not values["search_by"]["valid_person_id"] == int(actual_search[0]))
+            screenshot.assert_and_get_screenshot(app, not values_for_enrollment_test["search_by"]["valid_person_id"] == int(actual_search[0]))
 
 
