@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from utils.web_elem_utils import checkbox_set_state, dropdown_select_by_text, input_text_in_field,checkbox_set_state
+from utils.web_elem_utils import checkbox_set_state, dropdown_select_by_text, input_text_in_field,checkbox_set_state, \
+    is_checkbox_checked
 
 __author__ = 'Deorditsa'
 

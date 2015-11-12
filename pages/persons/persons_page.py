@@ -441,6 +441,8 @@ class PersonsPage(InternalPage):
         This method searches person by id.
         :param person_id: is person id.
         """
+        self.is_this_page()
+        self.try_get_choose_person_id().click()
         self.try_get_input_group().clear()
         self.try_get_input_group().send_keys(person_id)
         self.try_get_ok_button().click()
