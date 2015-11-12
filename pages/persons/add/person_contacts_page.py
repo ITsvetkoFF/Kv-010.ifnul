@@ -1,9 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from selenium.webdriver.common.by import By
+
 from utils.web_elem_utils import input_text_in_field
 from person_base_page import AddPersonPage
-from selenium.webdriver.common.by import By
 from utils.common_methods import CommonMethods
+
 __author__ = 'Deorditsa'
 
 
@@ -53,33 +55,9 @@ class AddPersonContactsPage(AddPersonPage):
     @property
     def icq_field(self):
         return self.driver.find_element(*self.ICQ_INPUT)
-    
-    def mobile_phone1_input(self):
-        return self.is_element_visible(self.MOBILE_PHONE1_INPUT)
-
-    def mobile_phone2_input(self):
-        return self.is_element_visible(self.MOBILE_PHONE2_INPUT)
-
-    def home_phone_input(self):
-        return self.is_element_visible(self.HOME_PHONE_INPUT)
-
-    def work_phone_input(self):
-        return self.is_element_visible(self.WORK_PHONE_INPUT)
-
-    def email_input(self):
-        return self.is_element_visible(self.EMAIL_INPUT)
-
-    def skype_input(self):
-        return self.is_element_visible(self.SKYPE_INPUT)
-
-    def site_input(self):
-        return self.is_element_visible(self.SITE_INPUT)
-
-    def icq_input(self):
-        return self.is_element_visible(self.ICQ_INPUT)
 
     # web element's functions
-   
+
 
     def set_first_mobile_phone(self, phone):
         """
@@ -171,10 +149,14 @@ class AddPersonContactsPage(AddPersonPage):
         self.is_this_page
         self.wait_until_page_generate()
         common_methods = CommonMethods(self.driver)
-        person_new.mobile_phone1 = common_methods.get_value_from_text_field(self.driver.find_element(*self.MOBILE_PHONE1_INPUT))
-        person_new.mobile_phone2 = common_methods.get_value_from_text_field(self.driver.find_element(*self.MOBILE_PHONE2_INPUT))
-        person_new.home_phone = common_methods.get_value_from_text_field(self.driver.find_element(*self.HOME_PHONE_INPUT))
-        person_new.work_phone = common_methods.get_value_from_text_field(self.driver.find_element(*self.WORK_PHONE_INPUT))
+        person_new.mobile_phone1 = common_methods.get_value_from_text_field(
+            self.driver.find_element(*self.MOBILE_PHONE1_INPUT))
+        person_new.mobile_phone2 = common_methods.get_value_from_text_field(
+            self.driver.find_element(*self.MOBILE_PHONE2_INPUT))
+        person_new.home_phone = common_methods.get_value_from_text_field(
+            self.driver.find_element(*self.HOME_PHONE_INPUT))
+        person_new.work_phone = common_methods.get_value_from_text_field(
+            self.driver.find_element(*self.WORK_PHONE_INPUT))
         person_new.email = common_methods.get_value_from_text_field(self.driver.find_element(*self.EMAIL_INPUT))
         person_new.skype = common_methods.get_value_from_text_field(self.driver.find_element(*self.SKYPE_INPUT))
         person_new.web_site = common_methods.get_value_from_text_field(self.driver.find_element(*self.SITE_INPUT))
