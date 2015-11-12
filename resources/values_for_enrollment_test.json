@@ -2,7 +2,7 @@
   "search_by":
   {
       "invalid_pib":"СтоПудовоНеІснуючич",
-      "valid_person_id":151,
+      "valid_person_id":13,
       "invalid_person_id":1677777777,
       "invalid_document_number":12365478,
       "valid_document_number":9888889
