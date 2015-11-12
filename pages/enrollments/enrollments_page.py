@@ -314,35 +314,35 @@ class EnrollmentsPage(InternalPage):
         self.filter_refresh_button_enr.click()
         self.wait_until_page_generate()
 
-    def search_enrollment_in_table(self):
-        """
-        This method creates instance of TableEnrollment and return one.
-        :return: instance of TableEnrollment with data from table.
-        """
-        self.add_table_columns(self.COLUMN_CONTRACT_ADD,
-                               self.COLUMN_BUDGET_ADD,
-                               self.COLUMN_UNIT_ADD,
-                               self.COLUMN_PERSON_DOC_ADD,
-                               self.COLUMN_TOTAL_SCORE_ADD,
-                               self.COLUMN_DOC_SERIES_ADD,
-                               self.COLUMN_DOC_SERIES_ADD,
-                               self.COLUMN_TYPE_OF_ENTRY_ADD,
-                               self.COLUMN_DATE_CREATE_ADD,
-                               self.COLUMN_DATE_TO_ADD,
-                               self.COLUMN_HIERARCHY_ADD)
-        head_list = []
-        row_list = []
-        elements_from_table_head = self.driver.find_elements(*self.TABLE_HEAD)
-        elements_from_table_first_row = self.driver.find_elements(*self.TABLE_FIRST_ROW)
-        for t in elements_from_table_head:
-            head_list.append(t.text)
-        for b in elements_from_table_first_row[:-1]:
-            row_list.append(b.text)
-        table_dict = dict(zip(head_list, row_list))
-        table_dict = self.reformat_dictionary(table_dict)
-        fill_enrollment = FillEnrollment()
-        table_enrollment = fill_enrollment.get_enrollment_from_table(table_dict)
-        return table_enrollment
+    # def search_enrollment_in_table(self):
+    #     """
+    #     This method creates instance of TableEnrollment and return one.
+    #     :return: instance of TableEnrollment with data from table.
+    #     """
+    #     self.add_table_columns(self.COLUMN_CONTRACT_ADD,
+    #                            self.COLUMN_BUDGET_ADD,
+    #                            self.COLUMN_UNIT_ADD,
+    #                            self.COLUMN_PERSON_DOC_ADD,
+    #                            self.COLUMN_TOTAL_SCORE_ADD,
+    #                            self.COLUMN_DOC_SERIES_ADD,
+    #                            self.COLUMN_DOC_SERIES_ADD,
+    #                            self.COLUMN_TYPE_OF_ENTRY_ADD,
+    #                            self.COLUMN_DATE_CREATE_ADD,
+    #                            self.COLUMN_DATE_TO_ADD,
+    #                            self.COLUMN_HIERARCHY_ADD)
+    #     head_list = []
+    #     row_list = []
+    #     elements_from_table_head = self.driver.find_elements(*self.TABLE_HEAD)
+    #     elements_from_table_first_row = self.driver.find_elements(*self.TABLE_FIRST_ROW)
+    #     for t in elements_from_table_head:
+    #         head_list.append(t.text)
+    #     for b in elements_from_table_first_row[:-1]:
+    #         row_list.append(b.text)
+    #     table_dict = dict(zip(head_list, row_list))
+    #     table_dict = self.reformat_dictionary(table_dict)
+    #     fill_enrollment = FillEnrollment()
+    #     table_enrollment = fill_enrollment.get_enrollment_from_table(table_dict)
+    #     return table_enrollment
 
     def reformat_dictionary(self, dictionary):
         """
