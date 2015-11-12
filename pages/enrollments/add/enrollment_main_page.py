@@ -92,7 +92,7 @@ class EnrollmentsMainPage(InternalPage):
 
     @property
     def cancel_button(self):
-        return self.driver.find_element(*self.CANCEL_BUTTON).click()
+        return self.driver.find_element(*self.CANCEL_BUTTON)
 
     @property
     def is_enrollment_in_person(self):
